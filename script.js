@@ -126,12 +126,36 @@
   };
 
   const validateRsvp = () => {
-    const names = document.getElementById("guestNames").value.trim();
+    const namesInput = document.getElementById("guestNames");
+    const names = namesInput.value.trim();
     const attendance = rsvpForm.querySelector('input[name="attendance"]:checked');
+
     setFieldError("guestNames", names ? "" : "Please enter the invited name(s).");
     setFieldError("attendance", attendance ? "" : "Please select your response.");
-    return Boolean(names && attendance);
+
+    if (!names) {
+      namesInput.focus();
+      namesInput.scrollIntoView({ behavior: "smooth", block: "center" });
+      return false;
+    }
+
+    if (!attendance) {
+      const attendanceField = document.querySelector(".attendance-field");
+      attendanceField?.scrollIntoView({ behavior: "smooth", block: "center" });
+      rsvpForm.querySelector('input[name="attendance"]')?.focus();
+      return false;
+    }
+
+    return true;
   };
+
+  document.getElementById("guestNames").addEventListener("input", event => {
+    if (event.target.value.trim()) setFieldError("guestNames", "");
+  });
+
+  rsvpForm.querySelectorAll('input[name="attendance"]').forEach(option => {
+    option.addEventListener("change", () => setFieldError("attendance", ""));
+  });
 
   rsvpForm.addEventListener("submit", async event => {
     event.preventDefault();

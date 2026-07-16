@@ -53,3 +53,12 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Forced the RSVP button and form controls to use the Champagne/Mocha/Espresso palette on Safari and Chrome.
 - Refined the loading screen into an A&A + date sequence.
 - Countdown changes to `Today is the day.` when it reaches zero.
+
+
+## Version 7 changes
+
+- Returned the venues to the compact two-column card layout.
+- Restored the handwritten-style `With love, Alwin & Ana` footer.
+- Added stronger required-field validation with focus and scroll-to-error.
+- Prevented the RSVP button from becoming blue or white on tap/focus.
+- Made the music control fixed so it remains accessible while scrolling.

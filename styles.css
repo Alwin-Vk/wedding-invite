@@ -883,3 +883,179 @@ footer {
     max-width: 100%;
   }
 }
+
+
+/* Version 7 — compact venues, fixed music control, stronger RSVP states */
+
+/* Keep the music control available throughout the invitation. */
+.music-button {
+  position: fixed;
+  z-index: 240;
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  color: var(--champagne-light);
+  border-color: rgba(244,231,211,.42);
+  background: rgba(36,20,14,.88);
+  box-shadow: 0 12px 32px rgba(20,10,6,.22);
+}
+.music-button:hover {
+  color: var(--champagne-light);
+  background: rgba(59,36,24,.96);
+}
+.music-button:focus-visible {
+  outline: 2px solid var(--champagne-deep);
+  outline-offset: 3px;
+}
+
+/* Return venues to the compact editorial-card layout. */
+.venue-list {
+  max-width: 1180px;
+  gap: 2rem;
+}
+.venue-card,
+.venue-card--reverse {
+  max-width: none;
+  min-height: 380px;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1.25fr .95fr;
+  background: var(--cream);
+  box-shadow: var(--shadow);
+}
+.venue-card--reverse {
+  grid-template-columns: .95fr 1.25fr;
+}
+.venue-card--reverse .venue-card__image {
+  order: 2;
+}
+.venue-card__image {
+  width: auto;
+  min-height: 380px;
+  aspect-ratio: auto;
+}
+.venue-card__content {
+  min-height: 380px;
+  padding: clamp(2.2rem, 4vw, 4rem);
+  align-items: flex-start;
+  text-align: left;
+}
+.venue-card h3 {
+  font-size: clamp(2.5rem, 4.5vw, 4.2rem);
+}
+.venue-address {
+  margin: 1rem 0 1.8rem !important;
+  text-align: left;
+}
+.venue-card__tag {
+  left: 1rem;
+  bottom: 1rem;
+  transform: none;
+}
+
+/* Footer closing should read like a handwritten signature again. */
+.signature--footer {
+  margin-top: 1.7rem;
+  color: var(--champagne);
+  font-family: var(--script);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.05;
+}
+.signature--footer span {
+  margin-bottom: .05rem;
+  font-family: var(--serif);
+  font-size: .95rem;
+  letter-spacing: .04em;
+}
+
+/* RSVP action remains mocha at every interaction state — never browser blue/white. */
+.rsvp-submit,
+.rsvp-submit:link,
+.rsvp-submit:visited,
+.rsvp-submit:hover,
+.rsvp-submit:focus,
+.rsvp-submit:active {
+  color: var(--champagne-light) !important;
+  border-color: var(--mocha) !important;
+  background: var(--mocha) !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.rsvp-submit:hover {
+  background: var(--mocha-dark) !important;
+  border-color: var(--mocha-dark) !important;
+}
+.rsvp-submit:active {
+  transform: translateY(1px);
+  background: #563a2f !important;
+}
+.rsvp-submit b,
+.rsvp-submit b::after {
+  color: currentColor;
+}
+
+/* Clear visual validation, without aggressive browser-default colours. */
+.form-field.has-error input[type="text"],
+.form-field.has-error textarea,
+.attendance-field.has-error .attendance-options span {
+  border-color: #efb7aa !important;
+  box-shadow: 0 0 0 2px rgba(239,183,170,.12);
+}
+.field-error {
+  display: block;
+  color: #ffd2c8;
+}
+.rsvp-form input:invalid,
+.rsvp-form textarea:invalid {
+  box-shadow: none;
+}
+
+@media (max-width: 820px) {
+  .venue-card,
+  .venue-card--reverse {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .venue-card--reverse .venue-card__image {
+    order: 0;
+  }
+  .venue-card__image {
+    min-height: 240px;
+    aspect-ratio: 16 / 10;
+  }
+  .venue-card__content {
+    min-height: 0;
+    padding: 2rem 1.4rem 2.3rem;
+    align-items: center;
+    text-align: center;
+  }
+  .venue-address {
+    text-align: center;
+  }
+  .music-button {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .venue-list {
+    gap: 2.4rem;
+  }
+  .venue-card__image {
+    min-height: 220px;
+    aspect-ratio: 4 / 3;
+  }
+  .venue-card h3 {
+    font-size: clamp(2.45rem, 12vw, 3.5rem);
+  }
+}
+
+@media (hover: none) {
+  .rsvp-submit:hover {
+    color: var(--champagne-light) !important;
+    border-color: var(--mocha) !important;
+    background: var(--mocha) !important;
+    transform: none;
+  }
+}
