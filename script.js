@@ -142,7 +142,7 @@
 
     if (RSVP_ENDPOINT.includes("PASTE_YOUR")) {
       formStatus.classList.add("is-error");
-      formStatus.textContent = "RSVP is not connected yet. Complete RSVP_SETUP.md and paste the Web App URL into script.js.";
+      formStatus.innerHTML = "<strong>RSVP is not connected yet.</strong><span>Complete RSVP_SETUP.md and add the Web App URL.</span>";
       return;
     }
 
@@ -168,13 +168,16 @@
       if (!response.ok || result.status !== "success") {
         throw new Error(result.message || "Submission failed");
       }
+      const attending = payload.attendance === "Joyfully accepts";
       rsvpForm.reset();
       formStatus.classList.add("is-success");
-      formStatus.textContent = "Thank you — your RSVP has been received.";
+      formStatus.innerHTML = attending
+        ? "<strong>We’re so happy you’ll be part of our day.</strong><span>With love, Alwin &amp; Annmareena</span>"
+        : "<strong>Thank you for letting us know.</strong><span>You’ll be in our thoughts on the day.</span>";
     } catch (error) {
       console.error("RSVP submission failed:", error);
       formStatus.classList.add("is-error");
-      formStatus.textContent = "We couldn’t send your RSVP. Please try again.";
+      formStatus.innerHTML = "<strong>We couldn’t send your RSVP.</strong><span>Please try again in a moment.</span>";
     } finally {
       submitButton.disabled = false;
       submitButton.querySelector("span").textContent = originalText;

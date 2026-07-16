@@ -34,3 +34,11 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Venue cards use a consistent 16:10 image frame and equal visual height.
 - Added a subtle espresso overlay to normalize the two venue photographs.
 - Venue cards are shorter and more balanced.
+
+
+## Version 5 changes
+
+- Added a custom A&A monogram treatment.
+- Added the personal line: `From Waterloo to forever.`
+- Refined venue and RSVP buttons.
+- Added personalized RSVP confirmation messages.

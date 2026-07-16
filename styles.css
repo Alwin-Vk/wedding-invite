@@ -92,12 +92,21 @@ button, a { -webkit-tap-highlight-color: transparent; }
   box-shadow: 0 1px 0 rgba(59,36,24,.08);
 }
 .monogram {
-  font-family: var(--serif);
-  font-size: 1.45rem;
-  font-weight: 600;
-  letter-spacing: .08em;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  color: inherit;
   text-decoration: none;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: .02em;
 }
+.monogram span:first-child { transform: translateX(4px); }
+.monogram span:last-child { transform: translateX(-4px); }
+.monogram i { position: relative; z-index: 1; font-family: var(--script); font-size: 1.18em; font-weight: 400; color: var(--champagne-deep); transform: translateY(1px); }
 .site-header nav { display: flex; gap: clamp(1rem, 3vw, 2.5rem); }
 .site-header nav a {
   text-decoration: none;
@@ -269,6 +278,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-size: clamp(1.3rem, 2.5vw, 1.75rem);
 }
 .quote-copy { max-width: 670px; margin: 0 auto; font-size: .98rem; }
+.personal-line { margin: 1.4rem 0 0; color: var(--mocha); font-family: var(--serif); font-size: 1rem; font-style: italic; letter-spacing: .06em; }
 .signature {
   margin: 2.2rem 0 0;
   font-family: var(--script);
@@ -519,20 +529,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
   background: var(--champagne-light);
 }
 .rsvp-submit {
+  width: 100%;
+  max-width: 320px;
+  margin: .3rem auto 0;
   border-radius: 0;
   cursor: pointer;
   font-family: var(--sans);
 }
 .rsvp-submit:disabled { cursor: wait; opacity: .62; }
-.form-status {
-  min-height: 1.5em;
-  margin: .2rem 0 0 !important;
-  text-align: center;
-  font-size: .78rem;
-}
+.form-status { min-height: 0; margin: .2rem 0 0 !important; text-align: center; font-size: .78rem; }
+.form-status.is-success, .form-status.is-error { padding: 1rem 1.1rem; border: 1px solid rgba(244,231,211,.28); background: rgba(255,255,255,.06); }
 .form-status.is-success { color: #f4e7d3; }
-.form-status.is-error,
-.field-error { color: #ffd2c8; }
+.form-status.is-error, .field-error { color: #ffd2c8; }
+.form-status strong { display: block; margin-bottom: .2rem; font-family: var(--serif); font-size: 1.2rem; font-weight: 500; }
+.form-status span { display: block; opacity: .88; }
 .field-error { min-height: 1.1em; font-size: .68rem; }
 .form-field.has-error input[type="text"],
 .form-field.has-error textarea,
