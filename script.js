@@ -168,7 +168,7 @@
       if (!response.ok || result.status !== "success") {
         throw new Error(result.message || "Submission failed");
       }
-      const attending = payload.attendance === "Joyfully accepts";
+      const attending = payload.attendance === "Joyfully accept";
       rsvpForm.reset();
       formStatus.classList.add("is-success");
       formStatus.innerHTML = attending

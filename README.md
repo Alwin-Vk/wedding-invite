@@ -42,3 +42,14 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Added the personal line: `From Waterloo to forever.`
 - Refined venue and RSVP buttons.
 - Added personalized RSVP confirmation messages.
+
+
+## Version 6 changes
+
+- Removed `From Waterloo to forever`.
+- Redesigned venue presentation into a cleaner editorial layout.
+- Added detailed but concise venue addresses.
+- Removed celebration icons for a typography-led look.
+- Forced the RSVP button and form controls to use the Champagne/Mocha/Espresso palette on Safari and Chrome.
+- Refined the loading screen into an A&A + date sequence.
+- Countdown changes to `Today is the day.` when it reaches zero.

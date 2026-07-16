@@ -278,13 +278,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   font-size: clamp(1.3rem, 2.5vw, 1.75rem);
 }
 .quote-copy { max-width: 670px; margin: 0 auto; font-size: .98rem; }
-.personal-line { margin: 1.4rem 0 0; color: var(--mocha); font-family: var(--serif); font-size: 1rem; font-style: italic; letter-spacing: .06em; }
-.signature {
-  margin: 2.2rem 0 0;
-  font-family: var(--script);
-  font-size: 2rem;
-  color: var(--mocha-dark);
-}
 .signature span {
   display: block;
   margin-bottom: -.3rem;
@@ -712,4 +705,181 @@ body {
 footer {
   padding-left: env(safe-area-inset-left, 0px);
   padding-right: env(safe-area-inset-right, 0px);
+}
+
+
+/* Version 6 — final invitation polish */
+.preloader__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: .02em;
+  animation: preloaderMark 1.8s ease both;
+}
+.preloader__mark span:first-child { transform: translateX(8px); }
+.preloader__mark span:last-child { transform: translateX(-8px); }
+.preloader__mark b {
+  position: relative;
+  z-index: 1;
+  color: var(--champagne-deep);
+}
+.preloader__date {
+  margin-top: .75rem !important;
+  font-family: var(--serif) !important;
+  font-style: normal !important;
+  font-size: .8rem;
+  letter-spacing: .28em !important;
+  animation: preloaderDate 1.8s .25s ease both;
+}
+@keyframes preloaderMark {
+  0% { opacity: 0; transform: translateY(8px); }
+  45%, 72% { opacity: 1; transform: none; }
+  100% { opacity: .25; transform: translateY(-3px); }
+}
+@keyframes preloaderDate {
+  0%, 30% { opacity: 0; transform: translateY(6px); }
+  65%, 100% { opacity: 1; transform: none; }
+}
+
+/* Typography-only celebration cards */
+.detail-card {
+  min-height: 330px;
+}
+.detail-card__number {
+  font-size: 1rem;
+}
+.detail-card__type {
+  margin-top: 0;
+}
+.detail-card h3 {
+  margin-top: .4rem;
+}
+.detail-card::before {
+  content: "";
+  width: 42px;
+  height: 1px;
+  margin: 0 auto 1.55rem;
+  background: rgba(59,36,24,.32);
+}
+
+/* Editorial venue treatment */
+.venue-list {
+  gap: clamp(4rem, 8vw, 7rem);
+}
+.venue-card,
+.venue-card--reverse {
+  grid-template-columns: 1fr;
+  min-height: 0;
+  max-width: 920px;
+  margin: 0 auto;
+  background: transparent;
+  box-shadow: none;
+}
+.venue-card--reverse .venue-card__image {
+  order: 0;
+}
+.venue-card__image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+}
+.venue-card__image::after {
+  background:
+    linear-gradient(180deg, rgba(36,20,14,.02), rgba(36,20,14,.26)),
+    linear-gradient(90deg, rgba(59,36,24,.08), transparent 55%);
+}
+.venue-card__tag {
+  left: 50%;
+  bottom: 1.1rem;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.venue-card__content {
+  min-height: 0;
+  padding: clamp(2rem, 5vw, 3.2rem) 1rem 0;
+  align-items: center;
+  text-align: center;
+}
+.venue-card__content .section-kicker {
+  margin-bottom: .9rem;
+}
+.venue-card h3 {
+  max-width: 100%;
+  font-size: clamp(2.7rem, 6vw, 5rem);
+}
+.venue-address {
+  margin: 1.1rem 0 2rem !important;
+  font-size: .8rem;
+  line-height: 1.8;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* Form controls: explicitly remove browser blue styling */
+.rsvp-form input,
+.rsvp-form textarea,
+.rsvp-form button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.attendance-options input {
+  accent-color: var(--champagne);
+}
+.rsvp-submit,
+.rsvp-submit:visited,
+.rsvp-submit:focus,
+.rsvp-submit:active {
+  color: var(--champagne-light);
+  border-color: var(--champagne-light);
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+.rsvp-submit:hover {
+  color: var(--espresso);
+  border-color: var(--champagne-light);
+  background: var(--champagne-light);
+}
+.rsvp-submit:focus-visible {
+  box-shadow: 0 0 0 3px rgba(244,231,211,.18);
+}
+
+/* One unified editorial action style */
+.venue-card .button {
+  color: var(--espresso);
+  border-color: rgba(59,36,24,.72);
+}
+.venue-card .button:hover {
+  color: var(--champagne-light);
+  background: var(--espresso);
+}
+
+@media (max-width: 820px) {
+  .venue-list {
+    gap: 4.5rem;
+  }
+  .venue-card__image {
+    aspect-ratio: 4 / 3;
+  }
+  .venue-card__content {
+    padding-top: 1.8rem;
+  }
+  .detail-card {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 520px) {
+  .venue-card__image {
+    aspect-ratio: 4 / 3;
+  }
+  .venue-card h3 {
+    font-size: clamp(2.55rem, 13vw, 3.7rem);
+  }
+  .venue-address {
+    margin-bottom: 1.6rem !important;
+  }
+  .rsvp-submit {
+    max-width: 100%;
+  }
 }

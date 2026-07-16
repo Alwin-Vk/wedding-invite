@@ -1,4 +1,4 @@
-const SHEET_ID = "1UzeoUMZRoeraxghGGcrii3w4X0wnKzBnd4fwJsWo73Q";
+const SHEET_ID = "PASTE_YOUR_GOOGLE_SHEET_ID_HERE";
 const SHEET_NAME = "RSVP Responses";
 
 function doPost(e) {
