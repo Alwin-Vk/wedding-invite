@@ -111,7 +111,7 @@
     }
   });
 
-  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxAm8j0pGLhQYWByOpzCI7gmlR3t1EZNa58UI-Bcqm_IqdxL96BM4ldufMwwZQis9Cc/exec";
+  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxQ40JQSt6BJxYWfHVnV_yNPCVL_fgebFusIC8vmo1xvRhLhRDdBJpROoCuUtFn8hwS/exec";
   const rsvpForm = document.getElementById("rsvpForm");
   const formStatus = document.getElementById("formStatus");
 
