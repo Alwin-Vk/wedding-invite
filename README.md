@@ -23,3 +23,14 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Footer remains With love, Alwin and Ana.
 - Added a native RSVP form with Google Sheets integration.
 - See `RSVP_SETUP.md`.
+
+
+## Version 4 changes
+
+- Alwin and Annmareena now use the same visual font size on mobile.
+- Long-name fitting uses subtle horizontal compression rather than shrinking one name.
+- Added `viewport-fit=cover` and iPhone safe-area handling.
+- Top and bottom browser areas blend into the espresso theme where supported.
+- Venue cards use a consistent 16:10 image frame and equal visual height.
+- Added a subtle espresso overlay to normalize the two venue photographs.
+- Venue cards are shorter and more balanced.
