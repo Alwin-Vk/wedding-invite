@@ -5,6 +5,7 @@
   const hero = document.querySelector(".hero");
   const heroMedia = document.querySelector(".hero__media");
   const heroContent = document.querySelector(".hero__content");
+  const progressBar = document.querySelector(".page-progress span");
   const musicButton = document.getElementById("musicButton");
   const musicLabel = musicButton.querySelector(".music-button__label");
   const audio = document.getElementById("weddingAudio");
@@ -20,6 +21,8 @@
 
   const updateScrollEffects = () => {
     const y = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = `${docHeight > 0 ? (y / docHeight) * 100 : 0}%`;
     header.classList.toggle("is-scrolled", y > 60);
 
     if (hero && y < window.innerHeight * 1.2) {
@@ -77,7 +80,7 @@
   updateCountdown();
   window.setInterval(updateCountdown, 1000);
 
-  audio.volume = 0.24;
+  audio.volume = 0.22;
 
   musicButton.addEventListener("click", async () => {
     try {
@@ -92,11 +95,19 @@
         musicButton.classList.remove("is-playing");
         musicButton.setAttribute("aria-pressed", "false");
         musicButton.setAttribute("aria-label", "Play our song");
-        musicLabel.textContent = "Play our song";
+        musicLabel.textContent = "Play music";
       }
     } catch (error) {
       console.error("Audio playback failed:", error);
       musicLabel.textContent = "Tap again";
+    }
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && !audio.paused) {
+      audio.pause();
+      musicButton.classList.remove("is-playing");
+      musicButton.setAttribute("aria-pressed", "false");
+      musicLabel.textContent = "Play music";
     }
   });
 })();
