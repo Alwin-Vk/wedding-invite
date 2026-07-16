@@ -8,7 +8,7 @@
   <meta property="og:title" content="Alwin & Annmareena — 20 August 2026">
   <meta property="og:description" content="The story knew before we did. Join us as we celebrate our wedding day.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/images/rings-hero.jpg">
+  <meta property="og:image" content="assets/images/rings-hero.webp">
   <title>Alwin & Annmareena | 20 August 2026</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,7 +64,7 @@
       <span class="short-rule"></span>
       <p class="quote-lead">Some stories are written long before they unfold.</p>
       <p class="quote-copy">As we step into our forever, nothing would make us happier than celebrating this unforgettable day with you by our side.</p>
-      <p class="signature"><span>With love,</span> Alwin and Ana</p>
+      <p class="signature"><span>With love,</span> Alwin &amp; Annmareena</p>
     </section>
 
     <section class="countdown-section reveal" aria-labelledby="countdownTitle">
@@ -118,7 +118,7 @@
       <div class="venue-list">
         <article class="venue-card reveal">
           <div class="venue-card__image">
-            <img src="assets/images/church.webp" alt="Fathima Matha Church exterior" loading="lazy"><span class="venue-card__tag">Ceremony</span>
+            <img src="assets/images/church.jpg" alt="Fathima Matha Church exterior" loading="lazy"><span class="venue-card__tag">Ceremony</span>
           </div>
           <div class="venue-card__content">
             <p class="section-kicker">Ceremony</p>
@@ -143,11 +143,51 @@
     </section>
 
     <section class="rsvp-section" id="rsvp">
-      <div class="rsvp-card reveal"><div class="rsvp-card__ring rsvp-card__ring--one"></div><div class="rsvp-card__ring rsvp-card__ring--two"></div>
-        <p class="section-kicker">Kindly respond</p>
-        <h2>Will you celebrate with us?</h2>
-        <p>We would be delighted to celebrate this special day with you.</p>
-        <a class="button button--light" href="https://forms.gle/8xNTcmH7o9CMJVsf8" target="_blank" rel="noopener noreferrer"><span>Confirm RSVP</span><b>↗</b></a>
+      <div class="rsvp-card reveal">
+        <div class="rsvp-card__ring rsvp-card__ring--one"></div>
+        <div class="rsvp-card__ring rsvp-card__ring--two"></div>
+
+        <div class="rsvp-card__intro">
+          <p class="section-kicker">Kindly respond</p>
+          <h2>Will you celebrate with us?</h2>
+          <p>We would be delighted to celebrate this special day with you.</p>
+        </div>
+
+        <form class="rsvp-form" id="rsvpForm" novalidate>
+          <div class="form-field">
+            <label for="guestNames">Name(s)</label>
+            <input id="guestNames" name="names" type="text" autocomplete="name"
+                   placeholder="Enter your name or both names" required>
+            <small class="field-error" data-error-for="guestNames"></small>
+          </div>
+
+          <fieldset class="form-field attendance-field">
+            <legend>Will you celebrate with us?</legend>
+            <div class="attendance-options">
+              <label>
+                <input type="radio" name="attendance" value="Joyfully accepts" required>
+                <span>Joyfully accepts</span>
+              </label>
+              <label>
+                <input type="radio" name="attendance" value="Regretfully declines" required>
+                <span>Regretfully declines</span>
+              </label>
+            </div>
+            <small class="field-error" data-error-for="attendance"></small>
+          </fieldset>
+
+          <div class="form-field">
+            <label for="guestMessage">A message for the couple <em>Optional</em></label>
+            <textarea id="guestMessage" name="message" rows="4"
+                      placeholder="Share your wishes, blessings, or kind words…"></textarea>
+          </div>
+
+          <button class="button button--light rsvp-submit" type="submit">
+            <span>Confirm RSVP</span><b>→</b>
+          </button>
+
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
       </div>
     </section>
   </main>

@@ -110,4 +110,75 @@
       musicLabel.textContent = "Play music";
     }
   });
+
+  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxAm8j0pGLhQYWByOpzCI7gmlR3t1EZNa58UI-Bcqm_IqdxL96BM4ldufMwwZQis9Cc/exec";
+  const rsvpForm = document.getElementById("rsvpForm");
+  const formStatus = document.getElementById("formStatus");
+
+  const setFieldError = (key, message) => {
+    const error = document.querySelector(`[data-error-for="${key}"]`);
+    if (error) error.textContent = message || "";
+    if (key === "attendance") {
+      document.querySelector(".attendance-field")?.classList.toggle("has-error", Boolean(message));
+    } else {
+      document.getElementById(key)?.closest(".form-field")?.classList.toggle("has-error", Boolean(message));
+    }
+  };
+
+  const validateRsvp = () => {
+    const names = document.getElementById("guestNames").value.trim();
+    const attendance = rsvpForm.querySelector('input[name="attendance"]:checked');
+    setFieldError("guestNames", names ? "" : "Please enter the invited name(s).");
+    setFieldError("attendance", attendance ? "" : "Please select your response.");
+    return Boolean(names && attendance);
+  };
+
+  rsvpForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    formStatus.className = "form-status";
+    formStatus.textContent = "";
+
+    if (!validateRsvp()) return;
+
+    if (RSVP_ENDPOINT.includes("PASTE_YOUR")) {
+      formStatus.classList.add("is-error");
+      formStatus.textContent = "RSVP is not connected yet. Complete RSVP_SETUP.md and paste the Web App URL into script.js.";
+      return;
+    }
+
+    const submitButton = rsvpForm.querySelector('button[type="submit"]');
+    const originalText = submitButton.querySelector("span").textContent;
+    const payload = {
+      names: document.getElementById("guestNames").value.trim(),
+      attendance: rsvpForm.querySelector('input[name="attendance"]:checked').value,
+      message: document.getElementById("guestMessage").value.trim(),
+      submittedAt: new Date().toISOString()
+    };
+
+    submitButton.disabled = true;
+    submitButton.querySelector("span").textContent = "Sending…";
+
+    try {
+      const response = await fetch(RSVP_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      if (!response.ok || result.status !== "success") {
+        throw new Error(result.message || "Submission failed");
+      }
+      rsvpForm.reset();
+      formStatus.classList.add("is-success");
+      formStatus.textContent = "Thank you — your RSVP has been received.";
+    } catch (error) {
+      console.error("RSVP submission failed:", error);
+      formStatus.classList.add("is-error");
+      formStatus.textContent = "We couldn’t send your RSVP. Please try again.";
+    } finally {
+      submitButton.disabled = false;
+      submitButton.querySelector("span").textContent = originalText;
+    }
+  });
+
 })();
