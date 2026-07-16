@@ -62,3 +62,13 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Added stronger required-field validation with focus and scroll-to-error.
 - Prevented the RSVP button from becoming blue or white on tap/focus.
 - Made the music control fixed so it remains accessible while scrolling.
+
+
+## Version 8 changes
+
+- Removed the duplicate `Ceremony` and `Reception` labels from venue images.
+- Reduced venue image and card height.
+- Reduced venue title size.
+- Split venue names and addresses cleanly across two lines.
+- Restored `The story knew before we did.` to the opening animation.
+- Refined the loading sequence to show monogram, quote, and date elegantly.
