@@ -1,80 +1,95 @@
 (() => {
+  "use strict";
+
   const body = document.body;
   const preloader = document.querySelector(".preloader");
   const header = document.getElementById("siteHeader");
   const hero = document.querySelector(".hero");
+  const heroSlideshow = document.querySelector(".hero__slideshow");
   const heroSlides = Array.from(document.querySelectorAll(".hero__slide"));
   const heroContent = document.querySelector(".hero__content");
   const progressBar = document.querySelector(".page-progress span");
   const musicButton = document.getElementById("musicButton");
-  const musicLabel = musicButton.querySelector(".music-button__label");
+  const musicLabel = musicButton?.querySelector(".music-button__label");
   const audio = document.getElementById("weddingAudio");
 
   body.classList.add("is-loading");
 
-  window.addEventListener("load", () => {
-    window.setTimeout(() => {
-      preloader.classList.add("is-hidden");
-      body.classList.remove("is-loading");
-      body.classList.add("hero-ready");
-    }, 950);
-  });
+  const revealPage = () => {
+    preloader?.classList.add("is-hidden");
+    body.classList.remove("is-loading");
+    body.classList.add("hero-ready");
+  };
+
+  // Always reveal the page, even if an image or font is slow.
+  window.addEventListener("load", () => window.setTimeout(revealPage, 2300));
+  window.setTimeout(revealPage, 5000);
 
   const updateScrollEffects = () => {
     const y = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    progressBar.style.width = `${docHeight > 0 ? (y / docHeight) * 100 : 0}%`;
-    header.classList.toggle("is-scrolled", y > 60);
+    const pageProgress = docHeight > 0 ? (y / docHeight) * 100 : 0;
 
-    if (hero && y < window.innerHeight * 1.2) {
+    if (progressBar) progressBar.style.width = `${pageProgress}%`;
+    header?.classList.toggle("is-scrolled", y > 60);
+
+    if (hero && heroContent && y < window.innerHeight * 1.2) {
       const progress = Math.min(y / window.innerHeight, 1);
-      heroContent.style.opacity = String(1 - progress * 1.1);
-      heroContent.style.transform = `translateY(${-progress * 48}px)`;
-      heroSlides.forEach(slide => {
-        if (slide.classList.contains("is-active")) {
-          slide.style.setProperty("--scroll-opacity", String(1 - progress * 0.55));
-        } else {
-          slide.style.removeProperty("--scroll-opacity");
-        }
-      });
+      heroContent.style.opacity = String(Math.max(0, 1 - progress * 1.08));
+      heroContent.style.transform = `translate3d(0, ${-progress * 52}px, 0)`;
+
+      if (heroSlideshow) {
+        heroSlideshow.style.opacity = String(Math.max(0.48, 1 - progress * 0.52));
+      }
     }
   };
 
   window.addEventListener("scroll", updateScrollEffects, { passive: true });
   updateScrollEffects();
 
-  const revealObserver = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.14 }
-  );
+  // Section reveal animations.
+  const revealElements = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -4% 0px" }
+    );
 
-  document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
-
-
-  let activeHeroIndex = 0;
-  const showNextHeroSlide = () => {
-    if (heroSlides.length < 2) return;
-    const current = heroSlides[activeHeroIndex];
-    activeHeroIndex = (activeHeroIndex + 1) % heroSlides.length;
-    const next = heroSlides[activeHeroIndex];
-
-    current.classList.remove("is-active");
-    next.classList.add("is-active");
-  };
-
-  if (heroSlides.length > 1) {
-    window.setInterval(showNextHeroSlide, 9000);
+    revealElements.forEach(element => observer.observe(element));
+  } else {
+    revealElements.forEach(element => element.classList.add("is-visible"));
   }
 
+  // Cinematic hero slideshow.
+  let activeHeroIndex = 0;
+
+  const activateSlide = index => {
+    heroSlides.forEach((slide, slideIndex) => {
+      slide.classList.toggle("is-active", slideIndex === index);
+    });
+  };
+
+  if (heroSlides.length > 0) {
+    activateSlide(0);
+  }
+
+  if (heroSlides.length > 1) {
+    window.setInterval(() => {
+      activeHeroIndex = (activeHeroIndex + 1) % heroSlides.length;
+      activateSlide(activeHeroIndex);
+    }, 9000);
+  }
+
+  // Countdown.
   const target = new Date("2026-08-20T16:30:00+05:30").getTime();
-  const els = {
+  const countdownElements = {
     days: document.getElementById("days"),
     hours: document.getElementById("hours"),
     minutes: document.getElementById("minutes"),
@@ -87,78 +102,110 @@
     const distance = target - Date.now();
 
     if (distance <= 0) {
-      els.days.textContent = "00";
-      els.hours.textContent = "00";
-      els.minutes.textContent = "00";
-      els.seconds.textContent = "00";
+      Object.values(countdownElements).forEach(element => {
+        if (element) element.textContent = "00";
+      });
+      const note = document.querySelector(".countdown-note");
+      if (note) note.textContent = "Today is the day.";
       return;
     }
 
-    els.days.textContent = pad(Math.floor(distance / 86400000));
-    els.hours.textContent = pad(Math.floor((distance % 86400000) / 3600000));
-    els.minutes.textContent = pad(Math.floor((distance % 3600000) / 60000));
-    els.seconds.textContent = pad(Math.floor((distance % 60000) / 1000));
+    if (countdownElements.days) {
+      countdownElements.days.textContent = pad(Math.floor(distance / 86400000));
+    }
+    if (countdownElements.hours) {
+      countdownElements.hours.textContent = pad(
+        Math.floor((distance % 86400000) / 3600000)
+      );
+    }
+    if (countdownElements.minutes) {
+      countdownElements.minutes.textContent = pad(
+        Math.floor((distance % 3600000) / 60000)
+      );
+    }
+    if (countdownElements.seconds) {
+      countdownElements.seconds.textContent = pad(
+        Math.floor((distance % 60000) / 1000)
+      );
+    }
   };
 
   updateCountdown();
   window.setInterval(updateCountdown, 1000);
 
-  audio.volume = 0.22;
+  // Music player.
+  if (audio && musicButton && musicLabel) {
+    audio.volume = 0.22;
 
-  musicButton.addEventListener("click", async () => {
-    try {
-      if (audio.paused) {
-        await audio.play();
-        musicButton.classList.add("is-playing");
-        musicButton.setAttribute("aria-pressed", "true");
-        musicButton.setAttribute("aria-label", "Pause our song");
-        musicLabel.textContent = "Pause music";
-      } else {
-        audio.pause();
-        musicButton.classList.remove("is-playing");
-        musicButton.setAttribute("aria-pressed", "false");
-        musicButton.setAttribute("aria-label", "Play our song");
-        musicLabel.textContent = "Play music";
+    const updateMusicState = isPlaying => {
+      musicButton.classList.toggle("is-playing", isPlaying);
+      musicButton.setAttribute("aria-pressed", String(isPlaying));
+      musicButton.setAttribute(
+        "aria-label",
+        isPlaying ? "Pause our song" : "Play our song"
+      );
+      musicLabel.textContent = isPlaying ? "Pause music" : "Play music";
+    };
+
+    musicButton.addEventListener("click", async () => {
+      try {
+        if (audio.paused) {
+          await audio.play();
+          updateMusicState(true);
+        } else {
+          audio.pause();
+          updateMusicState(false);
+        }
+      } catch (error) {
+        console.error("Audio playback failed:", error);
+        musicLabel.textContent = "Tap again";
       }
-    } catch (error) {
-      console.error("Audio playback failed:", error);
-      musicLabel.textContent = "Tap again";
-    }
-  });
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden && !audio.paused) {
-      audio.pause();
-      musicButton.classList.remove("is-playing");
-      musicButton.setAttribute("aria-pressed", "false");
-      musicLabel.textContent = "Play music";
-    }
-  });
+    });
 
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && !audio.paused) {
+        audio.pause();
+        updateMusicState(false);
+      }
+    });
+  }
+
+  // Native RSVP form.
   const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxQ40JQSt6BJxYWfHVnV_yNPCVL_fgebFusIC8vmo1xvRhLhRDdBJpROoCuUtFn8hwS/exec";
   const rsvpForm = document.getElementById("rsvpForm");
   const formStatus = document.getElementById("formStatus");
 
+  if (!rsvpForm || !formStatus) return;
+
   const setFieldError = (key, message) => {
-    const error = document.querySelector(`[data-error-for="${key}"]`);
-    if (error) error.textContent = message || "";
+    const errorElement = document.querySelector(`[data-error-for="${key}"]`);
+    if (errorElement) errorElement.textContent = message || "";
+
     if (key === "attendance") {
-      document.querySelector(".attendance-field")?.classList.toggle("has-error", Boolean(message));
+      document
+        .querySelector(".attendance-field")
+        ?.classList.toggle("has-error", Boolean(message));
     } else {
-      document.getElementById(key)?.closest(".form-field")?.classList.toggle("has-error", Boolean(message));
+      document
+        .getElementById(key)
+        ?.closest(".form-field")
+        ?.classList.toggle("has-error", Boolean(message));
     }
   };
 
   const validateRsvp = () => {
     const namesInput = document.getElementById("guestNames");
-    const names = namesInput.value.trim();
-    const attendance = rsvpForm.querySelector('input[name="attendance"]:checked');
+    const attendance = rsvpForm.querySelector(
+      'input[name="attendance"]:checked'
+    );
+    const names = namesInput?.value.trim() || "";
 
     setFieldError("guestNames", names ? "" : "Please enter the invited name(s).");
     setFieldError("attendance", attendance ? "" : "Please select your response.");
 
     if (!names) {
-      namesInput.focus();
-      namesInput.scrollIntoView({ behavior: "smooth", block: "center" });
+      namesInput?.focus();
+      namesInput?.scrollIntoView({ behavior: "smooth", block: "center" });
       return false;
     }
 
@@ -172,38 +219,46 @@
     return true;
   };
 
-  document.getElementById("guestNames").addEventListener("input", event => {
+  document.getElementById("guestNames")?.addEventListener("input", event => {
     if (event.target.value.trim()) setFieldError("guestNames", "");
   });
 
-  rsvpForm.querySelectorAll('input[name="attendance"]').forEach(option => {
-    option.addEventListener("change", () => setFieldError("attendance", ""));
-  });
+  rsvpForm
+    .querySelectorAll('input[name="attendance"]')
+    .forEach(option =>
+      option.addEventListener("change", () => setFieldError("attendance", ""))
+    );
 
   rsvpForm.addEventListener("submit", async event => {
     event.preventDefault();
     formStatus.className = "form-status";
-    formStatus.textContent = "";
+    formStatus.innerHTML = "";
 
     if (!validateRsvp()) return;
 
     if (RSVP_ENDPOINT.includes("PASTE_YOUR")) {
       formStatus.classList.add("is-error");
-      formStatus.innerHTML = "<strong>RSVP is not connected yet.</strong><span>Complete RSVP_SETUP.md and add the Web App URL.</span>";
+      formStatus.innerHTML =
+        "<strong>RSVP is not connected yet.</strong><span>Complete RSVP_SETUP.md and add the Web App URL.</span>";
       return;
     }
 
     const submitButton = rsvpForm.querySelector('button[type="submit"]');
-    const originalText = submitButton.querySelector("span").textContent;
+    const buttonText = submitButton?.querySelector("span");
+    const originalText = buttonText?.textContent || "Confirm RSVP";
+    const attendance = rsvpForm.querySelector(
+      'input[name="attendance"]:checked'
+    ).value;
+
     const payload = {
       names: document.getElementById("guestNames").value.trim(),
-      attendance: rsvpForm.querySelector('input[name="attendance"]:checked').value,
+      attendance,
       message: document.getElementById("guestMessage").value.trim(),
       submittedAt: new Date().toISOString()
     };
 
-    submitButton.disabled = true;
-    submitButton.querySelector("span").textContent = "Sending…";
+    if (submitButton) submitButton.disabled = true;
+    if (buttonText) buttonText.textContent = "Sending…";
 
     try {
       const response = await fetch(RSVP_ENDPOINT, {
@@ -211,11 +266,13 @@
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload)
       });
+
       const result = await response.json();
       if (!response.ok || result.status !== "success") {
         throw new Error(result.message || "Submission failed");
       }
-      const attending = payload.attendance === "Joyfully accept";
+
+      const attending = attendance === "Joyfully accept";
       rsvpForm.reset();
       formStatus.classList.add("is-success");
       formStatus.innerHTML = attending
@@ -224,11 +281,11 @@
     } catch (error) {
       console.error("RSVP submission failed:", error);
       formStatus.classList.add("is-error");
-      formStatus.innerHTML = "<strong>We couldn’t send your RSVP.</strong><span>Please try again in a moment.</span>";
+      formStatus.innerHTML =
+        "<strong>We couldn’t send your RSVP.</strong><span>Please try again in a moment.</span>";
     } finally {
-      submitButton.disabled = false;
-      submitButton.querySelector("span").textContent = originalText;
+      if (submitButton) submitButton.disabled = false;
+      if (buttonText) buttonText.textContent = originalText;
     }
   });
-
 })();

@@ -84,3 +84,24 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Restored Ceremony and Reception labels inside venue images.
 - Reduced venue image and title sizes further.
 - Kept venue names and addresses compact on mobile.
+
+
+## Stable Version 9 fix
+
+- Removed the stale `heroMedia` JavaScript reference that stopped the entire page.
+- Rebuilt the slideshow logic defensively.
+- Added fallback page reveal after five seconds.
+- Added null checks so one missing optional element cannot break the site.
+- Added a browser fallback for section reveal animations.
+- Added `.nojekyll` for direct static hosting on GitHub Pages.
+
+
+## Version 10 — mobile-first correction
+
+- Removed forced line breaks from `Fathima Matha Church` and `La Mirage`.
+- Venue names now remain on one line on mobile.
+- Reduced venue title size specifically for narrow phones.
+- Reduced venue image height.
+- Tightened venue address and button spacing.
+- Added a broader mobile spacing pass across sections.
+- Optimized for common iPhone and Android widths.

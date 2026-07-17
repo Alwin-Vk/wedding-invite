@@ -157,7 +157,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   will-change: opacity, transform;
 }
 .hero__slide.is-active {
-  opacity: var(--scroll-opacity, 1);
+  opacity: 1;
   animation: heroKenBurns 10s ease-out forwards;
 }
 .hero__overlay {
@@ -1249,5 +1249,211 @@ body.hero-ready .hero-reveal--5 { animation-delay: 1.28s; }
   .venue-card__image {
     min-height: 165px;
     aspect-ratio: 16 / 10;
+  }
+}
+
+
+/* Stable build safeguards */
+.hero__slideshow {
+  opacity: 1;
+}
+.hero__slide {
+  pointer-events: none;
+}
+.hero__slide.is-active {
+  z-index: 1;
+}
+.hero__overlay,
+.hero__grain,
+.hero__content {
+  z-index: 2;
+}
+.hero__overlay,
+.hero__grain {
+  pointer-events: none;
+}
+
+/* Content must never remain permanently hidden. */
+.reveal {
+  will-change: opacity, transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+
+/* Version 10 — mobile-first venue correction and spacing pass */
+
+/* Venue names must remain single-line, especially on phones. */
+.venue-name {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  white-space: nowrap;
+  text-align: inherit;
+  overflow: visible;
+  font-size: clamp(1.75rem, 3.1vw, 2.65rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -.025em;
+}
+
+.venue-address {
+  display: grid;
+  gap: .1rem;
+}
+
+.venue-address span {
+  display: block;
+}
+
+/* Mobile-first compact venue treatment */
+@media (max-width: 820px) {
+  .venue-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .venue-list {
+    width: 100%;
+    gap: 1.6rem;
+  }
+
+  .venue-card,
+  .venue-card--reverse {
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .venue-card--reverse .venue-card__image {
+    order: 0;
+  }
+
+  .venue-card__image {
+    width: 100%;
+    min-height: 0 !important;
+    height: clamp(170px, 47vw, 210px);
+    aspect-ratio: auto !important;
+  }
+
+  .venue-card__content {
+    min-height: 0 !important;
+    padding: 1.25rem 1rem 1.45rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .venue-name {
+    font-size: clamp(1.55rem, 7.2vw, 2.05rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -.035em;
+  }
+
+  .venue-name--church {
+    transform: scaleX(.94);
+    transform-origin: center;
+  }
+
+  .venue-address {
+    margin: .65rem 0 1.1rem !important;
+    text-align: center;
+    font-size: .68rem;
+    line-height: 1.45;
+    letter-spacing: .075em;
+  }
+
+  .venue-card .button {
+    width: min(100%, 210px);
+    min-width: 0;
+    min-height: 42px;
+    padding: .72rem .95rem;
+  }
+
+  .venue-card__tag {
+    left: .8rem;
+    bottom: .8rem;
+    padding: .42rem .65rem;
+    font-size: .52rem;
+  }
+}
+
+/* Narrow iPhones and small Android devices */
+@media (max-width: 390px) {
+  .venue-section {
+    padding-left: .75rem;
+    padding-right: .75rem;
+  }
+
+  .venue-card__image {
+    height: 165px;
+  }
+
+  .venue-card__content {
+    padding-left: .8rem;
+    padding-right: .8rem;
+  }
+
+  .venue-name {
+    font-size: 1.48rem !important;
+  }
+
+  .venue-name--church {
+    transform: scaleX(.92);
+  }
+
+  .venue-address {
+    font-size: .64rem;
+  }
+}
+
+/* Larger phones: still keep the venue name on one line. */
+@media (min-width: 391px) and (max-width: 520px) {
+  .venue-name--church {
+    font-size: clamp(1.55rem, 6.6vw, 1.9rem) !important;
+  }
+}
+
+/* General mobile spacing pass */
+@media (max-width: 520px) {
+  .quote-section,
+  .countdown-section,
+  .celebration-section,
+  .venue-section,
+  .rsvp-section {
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .section-heading {
+    margin-bottom: 2.4rem;
+  }
+
+  .section-heading h2,
+  .countdown-section h2,
+  .rsvp-card h2 {
+    line-height: 1.05;
+  }
+
+  .details-grid {
+    gap: 1rem;
+  }
+
+  .detail-card {
+    min-height: 245px;
+    padding: 1.7rem 1.1rem;
+  }
+
+  .rsvp-card {
+    padding-top: 2.8rem;
+    padding-bottom: 2.8rem;
+  }
+
+  .rsvp-form {
+    gap: 1.15rem;
   }
 }
