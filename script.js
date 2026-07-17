@@ -210,7 +210,7 @@
   }
 
   // Native RSVP form.
-  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxQ40JQSt6BJxYWfHVnV_yNPCVL_fgebFusIC8vmo1xvRhLhRDdBJpROoCuUtFn8hwS/exec";
+  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycby9Zs7paKUzQCU1aYKtglO_4pLWQLfqPx-QsWvTkjVdDPkog2_Klxr3IcxGbxTrM3E/exec";
   const rsvpForm = document.getElementById("rsvpForm");
   const formStatus = document.getElementById("formStatus");
   const rsvpCard = document.querySelector(".rsvp-card");
@@ -219,6 +219,19 @@
   const rsvpSuccessMessage = document.getElementById("rsvpSuccessMessage");
   const calendarActions = document.getElementById("calendarActions");
   const addCalendarButton = document.getElementById("addCalendarButton");
+  const wishesSection = document.getElementById("wishes");
+  const wishesCarousel = document.querySelector(".wishes-carousel");
+  const wishesTrack = document.getElementById("wishesTrack");
+  const wishesFallback = document.getElementById("wishesFallback");
+  const wishesPrev = document.getElementById("wishesPrev");
+  const wishesNext = document.getElementById("wishesNext");
+  const wishModal = document.getElementById("wishModal");
+  const wishForm = document.getElementById("wishForm");
+  const wishNameInput = document.getElementById("wishName");
+  const wishMessageInput = document.getElementById("wishMessage");
+  const wishCount = document.getElementById("wishCount");
+  const wishStatus = document.getElementById("wishStatus");
+  const wishSuccess = document.getElementById("wishSuccess");
 
   if (!rsvpForm || !formStatus) return;
 
@@ -353,6 +366,515 @@
 
   addCalendarButton?.addEventListener("click", addToCalendar);
 
+  const fallbackWishes = [
+    {
+      name: "With love",
+      wish: "Wishing you both a lifetime filled with love, laughter, and countless beautiful memories."
+    },
+    {
+      name: "Family",
+      wish: "May this new chapter bring you endless joy and togetherness."
+    },
+    {
+      name: "A loved one",
+      wish: "So happy to celebrate this beautiful beginning with you both."
+    },
+    {
+      name: "Friend",
+      wish: "May your love grow stronger with every passing year."
+    }
+  ];
+
+  const reducedMotionQuery = window.matchMedia?.(
+    "(prefers-reduced-motion: reduce)"
+  );
+  let wishesAutoplayTimer = 0;
+  let wishesScrollSettleTimer = 0;
+  let wishesUserInteracted = false;
+  let wishesSectionVisible = !("IntersectionObserver" in window);
+  let wishesHoverPaused = false;
+  let wishesAutoScrolling = false;
+
+  const getWishCards = (includeCta = false) => {
+    if (!wishesTrack) return [];
+
+    const selector = includeCta
+      ? ".wish-card"
+      : ".wish-card:not(.wish-card--cta)";
+
+    return Array.from(wishesTrack.querySelectorAll(selector));
+  };
+
+  const clearWishesAutoplay = () => {
+    window.clearTimeout(wishesAutoplayTimer);
+    wishesAutoplayTimer = 0;
+  };
+
+  const canRunWishesAutoplay = () =>
+    Boolean(
+      wishesTrack &&
+        wishesSectionVisible &&
+        !wishesUserInteracted &&
+        !wishesHoverPaused &&
+        !document.hidden &&
+        !reducedMotionQuery?.matches &&
+        getWishCards().length > 1
+    );
+
+  const getNearestWishIndex = cards => {
+    if (!wishesTrack || cards.length === 0) return -1;
+
+    return cards.reduce((nearestIndex, card, index) => {
+      const nearestDistance = Math.abs(
+        cards[nearestIndex].offsetLeft - wishesTrack.scrollLeft
+      );
+      const distance = Math.abs(card.offsetLeft - wishesTrack.scrollLeft);
+      return distance < nearestDistance ? index : nearestIndex;
+    }, 0);
+  };
+
+  const scrollToWishCard = card => {
+    if (!wishesTrack || !card) return;
+
+    wishesTrack.scrollTo({
+      left: card.offsetLeft,
+      behavior: "smooth"
+    });
+  };
+
+  const advanceWishesAutoplay = () => {
+    if (!canRunWishesAutoplay()) return;
+
+    const cards = getWishCards();
+    const currentIndex = Math.max(0, getNearestWishIndex(cards));
+    const nextCard = cards[(currentIndex + 1) % cards.length];
+
+    wishesAutoScrolling = true;
+    scrollToWishCard(nextCard);
+    window.clearTimeout(wishesScrollSettleTimer);
+    wishesScrollSettleTimer = window.setTimeout(() => {
+      wishesAutoScrolling = false;
+    }, 900);
+  };
+
+  const scheduleWishesAutoplay = (delay = 5500) => {
+    clearWishesAutoplay();
+
+    if (!canRunWishesAutoplay()) return;
+
+    wishesAutoplayTimer = window.setTimeout(() => {
+      advanceWishesAutoplay();
+      scheduleWishesAutoplay();
+    }, delay);
+  };
+
+  const initWishesAutoplay = () => {
+    clearWishesAutoplay();
+
+    if (wishesUserInteracted || reducedMotionQuery?.matches) return;
+    scheduleWishesAutoplay(4500);
+  };
+
+  const stopWishesAutoplay = () => {
+    if (wishesUserInteracted) return;
+
+    wishesUserInteracted = true;
+    wishesAutoScrolling = false;
+    clearWishesAutoplay();
+    window.clearTimeout(wishesScrollSettleTimer);
+  };
+
+  const moveWishesManually = direction => {
+    stopWishesAutoplay();
+
+    const cards = getWishCards(true);
+    if (!wishesTrack || cards.length === 0) return;
+
+    const currentIndex = getNearestWishIndex(cards);
+    const nextIndex = Math.min(
+      Math.max(currentIndex + direction, 0),
+      cards.length - 1
+    );
+
+    scrollToWishCard(cards[nextIndex]);
+  };
+
+  const createWishCard = ({ name, wish }) => {
+    const card = document.createElement("article");
+    const text = document.createElement("p");
+    const footer = document.createElement("footer");
+    const prefix = document.createElement("span");
+
+    card.className = "wish-card";
+    text.textContent = wish;
+    prefix.textContent = "Love,";
+    footer.textContent = name;
+    footer.prepend(prefix, " ");
+
+    card.append(text, footer);
+    return card;
+  };
+
+  const createWishCta = () => {
+    const cta = document.createElement("button");
+    const text = document.createElement("span");
+    const plus = document.createElement("b");
+    const note = document.createElement("small");
+    const action = document.createElement("em");
+
+    cta.className = "wish-card wish-card--cta";
+    cta.id = "openWishForm";
+    cta.type = "button";
+    text.textContent = "Share Your Wishes";
+    plus.textContent = "+";
+    note.textContent = "Your blessing will become part of our story.";
+    action.textContent = "Add Yours →";
+    plus.setAttribute("aria-hidden", "true");
+
+    cta.append(plus, text, note, action);
+    cta.addEventListener("click", openWishModal);
+    return cta;
+  };
+
+  const renderWishes = wishes => {
+    if (!wishesTrack) return;
+
+    clearWishesAutoplay();
+    if (!wishesUserInteracted) {
+      wishesAutoScrolling = true;
+      window.clearTimeout(wishesScrollSettleTimer);
+    }
+
+    wishesTrack.replaceChildren(
+      ...wishes.map(createWishCard),
+      createWishCta()
+    );
+
+    if (!wishesUserInteracted) {
+      wishesTrack.scrollTo({ left: 0, behavior: "auto" });
+      wishesScrollSettleTimer = window.setTimeout(() => {
+        wishesAutoScrolling = false;
+      }, 120);
+    }
+
+    initWishesAutoplay();
+  };
+
+  const showWishFallback = () => {
+    renderWishes(fallbackWishes);
+    if (wishesFallback) wishesFallback.hidden = false;
+  };
+
+  async function loadApprovedWishes() {
+    if (!wishesTrack) return;
+
+    renderWishes(fallbackWishes);
+
+    try {
+      const response = await fetch(RSVP_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "getApprovedWishes" })
+      });
+      const result = await response.json();
+
+      if (!response.ok || result.status !== "success") {
+        throw new Error(result.message || "Could not load wishes");
+      }
+
+      const approvedWishes = Array.isArray(result.wishes)
+        ? result.wishes
+            .map(item => ({
+              name: String(item.name || "").trim(),
+              wish: String(item.wish || "").trim()
+            }))
+            .filter(item => item.name && item.wish)
+        : [];
+
+      if (approvedWishes.length > 0) {
+        renderWishes(approvedWishes);
+        if (wishesFallback) wishesFallback.hidden = true;
+      }
+    } catch (error) {
+      console.error("Approved wishes failed to load:", error);
+      showWishFallback();
+    }
+  }
+
+  let wishModalTrigger = null;
+  let wishCloseTimer = 0;
+
+  const getWishModalFocusables = () => {
+    if (!wishModal) return [];
+
+    return Array.from(
+      wishModal.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter(element => element.offsetParent !== null);
+  };
+
+  const resetWishForm = () => {
+    wishForm?.reset();
+    if (wishForm) wishForm.hidden = false;
+    if (wishSuccess) wishSuccess.hidden = true;
+    if (wishStatus) {
+      wishStatus.className = "form-status";
+      wishStatus.textContent = "";
+    }
+    ["wishName", "wishMessage"].forEach(key =>
+      setWishError(key, "")
+    );
+    updateWishCount();
+  };
+
+  function openWishModal(event) {
+    if (!wishModal) return;
+
+    window.clearTimeout(wishCloseTimer);
+    wishModalTrigger = event?.currentTarget || document.activeElement;
+    resetWishForm();
+    wishModal.hidden = false;
+    wishModal.classList.remove("is-closing");
+    body.classList.add("wish-modal-open");
+    window.requestAnimationFrame(() => {
+      wishModal.classList.add("is-open");
+      window.setTimeout(() => wishNameInput?.focus(), 80);
+    });
+  }
+
+  const closeWishModal = () => {
+    if (!wishModal) return;
+
+    wishModal.classList.remove("is-open");
+    wishModal.classList.add("is-closing");
+    body.classList.remove("wish-modal-open");
+
+    wishCloseTimer = window.setTimeout(() => {
+      wishModal.hidden = true;
+      wishModal.classList.remove("is-closing");
+      resetWishForm();
+      if (wishModalTrigger instanceof HTMLElement) {
+        wishModalTrigger.focus();
+      }
+    }, 300);
+  };
+
+  document
+    .getElementById("openWishForm")
+    ?.addEventListener("click", openWishModal);
+
+  wishModal
+    ?.querySelectorAll("[data-wish-close]")
+    .forEach(element => element.addEventListener("click", closeWishModal));
+
+  document.addEventListener("keydown", event => {
+    if (!wishModal || wishModal.hidden) return;
+
+    if (event.key === "Escape") {
+      closeWishModal();
+      return;
+    }
+
+    if (event.key === "Tab") {
+      const focusableElements = getWishModalFocusables();
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    }
+  });
+
+  const setWishError = (key, message) => {
+    const errorElement = document.querySelector(`[data-error-for="${key}"]`);
+    if (errorElement) errorElement.textContent = message || "";
+
+    document
+      .getElementById(key)
+      ?.closest(".form-field")
+      ?.classList.toggle("has-error", Boolean(message));
+  };
+
+  const updateWishCount = () => {
+    if (!wishMessageInput || !wishCount) return;
+    const length = wishMessageInput.value.length;
+    const remaining = Math.max(0, 180 - length);
+
+    wishCount.hidden = length === 0;
+    wishCount.textContent = `${remaining} ${
+      remaining === 1 ? "character" : "characters"
+    } remaining`;
+    wishCount.classList.toggle("is-warning", length > 0 && remaining < 20);
+  };
+
+  const validateWish = () => {
+    const name = wishNameInput?.value.trim() || "";
+    const wish = wishMessageInput?.value.trim() || "";
+
+    setWishError("wishName", name ? "" : "Please enter your name.");
+    setWishError("wishMessage", wish ? "" : "Please write a wish.");
+
+    if (wish.length > 180) {
+      setWishError("wishMessage", "Please keep your wish to 180 characters.");
+    }
+
+    if (!name) {
+      wishNameInput?.focus();
+      return false;
+    }
+
+    if (!wish || wish.length > 180) {
+      wishMessageInput?.focus();
+      return false;
+    }
+
+    return true;
+  };
+
+  wishNameInput?.addEventListener("input", event => {
+    if (event.target.value.trim()) setWishError("wishName", "");
+  });
+
+  wishMessageInput?.addEventListener("input", event => {
+    updateWishCount();
+    if (event.target.value.trim()) setWishError("wishMessage", "");
+  });
+
+  wishForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!wishStatus) return;
+
+    wishStatus.className = "form-status";
+    wishStatus.textContent = "";
+
+    if (!validateWish()) return;
+
+    const submitButton = wishForm.querySelector('button[type="submit"]');
+    const buttonText = submitButton?.querySelector("span");
+    const originalText = buttonText?.textContent || "Share My Blessing ❤️";
+    const payload = {
+      action: "submitWish",
+      name: wishNameInput.value.trim(),
+      wish: wishMessageInput.value.trim(),
+      publicPermission: true,
+      submittedAt: new Date().toISOString()
+    };
+
+    if (submitButton) submitButton.disabled = true;
+    if (buttonText) buttonText.textContent = "Sending…";
+
+    try {
+      const response = await fetch(RSVP_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+
+      if (!response.ok || result.status !== "success") {
+        throw new Error(result.message || "Wish submission failed");
+      }
+
+      wishForm.hidden = true;
+      if (wishSuccess) wishSuccess.hidden = false;
+      wishSuccess?.querySelector("button")?.focus();
+    } catch (error) {
+      console.error("Wish submission failed:", error);
+      wishStatus.classList.add("is-error");
+      wishStatus.textContent = "We couldn’t send your wish. Please try again.";
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+      if (buttonText) buttonText.textContent = originalText;
+    }
+  });
+
+  wishesPrev?.addEventListener("click", () => moveWishesManually(-1));
+  wishesNext?.addEventListener("click", () => moveWishesManually(1));
+
+  wishesCarousel?.addEventListener("pointerdown", stopWishesAutoplay, {
+    passive: true
+  });
+  wishesCarousel?.addEventListener("touchstart", stopWishesAutoplay, {
+    passive: true
+  });
+  wishesCarousel?.addEventListener("wheel", stopWishesAutoplay, {
+    passive: true
+  });
+  wishesCarousel?.addEventListener("keydown", stopWishesAutoplay);
+  wishesCarousel?.addEventListener("focusin", stopWishesAutoplay);
+  wishesCarousel?.addEventListener("mouseenter", () => {
+    if (wishesUserInteracted) return;
+    wishesHoverPaused = true;
+    clearWishesAutoplay();
+  });
+  wishesCarousel?.addEventListener("mouseleave", () => {
+    if (wishesUserInteracted) return;
+    wishesHoverPaused = false;
+    scheduleWishesAutoplay();
+  });
+  wishesTrack?.addEventListener(
+    "scroll",
+    () => {
+      if (wishesAutoScrolling || wishesUserInteracted) return;
+      stopWishesAutoplay();
+    },
+    { passive: true }
+  );
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      clearWishesAutoplay();
+      return;
+    }
+
+    scheduleWishesAutoplay(4500);
+  });
+
+  const handleReducedMotionChange = event => {
+    if (event.matches) {
+      clearWishesAutoplay();
+      return;
+    }
+
+    scheduleWishesAutoplay(4500);
+  };
+
+  if (reducedMotionQuery?.addEventListener) {
+    reducedMotionQuery.addEventListener("change", handleReducedMotionChange);
+  } else if (reducedMotionQuery?.addListener) {
+    reducedMotionQuery.addListener(handleReducedMotionChange);
+  }
+
+  if ("IntersectionObserver" in window && wishesSection) {
+    const wishesObserver = new IntersectionObserver(
+      entries => {
+        const [entry] = entries;
+        wishesSectionVisible =
+          entry.isIntersecting && entry.intersectionRatio >= 0.35;
+
+        if (wishesSectionVisible) {
+    scheduleWishesAutoplay(4500);
+        } else {
+          clearWishesAutoplay();
+        }
+      },
+      { threshold: [0, 0.35, 0.65] }
+    );
+
+    wishesObserver.observe(wishesSection);
+  }
+
+  updateWishCount();
+  loadApprovedWishes();
+
   const showRsvpResult = attending => {
     if (!rsvpSuccessPanel || !rsvpCard) return;
 
@@ -409,6 +931,7 @@
     ).value;
 
     const payload = {
+      action: "submitRsvp",
       names: document.getElementById("guestNames").value.trim(),
       attendance,
       message: document.getElementById("guestMessage").value.trim(),

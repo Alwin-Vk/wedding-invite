@@ -45,9 +45,10 @@
   <main>
     <section class="hero" id="home" aria-label="Wedding introduction">
       <div class="hero__slideshow" aria-hidden="true">
-        <div class="hero__slide is-active" style="--hero-image: url('assets/images/hero/hero-1.jpg')"></div>
-        <div class="hero__slide" style="--hero-image: url('assets/images/hero/hero-2.jpg')"></div>
-        <div class="hero__slide" style="--hero-image: url('assets/images/hero/hero-3.jpg')"></div>
+        <div class="hero__slide is-active" style="--hero-image: url('assets/images/hero/hero-1.png')"></div>
+        <div class="hero__slide" style="--hero-image: url('assets/images/hero/hero-2.png')"></div>
+        <div class="hero__slide" style="--hero-image: url('assets/images/hero/hero-3.png')"></div>
+        <div class="hero__slide" style="--hero-image: url('assets/images/hero/hero-4.png')"></div>
       </div>
       <div class="hero__overlay"></div>
       <div class="hero__grain"></div>
@@ -222,7 +223,100 @@
         </div>
       </div>
     </section>
+
+    <section class="wishes-section reveal" id="wishes" aria-labelledby="wishesTitle">
+      <div class="wishes-heading">
+        <p class="section-kicker">From our loved ones</p>
+        <h2 id="wishesTitle">Wedding Wishes</h2>
+        <p>A few kind words from the people who mean the most to us.</p>
+      </div>
+
+      <div class="wishes-carousel">
+        <button class="wishes-nav wishes-nav--prev" id="wishesPrev" type="button" aria-label="Previous wishes">
+          <span aria-hidden="true"></span>
+        </button>
+
+        <div class="wishes-track" id="wishesTrack" aria-live="polite">
+          <article class="wish-card">
+            <p>Wishing you both a lifetime filled with love, laughter, and countless beautiful memories.</p>
+            <footer><span>Love,</span> With love</footer>
+          </article>
+          <article class="wish-card">
+            <p>May this new chapter bring you endless joy and togetherness.</p>
+            <footer><span>Love,</span> Family</footer>
+          </article>
+          <article class="wish-card">
+            <p>So happy to celebrate this beautiful beginning with you both.</p>
+            <footer><span>Love,</span> A loved one</footer>
+          </article>
+          <article class="wish-card">
+            <p>May your love grow stronger with every passing year.</p>
+            <footer><span>Love,</span> Friend</footer>
+          </article>
+          <button class="wish-card wish-card--cta" id="openWishForm" type="button">
+            <b aria-hidden="true">+</b>
+            <span>Share Your Wishes</span>
+            <small>Your blessing will become part of our story.</small>
+            <em>Add Yours →</em>
+          </button>
+        </div>
+
+        <button class="wishes-nav wishes-nav--next" id="wishesNext" type="button" aria-label="Next wishes">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <p class="wishes-fallback" id="wishesFallback" hidden>
+        Wishes are taking a moment to load. A few favorites are shown for now.
+      </p>
+    </section>
   </main>
+
+  <div class="wish-modal" id="wishModal" hidden>
+    <div class="wish-modal__backdrop" data-wish-close></div>
+    <div class="wish-modal__panel" role="dialog" aria-modal="true" aria-labelledby="wishModalTitle" aria-describedby="wishModalDescription">
+      <button class="wish-modal__close" type="button" data-wish-close aria-label="Close wish form"></button>
+      <div class="wish-modal__intro">
+        <p class="section-kicker">Share a blessing</p>
+        <h2 id="wishModalTitle">Leave a Blessing</h2>
+        <p id="wishModalDescription">A few kind words for the beginning of our forever.</p>
+        <span aria-hidden="true"></span>
+      </div>
+      <form class="wish-form" id="wishForm" novalidate>
+        <div class="form-field">
+          <label for="wishName">Your name</label>
+          <input id="wishName" name="name" type="text" autocomplete="name" placeholder="John &amp; Maria" required>
+          <small class="field-error" data-error-for="wishName"></small>
+        </div>
+
+        <div class="form-field">
+          <label for="wishMessage">Your blessing</label>
+          <textarea id="wishMessage" name="wish" rows="4" maxlength="180" placeholder="Share a blessing, prayer, or a few kind words for us…" required></textarea>
+          <div class="wish-form__meta">
+            <small class="field-error" data-error-for="wishMessage"></small>
+            <small id="wishCount" hidden>180 characters remaining</small>
+          </div>
+        </div>
+
+        <button class="button rsvp-submit wish-submit" type="submit">
+          <span>Share My Blessing ❤️</span><b aria-hidden="true"></b>
+        </button>
+
+        <div class="form-status" id="wishStatus" role="status" aria-live="polite"></div>
+      </form>
+
+      <div class="wish-success" id="wishSuccess" hidden aria-live="polite">
+        <div class="wish-success__mark" aria-hidden="true">❤️</div>
+        <p class="section-kicker">Thank you.</p>
+        <h2>Your blessing has been received.</h2>
+        <p>Soon, it will become part of our wedding story.</p>
+        <span aria-hidden="true">✦</span>
+        <button class="button rsvp-submit wish-success__close" type="button" data-wish-close>
+          <span>Close</span><b aria-hidden="true"></b>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <div class="footer-monogram"><span>A</span><i>&</i><span>A</span></div>

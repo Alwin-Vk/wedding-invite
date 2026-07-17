@@ -1,6 +1,8 @@
-# Native RSVP Setup
+# Native RSVP and Wedding Wishes Setup
 
 The website now shows the RSVP form directly. Guests will not be redirected to Google Forms.
+
+The website also supports moderated public wedding wishes. Guests can submit a wish, but it will not appear publicly until you approve it in Google Sheets.
 
 ## 1. Create a Google Sheet
 
@@ -19,7 +21,7 @@ https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
 1. In the spreadsheet, open **Extensions → Apps Script**.
 2. Delete the starter code.
 3. Copy all code from `google-apps-script.js`.
-4. Replace `PASTE_YOUR_GOOGLE_SHEET_ID_HERE` with your spreadsheet ID.
+4. Confirm `SHEET_ID` matches your spreadsheet ID.
 5. Save.
 
 ## 3. Deploy
@@ -41,10 +43,38 @@ const RSVP_ENDPOINT = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 
 with your `/exec` URL.
 
-## 5. Push the update
+## 5. Wedding Wishes moderation
+
+The Apps Script creates a second tab named:
+
+`Wedding Wishes`
+
+Columns:
+
+```text
+Submitted At | Name | Wish | Public Permission | Approved
+```
+
+New wishes are saved with:
+
+```text
+Approved = NO
+```
+
+To publish a wish on the website, change the row to:
+
+```text
+Approved = YES
+```
+
+Only rows with `Approved = YES` are returned publicly. Submitted wishes are not shown immediately.
+
+After updating `google-apps-script.js`, deploy a new Apps Script web app version so the live site uses the latest backend code.
+
+## 6. Push the update
 
 ```bash
 git add .
-git commit -m "Add native RSVP and mobile fixes"
+git commit -m "Add native RSVP and wedding wishes"
 git push
 ```
