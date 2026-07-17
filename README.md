@@ -115,3 +115,14 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Added `😊` to the dress-code sentence.
 - Added `❤️` to the footer signature.
 - Added subtle typography spacing refinements for a more elegant look.
+
+
+## Final polish
+
+- Reverted the main serif font to Cormorant Garamond.
+- Kept Montserrat for body copy and Parisienne for signatures.
+- Kept the champagne quote-section background.
+- Kept the smile emoji in the dress-code copy.
+- Kept the love emoji in the footer signature.
+- Slowed the hero slideshow to 12 seconds.
+- Applied subtle spacing and weight refinements without redesigning the site.

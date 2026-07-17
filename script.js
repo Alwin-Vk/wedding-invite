@@ -84,7 +84,7 @@
     window.setInterval(() => {
       activeHeroIndex = (activeHeroIndex + 1) % heroSlides.length;
       activateSlide(activeHeroIndex);
-    }, 9000);
+    }, 12000);
   }
 
   // Countdown.

@@ -7,7 +7,7 @@
   --cream: #fffaf2;
   --shadow: 0 22px 70px rgba(59, 36, 24, 0.12);
   --radius: 2px;
-  --serif: "Bodoni Moda", Didot, "Times New Roman", serif;
+  --serif: "Cormorant Garamond", Georgia, serif;
   --sans: "Montserrat", Arial, sans-serif;
   --script: "Parisienne", cursive;
 }
@@ -1469,7 +1469,6 @@ body.hero-ready .hero-reveal--5 { animation-delay: 1.28s; }
 .venue-card h3,
 .footer-date {
   font-family: var(--serif);
-  font-optical-sizing: auto;
 }
 
 .hero h1 {
@@ -1538,5 +1537,46 @@ body.hero-ready .hero-reveal--5 { animation-delay: 1.28s; }
 
   .signature--footer {
     white-space: normal;
+  }
+}
+
+
+/* Final polish — restored classic typography */
+.hero h1 {
+  letter-spacing: -.02em;
+  line-height: .88;
+}
+
+.quote-section h2,
+.section-heading h2,
+.countdown-section h2,
+.rsvp-card h2 {
+  font-weight: 500;
+  letter-spacing: -.012em;
+}
+
+.quote-lead {
+  font-size: clamp(1.35rem, 2.7vw, 1.85rem);
+  line-height: 1.45;
+}
+
+.quote-copy {
+  max-width: 640px;
+  line-height: 1.85;
+}
+
+.detail-card h3,
+.venue-card h3 {
+  font-weight: 500;
+  letter-spacing: -.015em;
+}
+
+@media (max-width: 520px) {
+  .hero h1 {
+    line-height: .91;
+  }
+
+  .quote-copy {
+    line-height: 1.75;
   }
 }
