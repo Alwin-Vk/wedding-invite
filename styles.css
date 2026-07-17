@@ -1533,6 +1533,10 @@ body.hero-ready .hero-reveal--5 { animation-delay: 1.28s; }
   gap: .8rem;
 }
 
+.calendar-actions[hidden] {
+  display: none !important;
+}
+
 .calendar-button {
   min-width: 220px;
   cursor: pointer;
@@ -1598,10 +1602,285 @@ body.has-scrolled .music-button__text {
     left: 1rem;
     bottom: max(1.15rem, env(safe-area-inset-bottom, 0px));
     transform: none;
-    justify-items: start;
+    justify-items: center;
+    text-align: center;
   }
 
   .rsvp-success-panel h2 {
     font-size: 3rem;
+  }
+}
+
+/* Final music label copy */
+.music-button__text {
+  align-items: center;
+}
+
+.music-button__text strong {
+  margin-top: 0;
+}
+
+.music-button__label {
+  display: inline;
+}
+
+@media (max-width: 820px) {
+  body:not(.has-scrolled) .music-button {
+    width: auto;
+    height: auto;
+    min-height: 48px;
+    padding: .5rem 1rem .5rem .5rem;
+    justify-content: flex-start;
+  }
+
+  body:not(.has-scrolled) .music-button__text {
+    display: grid;
+  }
+
+  body.has-scrolled .music-button {
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  body.has-scrolled .music-button__text {
+    display: none;
+  }
+}
+
+/* Final RSVP readability fixes */
+.rsvp-form input[type="text"],
+.rsvp-form textarea {
+  color: var(--champagne-light) !important;
+  -webkit-text-fill-color: var(--champagne-light);
+  caret-color: var(--champagne-light);
+  background: rgba(255,255,255,.055) !important;
+  color-scheme: dark;
+}
+
+.rsvp-form input[type="text"]:focus,
+.rsvp-form textarea:focus {
+  color: var(--champagne-light) !important;
+  -webkit-text-fill-color: var(--champagne-light);
+  background: rgba(255,255,255,.08) !important;
+}
+
+.rsvp-form input[type="text"]:-webkit-autofill,
+.rsvp-form input[type="text"]:-webkit-autofill:hover,
+.rsvp-form input[type="text"]:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--champagne-light);
+  caret-color: var(--champagne-light);
+  border-color: rgba(244,231,211,.48);
+  box-shadow: 0 0 0 1000px rgba(59,36,24,.92) inset;
+  transition: background-color 9999s ease-out;
+}
+
+.calendar-button,
+.calendar-button:visited,
+.calendar-button:focus,
+.calendar-button:active {
+  color: var(--champagne-light) !important;
+  border-color: var(--mocha) !important;
+  background: var(--mocha) !important;
+}
+
+.calendar-button:hover {
+  color: var(--champagne-light) !important;
+  border-color: var(--mocha-dark) !important;
+  background: var(--mocha-dark) !important;
+}
+
+/* Animated quote ornament */
+.ornament {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .42rem;
+  width: 96px;
+  height: 36px;
+  margin-bottom: 1.35rem;
+  color: var(--mocha);
+}
+
+.ornament span {
+  display: inline-block;
+  line-height: 1;
+  animation: ornamentPulse 2.6s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.ornament span:nth-child(1),
+.ornament span:nth-child(3) {
+  font-size: .82rem;
+  opacity: .54;
+  animation-delay: .28s;
+}
+
+.ornament span:nth-child(2) {
+  color: var(--mocha-dark);
+  font-size: 1.28rem;
+}
+
+.ornament::before,
+.ornament::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,102,83,.58), transparent);
+  transform: translateY(-50%);
+  animation: ornamentLineGlow 2.4s ease-in-out infinite;
+}
+
+.ornament::before {
+  right: calc(100% + .15rem);
+}
+
+.ornament::after {
+  left: calc(100% + .15rem);
+}
+
+@keyframes ornamentPulse {
+  0%, 100% {
+    opacity: .5;
+    transform: scale(.78);
+    text-shadow: 0 0 0 rgba(139,102,83,0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.16);
+    text-shadow: 0 0 18px rgba(139,102,83,.38);
+  }
+}
+
+@keyframes ornamentLineGlow {
+  0%, 100% {
+    opacity: .35;
+    width: 12px;
+  }
+  50% {
+    opacity: .9;
+    width: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ornament span,
+  .ornament::before,
+  .ornament::after {
+    animation: none !important;
+  }
+}
+
+/* Final compact venue cards */
+.venue-list {
+  gap: 1.35rem;
+}
+
+.venue-card,
+.venue-card--reverse {
+  min-height: 250px;
+  grid-template-columns: 1.38fr .82fr;
+}
+
+.venue-card--reverse {
+  grid-template-columns: .82fr 1.38fr;
+}
+
+.venue-card__image {
+  min-height: 250px;
+}
+
+.venue-card__content {
+  min-height: 250px;
+  padding: clamp(1.15rem, 2.2vw, 1.9rem);
+  justify-content: center;
+  gap: .55rem;
+}
+
+.venue-name {
+  font-size: clamp(1.75rem, 2.7vw, 2.35rem) !important;
+  line-height: 1 !important;
+}
+
+.venue-card__content > .venue-address {
+  margin: .15rem 0 .55rem !important;
+  color: rgba(59,36,24,.78);
+  font-size: .68rem;
+  line-height: 1.4;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.venue-card .button {
+  min-width: 150px;
+  min-height: 40px;
+  padding: .66rem .9rem;
+  font-size: .6rem;
+}
+
+.venue-card .button b {
+  display: inline-grid;
+  flex: 0 0 1.05em;
+  place-items: center;
+  width: 1.05em;
+  height: 1.05em;
+}
+
+.venue-card .button b::before {
+  content: "↗";
+  display: block;
+  color: currentColor;
+  font-size: .92rem;
+  line-height: 1;
+}
+
+@media (max-width: 820px) {
+  .venue-list {
+    gap: 1.15rem;
+  }
+
+  .venue-card,
+  .venue-card--reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-card__image {
+    height: clamp(160px, 42vw, 198px);
+  }
+
+  .venue-card__content {
+    min-height: 0;
+    padding: 1rem .95rem 1.18rem;
+    gap: .42rem;
+  }
+
+  .venue-card__content > .venue-address {
+    margin: .1rem 0 .5rem !important;
+    font-size: .64rem;
+    line-height: 1.35;
+  }
+
+  .venue-card .button {
+    width: fit-content;
+    min-width: 158px;
+    min-height: 40px;
+    gap: .6rem;
+    padding: .66rem .82rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .venue-card__image {
+    height: 155px;
+  }
+
+  .venue-card__content {
+    padding-top: .95rem;
+    padding-bottom: 1.1rem;
   }
 }

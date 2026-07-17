@@ -145,18 +145,20 @@
       audio.currentTime = savedMusicTime;
     }
 
+    let musicState = savedMusicState;
+
     const updateMusicState = isPlaying => {
       musicButton.classList.toggle("is-playing", isPlaying);
       musicButton.setAttribute("aria-pressed", String(isPlaying));
       musicButton.setAttribute(
         "aria-label",
-        isPlaying ? "Pause our song" : "Play our song"
+        isPlaying ? "Pause song" : "Play song"
       );
       musicLabel.textContent = isPlaying
-        ? "Pause music"
-        : savedMusicState === "playing"
-          ? "Resume music"
-          : "Play music";
+        ? "Pause song"
+        : musicState === "playing"
+          ? "Resume song"
+          : "Play song";
     };
 
     updateMusicState(false);
@@ -165,15 +167,27 @@
       localStorage.setItem("weddingMusicTime", String(audio.currentTime || 0));
     };
 
+    const pauseMusicForInactivePage = () => {
+      if (audio.paused) return;
+
+      audio.pause();
+      musicState = "playing";
+      localStorage.setItem("weddingMusicState", "playing");
+      saveMusicProgress();
+      updateMusicState(false);
+    };
+
     musicButton.addEventListener("click", async () => {
       try {
         if (audio.paused) {
           await audio.play();
-          localStorage.setItem("weddingMusicState", "playing");
+          musicState = "playing";
+          localStorage.setItem("weddingMusicState", musicState);
           updateMusicState(true);
         } else {
           audio.pause();
-          localStorage.setItem("weddingMusicState", "paused");
+          musicState = "paused";
+          localStorage.setItem("weddingMusicState", musicState);
           saveMusicProgress();
           updateMusicState(false);
         }
@@ -187,12 +201,11 @@
       if (Math.floor(audio.currentTime) % 5 === 0) saveMusicProgress();
     });
 
-    window.addEventListener("pagehide", saveMusicProgress);
+    window.addEventListener("pagehide", pauseMusicForInactivePage);
+    window.addEventListener("blur", pauseMusicForInactivePage);
 
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden && !audio.paused) {
-        saveMusicProgress();
-      }
+      if (document.hidden) pauseMusicForInactivePage();
     });
   }
 
@@ -205,8 +218,7 @@
   const rsvpSuccessTitle = document.getElementById("rsvpSuccessTitle");
   const rsvpSuccessMessage = document.getElementById("rsvpSuccessMessage");
   const calendarActions = document.getElementById("calendarActions");
-  const googleCalendarButton = document.getElementById("googleCalendarButton");
-  const icsCalendarButton = document.getElementById("icsCalendarButton");
+  const addCalendarButton = document.getElementById("addCalendarButton");
 
   if (!rsvpForm || !formStatus) return;
 
@@ -328,10 +340,18 @@
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
-  if (googleCalendarButton) {
-    googleCalendarButton.href = buildGoogleCalendarUrl();
-  }
-  icsCalendarButton?.addEventListener("click", downloadCalendarFile);
+  const addToCalendar = () => {
+    const isAndroid = /Android/i.test(navigator.userAgent);
+
+    if (isAndroid) {
+      window.open(buildGoogleCalendarUrl(), "_blank", "noopener");
+      return;
+    }
+
+    downloadCalendarFile();
+  };
+
+  addCalendarButton?.addEventListener("click", addToCalendar);
 
   const showRsvpResult = attending => {
     if (!rsvpSuccessPanel || !rsvpCard) return;
@@ -354,6 +374,7 @@
 
     if (calendarActions) {
       calendarActions.hidden = !attending;
+      calendarActions.style.display = attending ? "" : "none";
     }
 
     window.setTimeout(() => {

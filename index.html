@@ -59,9 +59,9 @@
         <p class="hero__location hero-reveal hero-reveal--5">Koratty, Kerala</p>
       </div>
 
-      <button class="music-button" id="musicButton" type="button" aria-pressed="false" aria-label="Play our song">
+      <button class="music-button" id="musicButton" type="button" aria-pressed="false" aria-label="Play song">
         <span class="music-button__disc" aria-hidden="true">♫</span>
-        <span class="music-button__text"><small>Our song</small><strong class="music-button__label">Play music</strong></span>
+        <span class="music-button__text"><strong class="music-button__label">Play song</strong></span>
       </button>
 
       <a class="scroll-cue" href="#quote" aria-label="Scroll to invitation">
@@ -71,7 +71,11 @@
     </section>
 
     <section class="quote-section reveal" id="quote">
-      <div class="ornament">✦</div>
+      <div class="ornament" aria-hidden="true">
+        <span>✦</span>
+        <span>✧</span>
+        <span>✦</span>
+      </div>
       <p class="section-kicker">A note from us</p>
       <h2>The story knew before we did.</h2>
       <span class="short-rule"></span>
@@ -131,26 +135,26 @@
       <div class="venue-list">
         <article class="venue-card reveal">
           <div class="venue-card__image">
-            <img src="assets/images/church.jpg" alt="Fathima Matha Church exterior" loading="lazy">
+            <img src="assets/images/church-new.png" alt="Fathima Matha Church exterior" loading="lazy">
             <span class="venue-card__tag">Ceremony</span>
           </div>
           <div class="venue-card__content">
             <p class="section-kicker">Ceremony</p>
             <h3 class="venue-name venue-name--church">Fathima Matha Church</h3>
-            <p>West Koratty, Thrissur</p>
+            <p class="venue-address">West Koratty, Thrissur</p>
             <a class="button" href="https://maps.app.goo.gl/mVEn6FETac7NuXJQ6" target="_blank" rel="noopener noreferrer"><span>Get Directions</span><b aria-hidden="true"></b></a>
           </div>
         </article>
 
         <article class="venue-card venue-card--reverse reveal">
           <div class="venue-card__image">
-            <img src="assets/images/la-mirage.jpg" alt="La Mirage reception venue" loading="lazy">
+            <img src="assets/images/la-mirage-new.png" alt="La Mirage reception venue" loading="lazy">
             <span class="venue-card__tag">Reception</span>
           </div>
           <div class="venue-card__content">
             <p class="section-kicker">Reception</p>
             <h3 class="venue-name venue-name--reception">La Mirage</h3>
-            <p>Koratty, Thrissur</p>
+            <p class="venue-address">Koratty, Thrissur</p>
             <a class="button" href="https://maps.app.goo.gl/AKp7GL7sriovNhSv9" target="_blank" rel="noopener noreferrer"><span>Get Directions</span><b aria-hidden="true"></b></a>
           </div>
         </article>
@@ -211,12 +215,8 @@
           <p id="rsvpSuccessMessage">We can’t wait to celebrate with you. ❤️</p>
 
           <div class="calendar-actions" id="calendarActions">
-            <a class="button button--light calendar-button" id="googleCalendarButton"
-               href="#" target="_blank" rel="noopener noreferrer">
-              <span>Add to Google Calendar</span>
-            </a>
-            <button class="button button--light calendar-button" id="icsCalendarButton" type="button">
-              <span>Apple / Outlook Calendar</span>
+            <button class="button button--light calendar-button" id="addCalendarButton" type="button">
+              <span>Add to Calendar</span>
             </button>
           </div>
         </div>
