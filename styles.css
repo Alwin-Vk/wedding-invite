@@ -157,7 +157,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   will-change: opacity, transform;
 }
 .hero__slide.is-active {
-  opacity: 1;
+  opacity: var(--scroll-opacity, 1);
   animation: heroKenBurns 10s ease-out forwards;
 }
 .hero__overlay {

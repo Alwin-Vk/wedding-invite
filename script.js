@@ -30,7 +30,13 @@
       const progress = Math.min(y / window.innerHeight, 1);
       heroContent.style.opacity = String(1 - progress * 1.1);
       heroContent.style.transform = `translateY(${-progress * 48}px)`;
-      heroMedia.style.opacity = String(1 - progress * 0.55);
+      heroSlides.forEach(slide => {
+        if (slide.classList.contains("is-active")) {
+          slide.style.setProperty("--scroll-opacity", String(1 - progress * 0.55));
+        } else {
+          slide.style.removeProperty("--scroll-opacity");
+        }
+      });
     }
   };
 
