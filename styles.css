@@ -1824,19 +1824,35 @@ body.has-scrolled .music-button__text {
 }
 
 .venue-card .button b {
-  display: inline-grid;
-  flex: 0 0 1.05em;
-  place-items: center;
-  width: 1.05em;
-  height: 1.05em;
+  position: relative;
+  display: inline-block;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  overflow: hidden;
 }
 
 .venue-card .button b::before {
-  content: "↗";
-  display: block;
-  color: currentColor;
-  font-size: .92rem;
-  line-height: 1;
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+}
+
+.venue-card .button b::after {
+  content: "";
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  width: 12px;
+  height: 1.5px;
+  background: currentColor;
+  transform: rotate(-45deg);
+  transform-origin: right center;
 }
 
 @media (max-width: 820px) {
@@ -1867,10 +1883,10 @@ body.has-scrolled .music-button__text {
 
   .venue-card .button {
     width: fit-content;
-    min-width: 158px;
+    min-width: 146px;
     min-height: 40px;
-    gap: .6rem;
-    padding: .66rem .82rem;
+    gap: .55rem;
+    padding: .66rem .78rem;
   }
 }
 
