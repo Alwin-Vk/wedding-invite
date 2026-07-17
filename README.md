@@ -105,3 +105,13 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Tightened venue address and button spacing.
 - Added a broader mobile spacing pass across sections.
 - Optimized for common iPhone and Android widths.
+
+
+## Version 11 — typography and theme refinement
+
+- Upgraded the primary serif font to Bodoni Moda.
+- Kept Montserrat for body copy and Parisienne for signatures.
+- Changed the `A note from us` section from near-white to a true champagne background.
+- Added `😊` to the dress-code sentence.
+- Added `❤️` to the footer signature.
+- Added subtle typography spacing refinements for a more elegant look.

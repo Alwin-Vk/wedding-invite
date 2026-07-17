@@ -7,7 +7,7 @@
   --cream: #fffaf2;
   --shadow: 0 22px 70px rgba(59, 36, 24, 0.12);
   --radius: 2px;
-  --serif: "Cormorant Garamond", Georgia, serif;
+  --serif: "Bodoni Moda", Didot, "Times New Roman", serif;
   --sans: "Montserrat", Arial, sans-serif;
   --script: "Parisienne", cursive;
 }
@@ -1455,5 +1455,88 @@ body.hero-ready .hero-reveal--5 { animation-delay: 1.28s; }
 
   .rsvp-form {
     gap: 1.15rem;
+  }
+}
+
+
+/* Version 11 — typography and theme refinement */
+.hero h1,
+.quote-section h2,
+.section-heading h2,
+.countdown-section h2,
+.rsvp-card h2,
+.detail-card h3,
+.venue-card h3,
+.footer-date {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+}
+
+.hero h1 {
+  letter-spacing: -.025em;
+}
+
+.quote-section h2,
+.section-heading h2,
+.countdown-section h2,
+.rsvp-card h2 {
+  letter-spacing: -.018em;
+}
+
+.quote-lead {
+  font-family: var(--serif);
+  letter-spacing: -.01em;
+}
+
+.detail-card h3,
+.venue-card h3 {
+  letter-spacing: -.02em;
+}
+
+.quote-panel {
+  position: relative;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2.5rem);
+}
+
+.quote-panel::before,
+.quote-panel::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 54px;
+  height: 1px;
+  transform: translateX(-50%);
+  background: rgba(101,70,56,.25);
+}
+
+.quote-panel::before {
+  top: 0;
+}
+
+.quote-panel::after {
+  bottom: 0;
+}
+
+.signature--footer {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .quote-section {
+    min-height: auto;
+  }
+
+  .quote-panel {
+    padding-top: 2.3rem;
+    padding-bottom: 2.3rem;
+  }
+
+  .hero h1 {
+    letter-spacing: -.04em;
+  }
+
+  .signature--footer {
+    white-space: normal;
   }
 }
