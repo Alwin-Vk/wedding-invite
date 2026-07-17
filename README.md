@@ -72,3 +72,15 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Split venue names and addresses cleanly across two lines.
 - Restored `The story knew before we did.` to the opening animation.
 - Refined the loading sequence to show monogram, quote, and date elegantly.
+
+
+## Version 9 changes
+
+- Added a 3-image cinematic hero slideshow.
+- Hero images crossfade every 9 seconds.
+- Added subtle Ken Burns movement.
+- Added sequential hero text reveal.
+- Strengthened hero overlay for consistent readability.
+- Restored Ceremony and Reception labels inside venue images.
+- Reduced venue image and title sizes further.
+- Kept venue names and addresses compact on mobile.

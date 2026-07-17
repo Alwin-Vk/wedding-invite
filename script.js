@@ -3,7 +3,7 @@
   const preloader = document.querySelector(".preloader");
   const header = document.getElementById("siteHeader");
   const hero = document.querySelector(".hero");
-  const heroMedia = document.querySelector(".hero__media");
+  const heroSlides = Array.from(document.querySelectorAll(".hero__slide"));
   const heroContent = document.querySelector(".hero__content");
   const progressBar = document.querySelector(".page-progress span");
   const musicButton = document.getElementById("musicButton");
@@ -16,6 +16,7 @@
     window.setTimeout(() => {
       preloader.classList.add("is-hidden");
       body.classList.remove("is-loading");
+      body.classList.add("hero-ready");
     }, 950);
   });
 
@@ -49,6 +50,22 @@
   );
 
   document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+
+  let activeHeroIndex = 0;
+  const showNextHeroSlide = () => {
+    if (heroSlides.length < 2) return;
+    const current = heroSlides[activeHeroIndex];
+    activeHeroIndex = (activeHeroIndex + 1) % heroSlides.length;
+    const next = heroSlides[activeHeroIndex];
+
+    current.classList.remove("is-active");
+    next.classList.add("is-active");
+  };
+
+  if (heroSlides.length > 1) {
+    window.setInterval(showNextHeroSlide, 9000);
+  }
 
   const target = new Date("2026-08-20T16:30:00+05:30").getTime();
   const els = {
