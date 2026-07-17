@@ -80,7 +80,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
     calc(clamp(1.25rem, 4vw, 4rem) + env(safe-area-inset-right, 0px))
     1.25rem
     calc(clamp(1.25rem, 4vw, 4rem) + env(safe-area-inset-left, 0px));
-  color: white;
+  color: var(--champagne-light);
   transition: background .35s ease, color .35s ease, box-shadow .35s ease, padding .35s ease;
 }
 .site-header.is-scrolled {
