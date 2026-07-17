@@ -1457,3 +1457,151 @@ body.hero-ready .hero-reveal--5 { animation-delay: 1.28s; }
     gap: 1.15rem;
   }
 }
+
+
+/* Final usability and sharing polish */
+.made-by {
+  margin: 2.4rem 0 0;
+  color: rgba(244,231,211,.55);
+  font-size: .64rem;
+  letter-spacing: .08em;
+}
+
+.rsvp-form,
+.rsvp-success-panel {
+  transition: opacity .55s ease, transform .55s ease;
+}
+
+.rsvp-card.is-complete .rsvp-card__intro,
+.rsvp-card.is-complete .rsvp-form {
+  opacity: 0;
+  transform: translateY(-18px);
+  pointer-events: none;
+}
+
+.rsvp-success-panel {
+  max-width: 650px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.rsvp-success-panel[hidden] {
+  display: none;
+}
+
+.rsvp-success-panel.is-entering {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.rsvp-success-panel.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.rsvp-success-panel__mark {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 1.2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(244,231,211,.55);
+  border-radius: 50%;
+  color: var(--champagne-light);
+  font-family: var(--serif);
+  font-size: 1.8rem;
+}
+
+.rsvp-success-panel h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.rsvp-success-panel > p:not(.section-kicker) {
+  margin: 1.2rem auto 2rem;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+}
+
+.calendar-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .8rem;
+}
+
+.calendar-button {
+  min-width: 220px;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+
+/* Music control: expanded at first on mobile, compact after scrolling. */
+body.has-scrolled .music-button {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  justify-content: center;
+}
+
+body.has-scrolled .music-button__text {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  .music-button {
+    width: auto;
+    height: auto;
+    min-height: 48px;
+    padding: .5rem 1rem .5rem .5rem;
+    justify-content: flex-start;
+  }
+
+  .music-button__text {
+    display: grid;
+  }
+
+  .scroll-cue {
+    display: grid;
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .scroll-cue span {
+    font-size: .56rem;
+  }
+
+  .scroll-cue i {
+    height: 24px;
+  }
+
+  .calendar-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-button {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .music-button {
+    right: max(.75rem, env(safe-area-inset-right, 0px));
+    bottom: max(.75rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .scroll-cue {
+    left: 1rem;
+    bottom: max(1.15rem, env(safe-area-inset-bottom, 0px));
+    transform: none;
+    justify-items: start;
+  }
+
+  .rsvp-success-panel h2 {
+    font-size: 3rem;
+  }
+}

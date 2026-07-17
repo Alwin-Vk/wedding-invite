@@ -32,6 +32,7 @@
 
     if (progressBar) progressBar.style.width = `${pageProgress}%`;
     header?.classList.toggle("is-scrolled", y > 60);
+    body.classList.toggle("has-scrolled", y > 36);
 
     if (hero && heroContent && y < window.innerHeight * 1.2) {
       const progress = Math.min(y / window.innerHeight, 1);
@@ -137,6 +138,13 @@
   if (audio && musicButton && musicLabel) {
     audio.volume = 0.22;
 
+    const savedMusicState = localStorage.getItem("weddingMusicState");
+    const savedMusicTime = Number(localStorage.getItem("weddingMusicTime") || "0");
+
+    if (Number.isFinite(savedMusicTime) && savedMusicTime > 0) {
+      audio.currentTime = savedMusicTime;
+    }
+
     const updateMusicState = isPlaying => {
       musicButton.classList.toggle("is-playing", isPlaying);
       musicButton.setAttribute("aria-pressed", String(isPlaying));
@@ -144,16 +152,29 @@
         "aria-label",
         isPlaying ? "Pause our song" : "Play our song"
       );
-      musicLabel.textContent = isPlaying ? "Pause music" : "Play music";
+      musicLabel.textContent = isPlaying
+        ? "Pause music"
+        : savedMusicState === "playing"
+          ? "Resume music"
+          : "Play music";
+    };
+
+    updateMusicState(false);
+
+    const saveMusicProgress = () => {
+      localStorage.setItem("weddingMusicTime", String(audio.currentTime || 0));
     };
 
     musicButton.addEventListener("click", async () => {
       try {
         if (audio.paused) {
           await audio.play();
+          localStorage.setItem("weddingMusicState", "playing");
           updateMusicState(true);
         } else {
           audio.pause();
+          localStorage.setItem("weddingMusicState", "paused");
+          saveMusicProgress();
           updateMusicState(false);
         }
       } catch (error) {
@@ -162,10 +183,15 @@
       }
     });
 
+    audio.addEventListener("timeupdate", () => {
+      if (Math.floor(audio.currentTime) % 5 === 0) saveMusicProgress();
+    });
+
+    window.addEventListener("pagehide", saveMusicProgress);
+
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && !audio.paused) {
-        audio.pause();
-        updateMusicState(false);
+        saveMusicProgress();
       }
     });
   }
@@ -174,6 +200,13 @@
   const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxQ40JQSt6BJxYWfHVnV_yNPCVL_fgebFusIC8vmo1xvRhLhRDdBJpROoCuUtFn8hwS/exec";
   const rsvpForm = document.getElementById("rsvpForm");
   const formStatus = document.getElementById("formStatus");
+  const rsvpCard = document.querySelector(".rsvp-card");
+  const rsvpSuccessPanel = document.getElementById("rsvpSuccessPanel");
+  const rsvpSuccessTitle = document.getElementById("rsvpSuccessTitle");
+  const rsvpSuccessMessage = document.getElementById("rsvpSuccessMessage");
+  const calendarActions = document.getElementById("calendarActions");
+  const googleCalendarButton = document.getElementById("googleCalendarButton");
+  const icsCalendarButton = document.getElementById("icsCalendarButton");
 
   if (!rsvpForm || !formStatus) return;
 
@@ -229,6 +262,110 @@
       option.addEventListener("change", () => setFieldError("attendance", ""))
     );
 
+
+  const calendarEvent = {
+    title: "Alwin & Annmareena’s Wedding",
+    start: "20260820T110000Z",
+    end: "20260820T170000Z",
+    location: "Fathima Matha Church, West Koratty, Thrissur, Kerala",
+    description:
+      "Holy Matrimony — 4:30 PM\n" +
+      "Fathima Matha Church, West Koratty, Thrissur, Kerala\n" +
+      "Church directions: https://maps.app.goo.gl/mVEn6FETac7NuXJQ6\n\n" +
+      "Reception — 6:00 PM\n" +
+      "La Mirage, Koratty, Thrissur, Kerala\n" +
+      "Reception directions: https://maps.app.goo.gl/AKp7GL7sriovNhSv9\n\n" +
+      "Wedding website: https://alwinannmareena.com\n\n" +
+      "We can’t wait to celebrate with you. ❤️"
+  };
+
+  const escapeIcsText = value =>
+    String(value)
+      .replace(/\\/g, "\\\\")
+      .replace(/\n/g, "\\n")
+      .replace(/,/g, "\\,")
+      .replace(/;/g, "\\;");
+
+  const buildGoogleCalendarUrl = () => {
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: calendarEvent.title,
+      dates: `${calendarEvent.start}/${calendarEvent.end}`,
+      details: calendarEvent.description,
+      location: calendarEvent.location,
+      ctz: "Asia/Kolkata"
+    });
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  };
+
+  const downloadCalendarFile = () => {
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Alwin and Annmareena//Wedding Invitation//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "BEGIN:VEVENT",
+      `UID:alwin-annmareena-wedding-20260820@alwinannmareena.com`,
+      `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z")}`,
+      `DTSTART:${calendarEvent.start}`,
+      `DTEND:${calendarEvent.end}`,
+      `SUMMARY:${escapeIcsText(calendarEvent.title)}`,
+      `LOCATION:${escapeIcsText(calendarEvent.location)}`,
+      `DESCRIPTION:${escapeIcsText(calendarEvent.description)}`,
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ].join("\r\n");
+
+    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "alwin-annmareena-wedding.ics";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
+  if (googleCalendarButton) {
+    googleCalendarButton.href = buildGoogleCalendarUrl();
+  }
+  icsCalendarButton?.addEventListener("click", downloadCalendarFile);
+
+  const showRsvpResult = attending => {
+    if (!rsvpSuccessPanel || !rsvpCard) return;
+
+    rsvpCard.classList.add("is-complete");
+    rsvpSuccessPanel.hidden = false;
+    rsvpSuccessPanel.classList.add("is-entering");
+
+    if (rsvpSuccessTitle) {
+      rsvpSuccessTitle.textContent = attending
+        ? "Thank you!"
+        : "Thank you for letting us know.";
+    }
+
+    if (rsvpSuccessMessage) {
+      rsvpSuccessMessage.textContent = attending
+        ? "We can’t wait to celebrate with you. ❤️"
+        : "You’ll be in our thoughts on the day. ❤️";
+    }
+
+    if (calendarActions) {
+      calendarActions.hidden = !attending;
+    }
+
+    window.setTimeout(() => {
+      const intro = rsvpCard.querySelector(".rsvp-card__intro");
+      rsvpForm.hidden = true;
+      if (intro) intro.hidden = true;
+      rsvpSuccessPanel.classList.remove("is-entering");
+      rsvpSuccessPanel.classList.add("is-visible");
+      rsvpSuccessPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 500);
+  };
+
   rsvpForm.addEventListener("submit", async event => {
     event.preventDefault();
     formStatus.className = "form-status";
@@ -274,10 +411,9 @@
 
       const attending = attendance === "Joyfully accept";
       rsvpForm.reset();
-      formStatus.classList.add("is-success");
-      formStatus.innerHTML = attending
-        ? "<strong>We’re so happy you’ll be part of our day.</strong><span>With love, Alwin &amp; Annmareena</span>"
-        : "<strong>Thank you for letting us know.</strong><span>You’ll be in our thoughts on the day.</span>";
+      formStatus.className = "form-status";
+      formStatus.innerHTML = "";
+      showRsvpResult(attending);
     } catch (error) {
       console.error("RSVP submission failed:", error);
       formStatus.classList.add("is-error");

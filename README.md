@@ -105,3 +105,17 @@ Version 2 adds refined loading animation, scroll progress, cinematic hero polish
 - Tightened venue address and button spacing.
 - Added a broader mobile spacing pass across sections.
 - Optimized for common iPhone and Android widths.
+
+
+## Final update
+
+- Added absolute Open Graph metadata for WhatsApp and social sharing.
+- Added a custom A&A favicon.
+- Updated the browser title.
+- Added an animated RSVP thank-you state.
+- Added Google Calendar and universal ICS calendar actions after accepted RSVPs.
+- Calendar details include ceremony and reception locations and map links.
+- Music state and playback position are remembered.
+- On mobile, the music control starts expanded and becomes compact after scrolling.
+- Restored “Scroll to begin” on mobile.
+- Added “Made with ❤️ by Alwin” below the footer.
