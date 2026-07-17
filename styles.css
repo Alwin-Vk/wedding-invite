@@ -1,10 +1,10 @@
 :root {
   --champagne: #f4e7d3;
-  --champagne-light: #fbf6ee;
+  --champagne-light: #f3e4cf;
   --mocha: #8b6653;
   --mocha-dark: #654638;
   --espresso: #3b2418;
-  --cream: #fffaf2;
+  --cream: #f7ead8;
   --shadow: 0 22px 70px rgba(59, 36, 24, 0.12);
   --radius: 2px;
   --serif: "Cormorant Garamond", Georgia, serif;
@@ -384,7 +384,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .detail-card p:last-child { margin: 0; font-size: .85rem; }
 
-.venue-section { background: var(--champagne-light); }
+.venue-section { background: var(--champagne); }
 .venue-list { max-width: 1180px; margin: 0 auto; display: grid; gap: 2rem; }
 .venue-card {
   display: grid;
