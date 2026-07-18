@@ -66,6 +66,35 @@
   };
   const setWishError = setFieldError;
 
+  const getWishKey = wish =>
+    `${String(wish.name || "").trim()}::${String(wish.wish || "").trim()}`;
+
+  const shuffleWishes = (wishes, storageKey) => {
+    const shuffledWishes = [...wishes];
+
+    for (let index = shuffledWishes.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [shuffledWishes[index], shuffledWishes[swapIndex]] = [
+        shuffledWishes[swapIndex],
+        shuffledWishes[index]
+      ];
+    }
+
+    if (shuffledWishes.length > 1) {
+      try {
+        const firstWishKey = getWishKey(shuffledWishes[0]);
+        if (sessionStorage.getItem(storageKey) === firstWishKey) {
+          shuffledWishes.push(shuffledWishes.shift());
+        }
+        sessionStorage.setItem(storageKey, getWishKey(shuffledWishes[0]));
+      } catch (error) {
+        // Session storage can be unavailable in private browsing modes.
+      }
+    }
+
+    return shuffledWishes;
+  };
+
   window.setTimeout(() => {
     preloader?.classList.add("is-hidden");
     body.classList.remove("is-loading");
@@ -221,13 +250,13 @@
       window.clearTimeout(wishesScrollSettleTimer);
       wishesScrollSettleTimer = window.setTimeout(() => {
         wishesAutoScrolling = false;
-      }, 120);
+      }, 700);
     }
     initWishesAutoplay();
   };
 
   const loadApprovedWishes = async () => {
-    renderWishes(fallbackWishes);
+    renderWishes(shuffleWishes(fallbackWishes, "engagementWishesFirst"));
 
     try {
       const response = await fetch(WISHES_ENDPOINT, {
@@ -251,7 +280,7 @@
         : [];
 
       if (wishes.length > 0) {
-        renderWishes(wishes);
+        renderWishes(shuffleWishes(wishes, "engagementWishesFirst"));
         if (wishesFallback) wishesFallback.hidden = true;
       }
     } catch (error) {

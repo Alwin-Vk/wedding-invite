@@ -395,6 +395,35 @@
   let wishesHoverPaused = false;
   let wishesAutoScrolling = false;
 
+  const getWishKey = wish =>
+    `${String(wish.name || "").trim()}::${String(wish.wish || "").trim()}`;
+
+  const shuffleWishes = (wishes, storageKey) => {
+    const shuffledWishes = [...wishes];
+
+    for (let index = shuffledWishes.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [shuffledWishes[index], shuffledWishes[swapIndex]] = [
+        shuffledWishes[swapIndex],
+        shuffledWishes[index]
+      ];
+    }
+
+    if (shuffledWishes.length > 1) {
+      try {
+        const firstWishKey = getWishKey(shuffledWishes[0]);
+        if (sessionStorage.getItem(storageKey) === firstWishKey) {
+          shuffledWishes.push(shuffledWishes.shift());
+        }
+        sessionStorage.setItem(storageKey, getWishKey(shuffledWishes[0]));
+      } catch (error) {
+        // Session storage can be unavailable in private browsing modes.
+      }
+    }
+
+    return shuffledWishes;
+  };
+
   const getWishCards = (includeCta = false) => {
     if (!wishesTrack) return [];
 
@@ -554,21 +583,16 @@
       wishesTrack.scrollTo({ left: 0, behavior: "auto" });
       wishesScrollSettleTimer = window.setTimeout(() => {
         wishesAutoScrolling = false;
-      }, 120);
+      }, 700);
     }
 
     initWishesAutoplay();
   };
 
-  const showWishFallback = () => {
-    renderWishes(fallbackWishes);
-    if (wishesFallback) wishesFallback.hidden = false;
-  };
-
   async function loadApprovedWishes() {
     if (!wishesTrack) return;
 
-    renderWishes(fallbackWishes);
+    renderWishes(shuffleWishes(fallbackWishes, "weddingWishesFirst"));
 
     try {
       const response = await fetch(RSVP_ENDPOINT, {
@@ -592,12 +616,12 @@
         : [];
 
       if (approvedWishes.length > 0) {
-        renderWishes(approvedWishes);
+        renderWishes(shuffleWishes(approvedWishes, "weddingWishesFirst"));
         if (wishesFallback) wishesFallback.hidden = true;
       }
     } catch (error) {
       console.error("Approved wishes failed to load:", error);
-      showWishFallback();
+      if (wishesFallback) wishesFallback.hidden = false;
     }
   }
 
@@ -861,7 +885,7 @@
           entry.isIntersecting && entry.intersectionRatio >= 0.35;
 
         if (wishesSectionVisible) {
-    scheduleWishesAutoplay(4500);
+          scheduleWishesAutoplay(4500);
         } else {
           clearWishesAutoplay();
         }
