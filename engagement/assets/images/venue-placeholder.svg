@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-label="St. Mary’s Church placeholder artwork">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8f1e7"/>
+      <stop offset="1" stop-color="#f1e5d7"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <circle cx="700" cy="450" r="320" fill="#d8a8aa" opacity=".15"/>
+  <path d="M515 640V405l185-145 185 145v235" fill="none" stroke="#686b3f" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M650 640V500c0-36 24-64 50-64s50 28 50 64v140" fill="none" stroke="#8d565d" stroke-width="18"/>
+  <path d="M700 260v-88M664 206h72" stroke="#8d565d" stroke-width="16" stroke-linecap="round"/>
+  <g fill="none" stroke="#77815b" stroke-width="5" opacity=".35">
+    <path d="M250 690c120-105 185-220 225-360"/>
+    <path d="M315 602c-62-26-115-22-170 17"/>
+    <path d="M1135 230c-84 116-130 230-155 375"/>
+    <path d="M1094 326c72 17 121 5 169-41"/>
+  </g>
+</svg>

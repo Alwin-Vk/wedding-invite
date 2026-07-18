@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="Soft botanical betrothal artwork">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8f1e7"/>
+      <stop offset=".5" stop-color="#d8a8aa"/>
+      <stop offset="1" stop-color="#77815b"/>
+    </linearGradient>
+    <radialGradient id="light" cx="50%" cy="35%" r="55%">
+      <stop offset="0" stop-color="#fff8ef" stop-opacity=".86"/>
+      <stop offset="1" stop-color="#fff8ef" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#light)"/>
+  <circle cx="800" cy="500" r="280" fill="none" stroke="#f8f1e7" stroke-opacity=".32" stroke-width="2"/>
+  <g opacity=".25" fill="none" stroke="#4d5030" stroke-width="3">
+    <path d="M285 760c95-125 172-235 220-360"/>
+    <path d="M350 665c-68-38-116-41-184-13"/>
+    <path d="M390 600c-43-67-89-94-151-102"/>
+    <path d="M438 514c-13-68-45-113-101-150"/>
+    <path d="M1230 210c-88 138-148 248-179 384"/>
+    <path d="M1178 310c71 26 119 23 180-16"/>
+    <path d="M1134 395c54 54 104 72 166 66"/>
+    <path d="M1092 493c31 69 73 102 135 127"/>
+  </g>
+  <g filter="url(#blur)" opacity=".28">
+    <circle cx="270" cy="220" r="160" fill="#f8f1e7"/>
+    <circle cx="1340" cy="790" r="210" fill="#8d565d"/>
+  </g>
+</svg>
