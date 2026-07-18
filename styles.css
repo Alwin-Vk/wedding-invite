@@ -2423,6 +2423,50 @@ body.wish-modal-open {
     0 16px 38px rgba(59,36,24,.07);
 }
 
+.wishes-secondary-cta {
+  min-height: 46px;
+  width: fit-content;
+  max-width: min(100%, 280px);
+  margin: 1.35rem auto 0;
+  padding: .78rem 1.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid rgba(139,102,83,.22);
+  border-radius: 999px;
+  color: var(--espresso);
+  background: rgba(244,231,211,.72);
+  box-shadow: 0 12px 28px rgba(59,36,24,.075);
+  cursor: pointer;
+  font: 500 .84rem/1 var(--sans);
+  letter-spacing: .03em;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity .48s ease,
+    transform .48s cubic-bezier(.22,.61,.36,1),
+    background .26s ease,
+    border-color .26s ease,
+    box-shadow .26s ease;
+}
+
+.wishes-secondary-cta.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wishes-secondary-cta:focus {
+  outline: none;
+}
+
+.wishes-secondary-cta:focus-visible {
+  border-color: rgba(139,102,83,.5);
+  box-shadow:
+    0 0 0 3px rgba(139,102,83,.18),
+    0 12px 28px rgba(59,36,24,.075);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .wish-card {
     transition: opacity .55s ease, transform .25s ease, box-shadow .25s ease, border-color .25s ease;
@@ -2432,6 +2476,26 @@ body.wish-modal-open {
     border-color: rgba(139,102,83,.18);
     box-shadow: 0 20px 46px rgba(59,36,24,.1);
     transform: translateY(-4px);
+  }
+
+  .wishes-secondary-cta:hover {
+    border-color: rgba(139,102,83,.3);
+    background: rgba(244,231,211,.86);
+    box-shadow: 0 15px 34px rgba(59,36,24,.105);
+    transform: translateY(-2px);
+  }
+
+  .wishes-secondary-cta:active {
+    box-shadow: 0 9px 20px rgba(59,36,24,.08);
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wishes-secondary-cta {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 

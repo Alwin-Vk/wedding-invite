@@ -225,6 +225,7 @@
   const wishesFallback = document.getElementById("wishesFallback");
   const wishesPrev = document.getElementById("wishesPrev");
   const wishesNext = document.getElementById("wishesNext");
+  const wishesSecondaryCta = document.querySelector(".wishes-secondary-cta");
   const wishModal = document.getElementById("wishModal");
   const wishForm = document.getElementById("wishForm");
   const wishNameInput = document.getElementById("wishName");
@@ -687,6 +688,26 @@
   document
     .getElementById("openWishForm")
     ?.addEventListener("click", openWishModal);
+  wishesSecondaryCta?.addEventListener("click", openWishModal);
+
+  if (wishesSecondaryCta) {
+    if (reducedMotionQuery?.matches || !("IntersectionObserver" in window)) {
+      wishesSecondaryCta.classList.add("is-visible");
+    } else {
+      const wishesCtaObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              wishesSecondaryCta.classList.add("is-visible");
+              wishesCtaObserver.disconnect();
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      wishesCtaObserver.observe(wishesSecondaryCta);
+    }
+  }
 
   wishModal
     ?.querySelectorAll("[data-wish-close]")

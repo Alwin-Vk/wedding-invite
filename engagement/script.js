@@ -15,6 +15,7 @@
   const wishesNext = document.getElementById("wishesNext");
   const wishModal = document.getElementById("wishModal");
   const initialWishTrigger = document.getElementById("openWishForm");
+  const wishesSecondaryCta = document.querySelector(".wishes-secondary-cta");
   const wishForm = document.getElementById("wishForm");
   const wishNameInput = document.getElementById("wishName");
   const wishMessageInput = document.getElementById("wishMessage");
@@ -560,6 +561,26 @@
   }
 
   initialWishTrigger?.addEventListener("click", openWishModal);
+  wishesSecondaryCta?.addEventListener("click", openWishModal);
+
+  if (wishesSecondaryCta) {
+    if (reducedMotionQuery?.matches || !("IntersectionObserver" in window)) {
+      wishesSecondaryCta.classList.add("is-visible");
+    } else {
+      const wishesCtaObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              wishesSecondaryCta.classList.add("is-visible");
+              wishesCtaObserver.disconnect();
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      wishesCtaObserver.observe(wishesSecondaryCta);
+    }
+  }
 
   const closeWishModal = () => {
     if (!wishModal) return;
