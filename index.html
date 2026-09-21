@@ -41,9 +41,7 @@
   <header class="site-header" id="siteHeader">
     <a class="monogram" href="#home" aria-label="Back to top"><span>A</span><i>&</i><span>A</span></a>
     <nav aria-label="Main navigation">
-      <a href="#celebration">Celebration</a>
-      <a href="#venue">Venue</a>
-      <a href="#rsvp">RSVP</a>
+      <a href="#wishes">Wishes</a>
     </nav>
   </header>
 
@@ -90,143 +88,16 @@
       <p class="signature"><span>With love,</span> Alwin &amp; Annmareena</p>
     </section>
 
-    <section class="countdown-section reveal" aria-labelledby="countdownTitle">
-      <p class="section-kicker">Counting down to</p>
-      <h2 id="countdownTitle">20 August 2026</h2>
-      <div class="countdown" data-wedding-time="2026-08-20T16:30:00+05:30" role="timer" aria-live="polite">
-        <div><strong id="days">00</strong><span>Days</span></div>
-        <div><strong id="hours">00</strong><span>Hours</span></div>
-        <div><strong id="minutes">00</strong><span>Minutes</span></div>
-        <div><strong id="seconds">00</strong><span>Seconds</span></div>
-      </div>
-      <p class="countdown-note">The celebration wouldn’t be complete without you.</p>
-    </section>
-
-    <section class="celebration-section" id="celebration">
-      <div class="section-heading reveal">
-        <p class="section-kicker">Save the date</p>
-        <h2>The Celebration</h2>
-      </div>
-
-      <div class="details-grid">
-        <article class="detail-card reveal">
-          <span class="detail-card__number">01</span>
-          <p class="detail-card__type">Holy Matrimony</p>
-          <h3>4:30 PM</h3>
-          <p>Fathima Matha Church<br>West Koratty, Thrissur, Kerala</p>
-        </article>
-
-        <article class="detail-card reveal">
-          <span class="detail-card__number">02</span>
-          <p class="detail-card__type">Reception</p>
-          <h3>6:00 PM</h3>
-          <p>La Mirage<br>Koratty, Thrissur, Kerala</p>
-        </article>
-
-        <article class="detail-card reveal">
-          <span class="detail-card__number">03</span>
-          <p class="detail-card__type">Dress Code</p>
-          <h3>Your Best Attire</h3>
-          <p>Come dressed in what makes you feel your best. 😊</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="venue-section" id="venue">
-      <div class="section-heading reveal">
-        <p class="section-kicker">Find your way</p>
-        <h2>The Venues</h2>
-      </div>
-
-      <div class="venue-list">
-        <article class="venue-card reveal">
-          <div class="venue-card__image">
-            <img src="assets/images/church-new.png" alt="Fathima Matha Church exterior" loading="lazy">
-            <span class="venue-card__tag">Ceremony</span>
-          </div>
-          <div class="venue-card__content">
-            <p class="section-kicker">Ceremony</p>
-            <h3 class="venue-name venue-name--church">Fathima Matha Church</h3>
-            <p class="venue-address">West Koratty, Thrissur</p>
-            <a class="button" href="https://maps.app.goo.gl/mVEn6FETac7NuXJQ6" target="_blank" rel="noopener noreferrer"><span>Get Directions</span><b aria-hidden="true"></b></a>
-          </div>
-        </article>
-
-        <article class="venue-card venue-card--reverse reveal">
-          <div class="venue-card__image">
-            <img src="assets/images/la-mirage-new.png" alt="La Mirage reception venue" loading="lazy">
-            <span class="venue-card__tag">Reception</span>
-          </div>
-          <div class="venue-card__content">
-            <p class="section-kicker">Reception</p>
-            <h3 class="venue-name venue-name--reception">La Mirage</h3>
-            <p class="venue-address">Koratty, Thrissur</p>
-            <a class="button" href="https://maps.app.goo.gl/AKp7GL7sriovNhSv9" target="_blank" rel="noopener noreferrer"><span>Get Directions</span><b aria-hidden="true"></b></a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="rsvp-section" id="rsvp">
-      <div class="rsvp-card reveal">
-        <div class="rsvp-card__ring rsvp-card__ring--one"></div>
-        <div class="rsvp-card__ring rsvp-card__ring--two"></div>
-
-        <div class="rsvp-card__intro">
-          <p class="section-kicker">Kindly respond</p>
-          <h2>Will you celebrate with us?</h2>
-          <p>We would be delighted to celebrate this special day with you.</p>
-        </div>
-
-        <form class="rsvp-form" id="rsvpForm" novalidate>
-          <div class="form-field">
-            <label for="guestNames">Name(s)</label>
-            <input id="guestNames" name="names" type="text" autocomplete="name"
-                   placeholder="Enter your name or both names" required>
-            <small class="field-error" data-error-for="guestNames"></small>
-          </div>
-
-          <fieldset class="form-field attendance-field">
-            <legend>Your response</legend>
-            <div class="attendance-options">
-              <label>
-                <input type="radio" name="attendance" value="Joyfully accept" required>
-                <span>Joyfully accept</span>
-              </label>
-              <label>
-                <input type="radio" name="attendance" value="Unable to attend" required>
-                <span>Unable to attend</span>
-              </label>
-            </div>
-            <small class="field-error" data-error-for="attendance"></small>
-          </fieldset>
-
-          <div class="form-field">
-            <label for="guestMessage">A message for the couple <em>Optional</em></label>
-            <textarea id="guestMessage" name="message" rows="4"
-                      placeholder="Share your wishes, blessings, or kind words…"></textarea>
-          </div>
-
-          <button class="button button--light rsvp-submit" type="submit">
-            <span>Confirm RSVP</span><b aria-hidden="true"></b>
-          </button>
-
-          <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
-        </form>
-
-        <div class="rsvp-success-panel" id="rsvpSuccessPanel" hidden aria-live="polite">
-          <div class="rsvp-success-panel__mark" aria-hidden="true">✓</div>
-          <p class="section-kicker">Response received</p>
-          <h2 id="rsvpSuccessTitle">Thank you!</h2>
-          <p id="rsvpSuccessMessage">We can’t wait to celebrate with you. ❤️</p>
-
-          <div class="calendar-actions" id="calendarActions">
-            <button class="button button--light calendar-button" id="addCalendarButton" type="button">
-              <span>Add to Calendar</span>
-            </button>
-          </div>
+    <section class="countdown-section reveal" aria-labelledby="marriageDaysTitle">
+      <p class="section-kicker">Our forever began</p>
+      <h2 id="marriageDaysTitle">20 August 2026</h2>
+      <div class="countdown countdown--marriage" data-marriage-date="2026-08-20" aria-live="polite">
+        <div>
+          <strong id="marriageDays">00</strong>
+          <span>Days Since We Said “I Do”</span>
         </div>
       </div>
+      <p class="countdown-note">Every day since has been part of our story.</p>
     </section>
 
     <section class="wishes-section reveal" id="wishes" aria-labelledby="wishesTitle">
@@ -258,12 +129,6 @@
             <p>May your love grow stronger with every passing year.</p>
             <footer><span>Love,</span> Friend</footer>
           </article>
-          <button class="wish-card wish-card--cta" id="openWishForm" type="button">
-            <b aria-hidden="true">+</b>
-            <span>Share Your Wishes</span>
-            <small>Your blessing will become part of our story.</small>
-            <em>Add Yours →</em>
-          </button>
         </div>
 
         <button class="wishes-nav wishes-nav--next" id="wishesNext" type="button" aria-label="Next wishes">
@@ -271,7 +136,7 @@
         </button>
       </div>
 
-      <button class="wishes-secondary-cta" type="button">Add Your Wish ❤️</button>
+      <button class="wishes-secondary-cta" type="button" hidden>Add Your Wish ❤️</button>
 
       <p class="wishes-fallback" id="wishesFallback" hidden>
         Wishes are taking a moment to load. A few favorites are shown for now.

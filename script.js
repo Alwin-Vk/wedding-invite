@@ -88,51 +88,35 @@
     }, 9000);
   }
 
-  // Countdown.
-  const target = new Date("2026-08-20T16:30:00+05:30").getTime();
-  const countdownElements = {
-    days: document.getElementById("days"),
-    hours: document.getElementById("hours"),
-    minutes: document.getElementById("minutes"),
-    seconds: document.getElementById("seconds")
+  // Days since the wedding.
+  const marriageDaysElement = document.getElementById("marriageDays");
+  const marriageCounter = document.querySelector("[data-marriage-date]");
+  const weddingDateParts = { month: 8, day: 20 };
+
+  const getLocalDateStart = date =>
+    new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+
+  const getDaysSinceWedding = () => {
+    const weddingDate = marriageCounter?.dataset.marriageDate || "2026-08-20";
+    const [year, month, day] = weddingDate.split("-").map(Number);
+    const weddingStart = new Date(year, month - 1, day).getTime();
+    const todayStart = getLocalDateStart(new Date());
+
+    return Math.max(0, Math.floor((todayStart - weddingStart) / 86400000));
   };
 
-  const pad = value => String(Math.max(0, value)).padStart(2, "0");
-
-  const updateCountdown = () => {
-    const distance = target - Date.now();
-
-    if (distance <= 0) {
-      Object.values(countdownElements).forEach(element => {
-        if (element) element.textContent = "00";
-      });
-      const note = document.querySelector(".countdown-note");
-      if (note) note.textContent = "Today is the day.";
-      return;
-    }
-
-    if (countdownElements.days) {
-      countdownElements.days.textContent = pad(Math.floor(distance / 86400000));
-    }
-    if (countdownElements.hours) {
-      countdownElements.hours.textContent = pad(
-        Math.floor((distance % 86400000) / 3600000)
-      );
-    }
-    if (countdownElements.minutes) {
-      countdownElements.minutes.textContent = pad(
-        Math.floor((distance % 3600000) / 60000)
-      );
-    }
-    if (countdownElements.seconds) {
-      countdownElements.seconds.textContent = pad(
-        Math.floor((distance % 60000) / 1000)
-      );
-    }
+  const updateMarriageDays = () => {
+    if (!marriageDaysElement) return;
+    marriageDaysElement.textContent = String(getDaysSinceWedding());
   };
 
-  updateCountdown();
-  window.setInterval(updateCountdown, 1000);
+  const isAnniversaryWeek = (date = new Date()) =>
+    date.getMonth() + 1 === weddingDateParts.month &&
+    date.getDate() >= weddingDateParts.day &&
+    date.getDate() <= weddingDateParts.day + 7;
+
+  updateMarriageDays();
+  window.setInterval(updateMarriageDays, 60000);
 
   // Music player.
   if (audio && musicButton && musicLabel) {
@@ -209,16 +193,7 @@
     });
   }
 
-  // Native RSVP form.
   const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycby9Zs7paKUzQCU1aYKtglO_4pLWQLfqPx-QsWvTkjVdDPkog2_Klxr3IcxGbxTrM3E/exec";
-  const rsvpForm = document.getElementById("rsvpForm");
-  const formStatus = document.getElementById("formStatus");
-  const rsvpCard = document.querySelector(".rsvp-card");
-  const rsvpSuccessPanel = document.getElementById("rsvpSuccessPanel");
-  const rsvpSuccessTitle = document.getElementById("rsvpSuccessTitle");
-  const rsvpSuccessMessage = document.getElementById("rsvpSuccessMessage");
-  const calendarActions = document.getElementById("calendarActions");
-  const addCalendarButton = document.getElementById("addCalendarButton");
   const wishesSection = document.getElementById("wishes");
   const wishesCarousel = document.querySelector(".wishes-carousel");
   const wishesTrack = document.getElementById("wishesTrack");
@@ -233,139 +208,11 @@
   const wishCount = document.getElementById("wishCount");
   const wishStatus = document.getElementById("wishStatus");
   const wishSuccess = document.getElementById("wishSuccess");
+  const canAddWishes = isAnniversaryWeek();
 
-  if (!rsvpForm || !formStatus) return;
-
-  const setFieldError = (key, message) => {
-    const errorElement = document.querySelector(`[data-error-for="${key}"]`);
-    if (errorElement) errorElement.textContent = message || "";
-
-    if (key === "attendance") {
-      document
-        .querySelector(".attendance-field")
-        ?.classList.toggle("has-error", Boolean(message));
-    } else {
-      document
-        .getElementById(key)
-        ?.closest(".form-field")
-        ?.classList.toggle("has-error", Boolean(message));
-    }
-  };
-
-  const validateRsvp = () => {
-    const namesInput = document.getElementById("guestNames");
-    const attendance = rsvpForm.querySelector(
-      'input[name="attendance"]:checked'
-    );
-    const names = namesInput?.value.trim() || "";
-
-    setFieldError("guestNames", names ? "" : "Please enter the invited name(s).");
-    setFieldError("attendance", attendance ? "" : "Please select your response.");
-
-    if (!names) {
-      namesInput?.focus();
-      namesInput?.scrollIntoView({ behavior: "smooth", block: "center" });
-      return false;
-    }
-
-    if (!attendance) {
-      const attendanceField = document.querySelector(".attendance-field");
-      attendanceField?.scrollIntoView({ behavior: "smooth", block: "center" });
-      rsvpForm.querySelector('input[name="attendance"]')?.focus();
-      return false;
-    }
-
-    return true;
-  };
-
-  document.getElementById("guestNames")?.addEventListener("input", event => {
-    if (event.target.value.trim()) setFieldError("guestNames", "");
-  });
-
-  rsvpForm
-    .querySelectorAll('input[name="attendance"]')
-    .forEach(option =>
-      option.addEventListener("change", () => setFieldError("attendance", ""))
-    );
-
-
-  const calendarEvent = {
-    title: "Alwin & Annmareena’s Wedding",
-    start: "20260820T110000Z",
-    end: "20260820T170000Z",
-    location: "Fathima Matha Church, West Koratty, Thrissur, Kerala",
-    description:
-      "Holy Matrimony — 4:30 PM\n" +
-      "Fathima Matha Church, West Koratty, Thrissur, Kerala\n" +
-      "Church directions: https://maps.app.goo.gl/mVEn6FETac7NuXJQ6\n\n" +
-      "Reception — 6:00 PM\n" +
-      "La Mirage, Koratty, Thrissur, Kerala\n" +
-      "Reception directions: https://maps.app.goo.gl/AKp7GL7sriovNhSv9\n\n" +
-      "Wedding website: https://alwinannmareena.com\n\n" +
-      "We can’t wait to celebrate with you. ❤️"
-  };
-
-  const escapeIcsText = value =>
-    String(value)
-      .replace(/\\/g, "\\\\")
-      .replace(/\n/g, "\\n")
-      .replace(/,/g, "\\,")
-      .replace(/;/g, "\\;");
-
-  const buildGoogleCalendarUrl = () => {
-    const params = new URLSearchParams({
-      action: "TEMPLATE",
-      text: calendarEvent.title,
-      dates: `${calendarEvent.start}/${calendarEvent.end}`,
-      details: calendarEvent.description,
-      location: calendarEvent.location,
-      ctz: "Asia/Kolkata"
-    });
-    return `https://calendar.google.com/calendar/render?${params.toString()}`;
-  };
-
-  const downloadCalendarFile = () => {
-    const ics = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//Alwin and Annmareena//Wedding Invitation//EN",
-      "CALSCALE:GREGORIAN",
-      "METHOD:PUBLISH",
-      "BEGIN:VEVENT",
-      `UID:alwin-annmareena-wedding-20260820@alwinannmareena.com`,
-      `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z")}`,
-      `DTSTART:${calendarEvent.start}`,
-      `DTEND:${calendarEvent.end}`,
-      `SUMMARY:${escapeIcsText(calendarEvent.title)}`,
-      `LOCATION:${escapeIcsText(calendarEvent.location)}`,
-      `DESCRIPTION:${escapeIcsText(calendarEvent.description)}`,
-      "END:VEVENT",
-      "END:VCALENDAR"
-    ].join("\r\n");
-
-    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "alwin-annmareena-wedding.ics";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
-
-  const addToCalendar = () => {
-    const isAndroid = /Android/i.test(navigator.userAgent);
-
-    if (isAndroid) {
-      window.open(buildGoogleCalendarUrl(), "_blank", "noopener");
-      return;
-    }
-
-    downloadCalendarFile();
-  };
-
-  addCalendarButton?.addEventListener("click", addToCalendar);
+  if (wishesSecondaryCta) {
+    wishesSecondaryCta.hidden = !canAddWishes;
+  }
 
   const fallbackWishes = [
     {
@@ -575,10 +422,9 @@
       window.clearTimeout(wishesScrollSettleTimer);
     }
 
-    wishesTrack.replaceChildren(
-      ...wishes.map(createWishCard),
-      createWishCta()
-    );
+    const wishCards = wishes.map(createWishCard);
+    if (canAddWishes) wishCards.push(createWishCta());
+    wishesTrack.replaceChildren(...wishCards);
 
     if (!wishesUserInteracted) {
       wishesTrack.scrollTo({ left: 0, behavior: "auto" });
@@ -685,12 +531,14 @@
     }, 300);
   };
 
-  document
-    .getElementById("openWishForm")
-    ?.addEventListener("click", openWishModal);
-  wishesSecondaryCta?.addEventListener("click", openWishModal);
+  if (canAddWishes) {
+    document
+      .getElementById("openWishForm")
+      ?.addEventListener("click", openWishModal);
+    wishesSecondaryCta?.addEventListener("click", openWishModal);
+  }
 
-  if (wishesSecondaryCta) {
+  if (canAddWishes && wishesSecondaryCta) {
     if (reducedMotionQuery?.matches || !("IntersectionObserver" in window)) {
       wishesSecondaryCta.classList.add("is-visible");
     } else {
@@ -920,97 +768,4 @@
   updateWishCount();
   loadApprovedWishes();
 
-  const showRsvpResult = attending => {
-    if (!rsvpSuccessPanel || !rsvpCard) return;
-
-    rsvpCard.classList.add("is-complete");
-    rsvpSuccessPanel.hidden = false;
-    rsvpSuccessPanel.classList.add("is-entering");
-
-    if (rsvpSuccessTitle) {
-      rsvpSuccessTitle.textContent = attending
-        ? "Thank you!"
-        : "Thank you for letting us know.";
-    }
-
-    if (rsvpSuccessMessage) {
-      rsvpSuccessMessage.textContent = attending
-        ? "We can’t wait to celebrate with you. ❤️"
-        : "You’ll be in our thoughts on the day. ❤️";
-    }
-
-    if (calendarActions) {
-      calendarActions.hidden = !attending;
-      calendarActions.style.display = attending ? "" : "none";
-    }
-
-    window.setTimeout(() => {
-      const intro = rsvpCard.querySelector(".rsvp-card__intro");
-      rsvpForm.hidden = true;
-      if (intro) intro.hidden = true;
-      rsvpSuccessPanel.classList.remove("is-entering");
-      rsvpSuccessPanel.classList.add("is-visible");
-      rsvpSuccessPanel.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 500);
-  };
-
-  rsvpForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    formStatus.className = "form-status";
-    formStatus.innerHTML = "";
-
-    if (!validateRsvp()) return;
-
-    if (RSVP_ENDPOINT.includes("PASTE_YOUR")) {
-      formStatus.classList.add("is-error");
-      formStatus.innerHTML =
-        "<strong>RSVP is not connected yet.</strong><span>Complete RSVP_SETUP.md and add the Web App URL.</span>";
-      return;
-    }
-
-    const submitButton = rsvpForm.querySelector('button[type="submit"]');
-    const buttonText = submitButton?.querySelector("span");
-    const originalText = buttonText?.textContent || "Confirm RSVP";
-    const attendance = rsvpForm.querySelector(
-      'input[name="attendance"]:checked'
-    ).value;
-
-    const payload = {
-      action: "submitRsvp",
-      names: document.getElementById("guestNames").value.trim(),
-      attendance,
-      message: document.getElementById("guestMessage").value.trim(),
-      submittedAt: new Date().toISOString()
-    };
-
-    if (submitButton) submitButton.disabled = true;
-    if (buttonText) buttonText.textContent = "Sending…";
-
-    try {
-      const response = await fetch(RSVP_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      });
-
-      const result = await response.json();
-      if (!response.ok || result.status !== "success") {
-        throw new Error(result.message || "Submission failed");
-      }
-
-      const attending = attendance === "Joyfully accept";
-      rsvpForm.reset();
-      formStatus.className = "form-status";
-      formStatus.innerHTML = "";
-      showRsvpResult(attending);
-    } catch (error) {
-      console.error("RSVP submission failed:", error);
-      formStatus.classList.add("is-error");
-      formStatus.innerHTML =
-        "<strong>We couldn’t send your RSVP.</strong><span>Please try again in a moment.</span>";
-    } finally {
-      if (submitButton) submitButton.disabled = false;
-      if (buttonText) buttonText.textContent = originalText;
-    }
-  });
 })();

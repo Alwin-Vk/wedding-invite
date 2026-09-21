@@ -310,6 +310,27 @@ button, a { -webkit-tap-highlight-color: transparent; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
+
+.countdown.countdown--marriage {
+  max-width: 620px;
+  grid-template-columns: 1fr;
+  margin-block: clamp(2rem, 5vw, 4rem);
+}
+
+.countdown.countdown--marriage div {
+  padding: 0;
+}
+
+.countdown.countdown--marriage strong {
+  font-size: clamp(5rem, 16vw, 10rem);
+}
+
+.countdown.countdown--marriage span {
+  max-width: 520px;
+  margin: 1.1rem auto 0;
+  line-height: 1.6;
+}
+
 .countdown div {
   position: relative;
   padding: .5rem;
@@ -2449,6 +2470,10 @@ body.wish-modal-open {
     background .26s ease,
     border-color .26s ease,
     box-shadow .26s ease;
+}
+
+.wishes-secondary-cta[hidden] {
+  display: none;
 }
 
 .wishes-secondary-cta.is-visible {
