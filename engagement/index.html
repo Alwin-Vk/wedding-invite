@@ -310,6 +310,23 @@
  .directions-link{transition:none}
 }
 
+
+/* Reuse the celebration card's glow, gold shimmer and twinkling stars in the personal note. */
+.note-content .note-home-name{
+  position:relative;display:block;width:max-content;max-width:100%;isolation:isolate;
+  margin:0 auto 20px;padding:9px 14px 15px;
+}
+.note-content .note-home-name .bethlehem-word{
+  display:block;white-space:nowrap;
+  font:400 clamp(1.9rem,3.75vw,2.7rem)/1.2 var(--font-editorial);
+  letter-spacing:.015em;
+}
+.note-content .note-home-copy{display:block}
+@media(max-width:390px){
+  .note-content .note-home-name{padding-inline:8px}
+  .note-content .note-home-name .bethlehem-word{font-size:clamp(1.73rem,7.4vw,2.1rem);letter-spacing:.005em}
+}
+
 </style>
 </head>
 <body>
@@ -339,7 +356,7 @@
       <a class="hero-end" href="#beginning" aria-label="Scroll to the invitation"><span>SCROLL TO BEGIN</span><i aria-hidden="true"></i></a>
     </div>
   </section>
-  <section id="beginning" class="note-section" aria-labelledby="noteTitle"><div class="ambient"></div><div class="container"><div class="note-content reveal"><p class="eyebrow">01 / A NOTE FROM US</p><h2 class="section-title" id="noteTitle">A home built<br><em>with love.</em></h2><span class="gold-line"></span><p class="lead"><strong>SD’s BETHLEHEM</strong> is our dream home, built with prayers, hard work and love. We see it as a miraculous blessing from God and our Koratty Muthy.</p><p class="ordinary">We’re happy to share this special milestone with you all.</p><p class="signature"><span>With love,</span>Sherin &amp; Dibiya</p></div>
+  <section id="beginning" class="note-section" aria-labelledby="noteTitle"><div class="ambient"></div><div class="container"><div class="note-content reveal"><p class="eyebrow">01 / A NOTE FROM US</p><h2 class="section-title" id="noteTitle">A home built<br><em>with love.</em></h2><span class="gold-line"></span><p class="lead"><span class="note-home-name bethlehem-name"><span class="bethlehem-word">SD’s BETHLEHEM</span><span class="bethlehem-spark bethlehem-spark--one" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--two" aria-hidden="true">✧</span><span class="bethlehem-spark bethlehem-spark--three" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--four" aria-hidden="true">✧</span></span><span class="note-home-copy">is our dream home, built with prayers, hard work and love. We see it as a miraculous blessing from God and our Koratty Muthy.</span></p><p class="ordinary">We’re happy to share this special milestone with you all.</p><p class="signature"><span>With love,</span>Sherin &amp; Dibiya</p></div>
       <div class="story-head reveal"><div><p class="eyebrow">THE JOURNEY TO BETHLEHEM</p><h3>From a dream<br>to a doorstep.</h3></div><p class="caption">Every stage and every milestone tell a story worth remembering.</p></div>
       <div class="story-viewer reveal" aria-label="The story of the building process"><div class="story-photo-wrap"><img id="storyMainImage" src="assets/bethlehem/01-the-land.webp" alt="The empty building plot before construction" loading="lazy"></div><div class="story-details"><p class="story-count" id="storyCount">01 <span>/ 09</span></p><h4 id="storyTitle">Where it all began.</h4><p id="storyDescription">The first steps on an empty piece of land, with a home still living in our dreams.</p><div class="story-controls"><button type="button" class="icon-btn" id="storyPrev" aria-label="Previous building stage">‹</button><button type="button" class="icon-btn" id="storyNext" aria-label="Next building stage">›</button></div></div></div>
       <div id="storyStrip" class="story-strip" aria-label="Select a chapter in the building journey"></div>
