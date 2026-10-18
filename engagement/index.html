@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <style>
-  :root { --ink:#280d1b;--deep:#210b16;--burgundy:#481a30;--wine:#60283d;--gold:#e4c68c;--muted-gold:#bea06b;--ivory:#fff4e6;--soft:#dfc6b6;--hair:#b78f6b67;--font-display:"Cormorant Garamond",Georgia,serif;--font-script:"Allura",cursive;--font-body:"DM Sans",Arial,sans-serif; }
+  :root { --ink:#280d1b;--deep:#210b16;--burgundy:#481a30;--wine:#60283d;--gold:#e4c68c;--muted-gold:#bea06b;--ivory:#fff4e6;--soft:#dfc6b6;--hair:#b78f6b67;--font-display:"Cormorant Garamond","EB Garamond",Georgia,serif;--font-script:"Allura","Z003",cursive;--font-body:"DM Sans",Arial,sans-serif; }
   *,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:var(--ink);color:var(--ivory);font:400 15px/1.75 var(--font-body);-webkit-font-smoothing:antialiased}body.modal-open{overflow:hidden}button,input,textarea{font:inherit}a{color:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:4px}p{margin:0 0 18px}h1,h2,h3{font-family:var(--font-display);font-weight:500;margin:0}button,a{-webkit-tap-highlight-color:transparent}img{max-width:100%}.container{width:min(1100px,calc(100% - 48px));margin-inline:auto}.eyebrow{font:700 10px/1.5 var(--font-body);letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}.serif{font-family:var(--font-display)}.script{font-family:var(--font-script)}.pill{min-height:49px;padding:12px 27px;border-radius:999px;display:inline-flex;justify-content:center;align-items:center;gap:10px;text-decoration:none;border:1px solid var(--gold);font:700 10px/1.5 var(--font-body);letter-spacing:.18em;text-transform:uppercase;transition:background .28s ease,color .28s ease,box-shadow .28s ease,transform .28s ease}.pill:hover{transform:translateY(-3px);box-shadow:0 11px 28px #03000150}.pill--gold{background:var(--gold);color:var(--ink);box-shadow:0 10px 25px #0700064d}.pill--gold:hover{background:#f1d9a7}.pill--outline{background:#ffffff07;color:var(--gold)}.pill--outline:hover{background:#e4c68c1f}.icon-btn{width:43px;height:43px;display:grid;place-items:center;border:1px solid #e4c68c80;border-radius:50%;background:#2a111ab3;color:var(--gold);font-size:22px;line-height:1;transition:background .2s,transform .2s}.icon-btn:hover{background:#784b52;transform:translateY(-2px)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.ambient{position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 90% 25%,#864c5626 0,transparent 50%),radial-gradient(ellipse at 6% 85%,#a16c5425 0,transparent 45%)}.gold-line{width:72px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:24px auto}.section-title{font-size:clamp(3.4rem,7vw,6.3rem);letter-spacing:-.045em;line-height:.9;color:var(--gold)}.section-title em{font-weight:400}
   /* A portrait-led hero, with typography on uninterrupted burgundy. */
   .hero{display:grid;grid-template-columns:50% 50%;min-height:100svh;position:relative;isolation:isolate;background:var(--deep)}.hero-media{position:relative;min-height:100svh;overflow:hidden;background:#5c3b42}.hero-photo{position:absolute;inset:0;opacity:0;transition:opacity 1.3s ease;pointer-events:none}.hero-photo.is-active{opacity:1}.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:var(--pos,center);display:block;transform:scale(1.035)}.hero-photo.is-active img{animation:slowZoom 9s linear both}@keyframes slowZoom{from{transform:scale(1.035)}to{transform:scale(1.09)}}.hero-media::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,#160711e0,transparent 42%,#2b0d1d38 100%)}.hero-media-info{position:absolute;left:clamp(22px,4vw,70px);bottom:35px;z-index:2;max-width:350px}.hero-media-info .mini{color:#f0d0a5;font-size:10px;font-weight:700;letter-spacing:.23em;text-transform:uppercase;margin-bottom:8px}.hero-media-info p:last-of-type{font:italic 500 clamp(1.7rem,3vw,2.5rem)/1.06 var(--font-display);margin:0 0 14px}.photo-controls{display:flex;gap:10px;align-items:center}.photo-controls .icon-btn{width:35px;height:35px;font-size:18px}.progress-dots{display:flex;gap:6px;margin-left:12px}.progress-dot{width:17px;height:3px;border:0;padding:0;border-radius:2px;background:#ffffff5e;transition:width .3s,background .3s}.progress-dot.is-active{width:35px;background:var(--gold)}
@@ -28,24 +28,152 @@
   @media(max-width:720px){.container{width:min(100% - 38px,550px)}.hero{display:flex;flex-direction:column;min-height:100svh}.hero-media{order:0;min-height:40svh;height:40svh}.hero-copy{order:1;padding:21px 28px 35px;min-height:60svh}.hero-copy::after{inset:11px}.hero-nav{padding:6px 0}.hero-center{min-height:auto;padding:40px 4px 28px}.hero h1{font-size:clamp(5.8rem,17vw,8rem);margin:15px 0}.hero h1 em{font-size:clamp(6.5rem,19vw,9rem)}.roof-symbol{height:52px;width:92px;margin-bottom:8px}.hero-celebration{margin-top:8px}.hero-name{font-size:2.1rem}.hero-hosts{font-size:2rem}.hero-date{margin-bottom:20px}.hero-end{padding-bottom:12px}.hero-media-info{bottom:16px;left:20px}.hero-media-info p:last-of-type{font-size:1.7rem}.photo-controls .icon-btn{width:32px;height:32px}.note-content{margin-bottom:70px}.note-section{padding:85px 0 75px}.story-head{display:block}.story-head .caption{margin:12px 0 0}.story-viewer{display:block;border-radius:21px}.story-photo-wrap{height:270px;min-height:270px}.story-details{padding:27px;min-height:270px}.story-details h4{font-size:2.8rem}.story-details p{margin-bottom:12px}.story-thumb{flex-basis:100px;height:75px}.invitation-grid{grid-template-columns:1fr}.invitation-cell{padding:30px 20px}.invitation-cell+.invitation-cell{border-left:0;border-top:1px solid var(--hair)}.invitation-cell .big{font-size:4.25rem}.rsvp-layout{display:block}.rsvp-intro{text-align:center}.rsvp-intro p:last-child{max-width:410px;margin:0 auto 30px}.rsvp-intro h2 em{margin:14px 0 24px}.wishes-head{align-items:end}.wish{flex-basis:min(85vw,330px)}.wishes-head p:last-child{font-size:13px}}
   @media(max-width:390px){.hero-media{min-height:36svh;height:36svh}.hero-nav nav a{font-size:8px}.monogram{font-size:20px}.hero h1{font-size:5.25rem}.hero h1 em{font-size:6.1rem}.hero-name{font-size:1.75rem}.hero-date{font-size:10px}.choices{flex-direction:column}.choice{min-height:46px}.wishes-head{flex-wrap:wrap}}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.arrival,.js-motion .reveal{opacity:1;transform:none}.roof-symbol path{stroke-dashoffset:0}}
+  
+.rsvp-layout{grid-template-columns:minmax(0, .8fr) minmax(0, 1.2fr)}
+/* The invitation hero follows the full-bleed, centred editorial composition of the wedding site. */
+.hero--cinematic {
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  min-height:100svh;
+  height:auto;
+  padding:0;
+  overflow:hidden;
+  text-align:center;
+  background:#240c18;
+}
+.hero--cinematic .hero-media { position:absolute; inset:0; min-height:0; height:auto; width:100%; z-index:-3; overflow:hidden; }
+.hero--cinematic .hero-photo { position:absolute; inset:0; opacity:0; transition:opacity 1.8s cubic-bezier(.28,.65,.22,1); pointer-events:none; }
+.hero--cinematic .hero-photo.is-active { opacity:1; }
+.hero--cinematic .hero-photo img { width:100%; height:100%; object-fit:cover; object-position:var(--pos,center); filter:saturate(.75) sepia(.16) brightness(.78); transform:scale(1.045); }
+.hero--cinematic .hero-photo.is-active img { animation:cinematicZoom 9s ease-out both; }
+@keyframes cinematicZoom { from{transform:scale(1.075)} to{transform:scale(1.015)} }
+.hero--cinematic .hero-veil {
+  position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:linear-gradient(180deg,rgba(31,10,18,.70) 0%, rgba(42,19,29,.62) 40%, rgba(28,9,17,.77) 75%, rgba(21,6,13,.90) 100%),radial-gradient(ellipse at 50% 48%,rgba(88,48,56,.03),rgba(35,7,22,.38) 80%);
+}
+.hero--cinematic .hero-veil::after{content:"";position:absolute;inset:0;opacity:.16;background-image:repeating-linear-gradient(103deg,transparent 0 84px,#fff2df10 85px,transparent 86px);}
+.hero--cinematic .hero-nav { position:absolute;top:clamp(26px,4vh,44px);left:clamp(25px,5vw,74px);right:clamp(25px,5vw,74px);z-index:4;display:flex;justify-content:space-between;align-items:center; }
+.hero--cinematic .monogram { font:400 33px/1 var(--font-display);letter-spacing:-.09em;display:inline-flex;align-items:center;gap:1px;color:#f4e0c3;text-shadow:0 2px 18px #0005; }
+.hero--cinematic .monogram i {font:400 1.04em/1 var(--font-script);margin:0 1px 0 0;position:relative;top:3px;color:var(--gold);}
+.hero--cinematic .hero-nav nav { gap:clamp(18px,3vw,38px); }
+.hero--cinematic .hero-nav nav a { font-size:10px;letter-spacing:.19em;color:#f4e4d5;text-shadow:0 2px 12px #0006; }
+.hero--cinematic .hero-center { position:relative;z-index:2;flex:none;display:flex;flex-direction:column;justify-content:center;align-items:center;width:min(100%,970px);min-height:0;padding:clamp(118px,17vh,170px) 20px clamp(122px,17vh,165px);margin:auto;text-align:center; }
+.hero--cinematic .hero-kicker { margin:0 0 clamp(12px,2vh,22px);color:#f1e0c9;font-size:clamp(10px,1.05vw,12px);font-weight:500;letter-spacing:.35em;text-shadow:0 2px 15px #0009; }
+.hero--cinematic .hero-script { font:400 clamp(2.7rem,5.4vw,4.4rem)/.9 var(--font-script);color:#e8c690;margin:0 0 8px;text-shadow:0 4px 25px #0007; }
+.hero--cinematic h1 { display:flex;flex-direction:column;align-items:center;gap:0;margin:0;color:#f6e3c8;text-shadow:0 4px 28px #0008;font:400 clamp(4.2rem,7.6vw,7.6rem)/.83 var(--font-display);letter-spacing:-.046em; }
+.hero--cinematic h1 span {display:block;font-size:.7em;line-height:1;letter-spacing:-.045em;font-weight:400;}
+.hero--cinematic h1 strong {display:block;line-height:.91;font-weight:400;letter-spacing:-.036em;}
+.hero--cinematic .hero-hosts { font:italic 400 clamp(1.75rem,3.2vw,2.6rem)/1.1 var(--font-display);letter-spacing:.015em;color:#fff1e2;margin:clamp(17px,3vh,28px) 0 0;text-shadow:0 4px 25px #0007; }
+.hero--cinematic .hero-hosts span {font-family:var(--font-script);font-style:normal;color:var(--gold);font-size:1.18em;margin:0 .1em;}
+.hero--cinematic .hero-rule {display:block;width:70px;height:1px;margin:clamp(25px,4vh,38px) auto clamp(25px,3vh,34px);background:#f2d5b3cc;box-shadow:0 0 12px #e4c68c56;}
+.hero--cinematic .hero-date {font:400 clamp(1.55rem,2.9vw,2.2rem)/1.1 var(--font-display);letter-spacing:.16em;color:#f6dfc0;margin:0 0 12px;text-shadow:0 3px 18px #0007;}
+.hero--cinematic .hero-location {font:500 clamp(10px,1vw,12px)/1.8 var(--font-body);letter-spacing:.2em;color:#e9d7c4;margin:0;text-shadow:0 3px 18px #0007;}
+.hero--cinematic .hero-location span {padding:0 .5em;color:var(--gold);}
+.hero--cinematic .hero-bottom { position:absolute;bottom:clamp(21px,4.5vh,45px);left:clamp(23px,4vw,62px);right:clamp(23px,4vw,62px);z-index:5;display:flex;justify-content:space-between;align-items:flex-end;gap:20px; }
+.hero--cinematic .hero-end {position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:0;margin:0;color:#f0ddcd;text-decoration:none;font:500 10px/1.4 var(--font-body);letter-spacing:.26em;}
+.hero--cinematic .hero-end span{display:inline;width:auto;height:auto;margin:0;background:none;animation:none;white-space:nowrap;}
+.hero--cinematic .hero-end i {display:block;width:1px;height:27px;margin:15px auto 0 50%;background:#e9d0ad;transform-origin:top;animation:scrollPulse 2.8s ease-in-out infinite;}
+.hero--cinematic .hero-media-info {position:relative;bottom:auto;left:auto;display:flex;align-items:center;gap:16px;max-width:none;margin:0;}
+.hero--cinematic .hero-media-info .mini {font:600 9px/1.4 var(--font-body);letter-spacing:.22em;color:var(--gold);margin:0 0 3px;}
+.hero--cinematic .hero-photo-caption {text-align:right;}
+.hero--cinematic .hero-media-info .hero-photo-caption p:last-of-type {font:italic 400 21px/1.1 var(--font-display);margin:0;color:#f4e2d2;}
+.hero--cinematic .photo-controls {display:flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid #e6c7a988;border-radius:999px;background:#2c101d70;backdrop-filter:blur(13px);box-shadow:0 10px 32px #0005;}
+.hero--cinematic .photo-controls .icon-btn {width:32px;height:32px;display:grid;place-items:center;border:0;background:transparent;font-size:23px;box-shadow:none;color:#f3e2cb;}
+.hero--cinematic .photo-controls .icon-btn:hover {background:#fff2df1c;}
+.hero--cinematic .progress-dots {margin:0;gap:5px;}
+.hero--cinematic .progress-dot {height:3px;width:11px;border-radius:999px;background:#e8cda36b;}
+.hero--cinematic .progress-dot.is-active {width:25px;background:var(--gold);}
+.hero--cinematic .arrival { transform:translateY(15px); }
+@media (max-width:720px) {
+  .hero--cinematic {display:flex;min-height:100svh;height:auto;}
+  .hero--cinematic .hero-media {order:unset;min-height:0;height:auto;}
+  .hero--cinematic .hero-nav {top:max(27px,env(safe-area-inset-top));left:27px;right:27px;}
+  .hero--cinematic .hero-nav nav {display:none;}
+  .hero--cinematic .monogram {font-size:29px;}
+  .hero--cinematic .hero-center {min-height:0;width:100%;padding:clamp(120px,17vh,152px) 16px clamp(132px,18vh,158px);}
+  .hero--cinematic .hero-kicker {font-size:10px;letter-spacing:.24em;margin-bottom:15px;}
+  .hero--cinematic .hero-script {font-size:clamp(3.1rem,12vw,4.2rem);margin-bottom:12px;}
+  .hero--cinematic h1 {font-size:clamp(3.7rem,12.2vw,5.6rem);letter-spacing:-.045em;}
+  .hero--cinematic h1 span {font-size:.73em;}
+  .hero--cinematic .hero-hosts {font-size:clamp(2rem,6vw,2.6rem);margin-top:19px;}
+  .hero--cinematic .hero-rule {margin:30px auto 27px;width:62px;}
+  .hero--cinematic .hero-date {font-size:clamp(1.5rem,6.2vw,2rem);letter-spacing:.13em;}
+  .hero--cinematic .hero-location {font-size:10px;letter-spacing:.12em;max-width:340px;}
+  .hero--cinematic .hero-bottom {bottom:max(24px,env(safe-area-inset-bottom));left:26px;right:26px;}
+  .hero--cinematic .hero-end {font-size:9px;letter-spacing:.19em;}
+  .hero--cinematic .hero-media-info .hero-photo-caption {display:none;}
+  .hero--cinematic .photo-controls {gap:6px;padding:5px 7px;}
+  .hero--cinematic .photo-controls .icon-btn {width:27px;height:30px;font-size:20px;}
+  .hero--cinematic .progress-dots {gap:4px;}
+  .hero--cinematic .progress-dot {width:9px;}
+  .hero--cinematic .progress-dot.is-active {width:18px;}
+}
+@media (max-width:390px) {
+  .hero--cinematic .hero-center {padding-top:113px;padding-bottom:118px;}
+  .hero--cinematic h1 {font-size:clamp(3.35rem,11.7vw,4.5rem);}
+  .hero--cinematic .hero-hosts {font-size:1.9rem;}
+  .hero--cinematic .hero-location {font-size:9px;}
+  .hero--cinematic .hero-bottom {left:18px;right:18px;}
+}
+@media (max-height:700px) and (max-width:720px) {
+  .hero--cinematic .hero-center {padding-top:103px;padding-bottom:107px;}
+  .hero--cinematic .hero-kicker {margin-bottom:8px;}
+  .hero--cinematic .hero-script {font-size:2.9rem;margin-bottom:8px;}
+  .hero--cinematic .hero-hosts {margin-top:10px;}
+  .hero--cinematic .hero-rule {margin:18px auto;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .hero--cinematic .hero-photo.is-active img {animation:none;transform:none;}
+  .hero--cinematic .arrival {opacity:1;transform:none;animation:none;}
+  .hero--cinematic .hero-end i {animation:none;}
+}
+
   </style>
 </head>
 <body>
 <main>
-  <section class="hero" id="home" aria-label="Welcome to SD’s BETHLEHEM">
-    <div class="hero-media" aria-label="Photos of the Bethlehem home and its journey">
-      <div class="hero-photo is-active" style="--pos:50% 49%"><img src="assets/bethlehem/08-together.webp" alt="Sherin and Dibiya in front of their new home" fetchpriority="high"></div>
+  <section class="hero hero--cinematic" id="home" aria-label="Welcome to SD’s BETHLEHEM">
+    <div class="hero-media" aria-label="A slideshow of the Bethlehem home and its milestones">
+      <div class="hero-photo is-active" style="--pos:50% 47%"><img src="assets/bethlehem/08-together.webp" alt="Sherin and Dibiya in front of their new home" fetchpriority="high"></div>
       <div class="hero-photo" style="--pos:50% 58%"><img src="assets/bethlehem/09-keys.webp" alt="Receiving the keys to their new home" loading="lazy"></div>
       <div class="hero-photo" style="--pos:50% 56%"><img src="assets/bethlehem/10-rainbow.webp" alt="A double rainbow over the Bethlehem home" loading="lazy"></div>
       <div class="hero-photo" style="--pos:50% 50%"><img src="assets/bethlehem/07-near-complete.webp" alt="The home nearing the end of construction" loading="lazy"></div>
-      <div class="hero-media-info"><p class="mini" id="slideKicker">OUR DREAM, OUR HOME</p><p id="slideCaption">A place to call our own.</p><div class="photo-controls"><button type="button" class="icon-btn" id="heroPrev" aria-label="Previous photograph">‹</button><button type="button" class="icon-btn" id="heroNext" aria-label="Next photograph">›</button><div class="progress-dots" id="heroDots" aria-label="Slideshow position"><button class="progress-dot is-active" type="button" aria-label="Show photograph 1" aria-current="true"></button><button class="progress-dot" type="button" aria-label="Show photograph 2"></button><button class="progress-dot" type="button" aria-label="Show photograph 3"></button><button class="progress-dot" type="button" aria-label="Show photograph 4"></button></div></div></div>
     </div>
-    <div class="hero-copy"><header class="hero-nav"><a class="monogram" href="#home" aria-label="Back to the beginning">S <span style="font-size:.7em">&amp;</span> D</a><nav aria-label="Invitation navigation"><a href="#beginning">Our story</a><a href="#rsvp">RSVP</a><a href="#wishes">Wishes</a></nav></header>
-      <div class="hero-center"><p class="eyebrow arrival arrival--1">A HOUSEWARMING INVITATION</p>
-        <svg class="roof-symbol arrival arrival--1" viewBox="0 0 180 82" aria-hidden="true"><path d="M8 61L90 8 172 61M21 63L90 22 159 63M81 48H99V65H81zM90 48V65M81 56H99"/></svg>
-        <h1 class="arrival arrival--2"><span>Welcome</span><em>home.</em></h1>
-        <p class="hero-celebration arrival arrival--3">CELEBRATING THE BLESSING OF</p><p class="hero-name arrival arrival--3">SD’s BETHLEHEM</p><span class="gold-line arrival arrival--4"></span><p class="hero-hosts arrival arrival--4">Sherin &amp; Dibiya</p><p class="hero-date arrival arrival--4">07 NOVEMBER 2026 <span aria-hidden="true">·</span> 06:00 PM ONWARDS</p><a class="pill pill--gold arrival arrival--5" href="#beginning">Explore our story <span aria-hidden="true">↓</span></a>
-      </div><div class="hero-end"><a href="#beginning">Scroll to begin <span aria-hidden="true"></span></a></div></div>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <header class="hero-nav">
+      <a class="monogram" href="#home" aria-label="SD's Bethlehem — back to top"><span>S</span><i>&amp;</i><span>D</span></a>
+      <nav aria-label="Invitation navigation"><a href="#beginning">Our story</a><a href="#rsvp">RSVP</a><a href="#wishes">Wishes</a></nav>
+    </header>
+    <div class="hero-center">
+      <p class="eyebrow hero-kicker arrival arrival--1">A HOUSEWARMING CELEBRATION</p>
+      <p class="hero-script arrival arrival--2">Welcome home</p>
+      <h1 class="arrival arrival--3"><span>SD’s</span><strong>BETHLEHEM</strong></h1>
+      <p class="hero-hosts arrival arrival--4">Sherin <span>&amp;</span> Dibiya</p>
+      <span class="hero-rule arrival arrival--4" aria-hidden="true"></span>
+      <p class="hero-date arrival arrival--5">07 NOVEMBER 2026</p>
+      <p class="hero-location arrival arrival--5">06:00 PM ONWARDS <span aria-hidden="true">·</span> JUNCTION HILL, NSW</p>
+    </div>
+    <div class="hero-bottom">
+      <a class="hero-end" href="#beginning" aria-label="Scroll to the invitation"><span>SCROLL TO BEGIN</span><i aria-hidden="true"></i></a>
+      <div class="hero-media-info" aria-label="Slideshow controls">
+        <div class="hero-photo-caption"><p class="mini" id="slideKicker">OUR DREAM, OUR HOME</p><p id="slideCaption">A place to call our own.</p></div>
+        <div class="photo-controls">
+          <button type="button" class="icon-btn" id="heroPrev" aria-label="Previous photograph">‹</button>
+          <div class="progress-dots" id="heroDots" aria-label="Slideshow position">
+            <button class="progress-dot is-active" type="button" aria-label="Show photograph 1" aria-current="true"></button>
+            <button class="progress-dot" type="button" aria-label="Show photograph 2"></button>
+            <button class="progress-dot" type="button" aria-label="Show photograph 3"></button>
+            <button class="progress-dot" type="button" aria-label="Show photograph 4"></button>
+          </div>
+          <button type="button" class="icon-btn" id="heroNext" aria-label="Next photograph">›</button>
+        </div>
+      </div>
+    </div>
   </section>
   <section id="beginning" class="note-section" aria-labelledby="noteTitle"><div class="ambient"></div><div class="container"><div class="note-content reveal"><p class="eyebrow">01 / A NOTE FROM US</p><h2 class="section-title" id="noteTitle">A home built<br><em>with love.</em></h2><span class="gold-line"></span><p class="lead"><strong>SD’s BETHLEHEM</strong> is our dream home, built with prayers, hard work and love — a miraculous blessing from God and our Koratty Muthy.</p><p class="ordinary">We’re happy to share this special milestone with you all.</p><p class="signature"><span>With love,</span>Sherin &amp; Dibiya</p></div>
       <div class="story-head reveal"><div><p class="eyebrow">THE JOURNEY TO BETHLEHEM</p><h3>From a dream<br>to a doorstep.</h3></div><p class="caption">Every stage, every little milestone — a story worth remembering.</p></div>
@@ -69,7 +197,7 @@ const reduce=window.matchMedia("(prefers-reduced-motion: reduce)");
 if(!reduce.matches&&"IntersectionObserver" in window){document.documentElement.classList.add("js-motion");const watcher=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){entry.target.classList.add("in-view");watcher.unobserve(entry.target)}}},{threshold:.07,rootMargin:"0px 0px -30px 0px"});document.querySelectorAll(".reveal").forEach(el=>watcher.observe(el))}
 const heroSlides=[...document.querySelectorAll(".hero-photo")];const heroCaptions=[{tag:"OUR DREAM, OUR HOME",caption:"A place to call our own."},{tag:"A SPECIAL MOMENT",caption:"The keys to a new beginning."},{tag:"A BEAUTIFUL BLESSING",caption:"A rainbow over Bethlehem."},{tag:"ALMOST HOME",caption:"Every step brought us closer."}];let heroIndex=0;let heroPaused=false;
 function setHero(i){heroIndex=(i+heroSlides.length)%heroSlides.length;heroSlides.forEach((s,j)=>s.classList.toggle("is-active",j===heroIndex));document.getElementById("slideKicker").textContent=heroCaptions[heroIndex].tag;document.getElementById("slideCaption").textContent=heroCaptions[heroIndex].caption;document.querySelectorAll(".progress-dot").forEach((b,j)=>{b.classList.toggle("is-active",j===heroIndex);if(j===heroIndex)b.setAttribute("aria-current","true");else b.removeAttribute("aria-current")})}
-document.getElementById("heroPrev").addEventListener("click",()=>setHero(heroIndex-1));document.getElementById("heroNext").addEventListener("click",()=>setHero(heroIndex+1));document.querySelectorAll(".progress-dot").forEach((el,i)=>el.addEventListener("click",()=>setHero(i)));document.querySelector(".hero-media").addEventListener("pointerenter",()=>heroPaused=true);document.querySelector(".hero-media").addEventListener("pointerleave",()=>heroPaused=false);document.querySelector(".hero-media").addEventListener("focusin",()=>heroPaused=true);document.querySelector(".hero-media").addEventListener("focusout",()=>heroPaused=false);if(!reduce.matches)window.setInterval(()=>{if(!heroPaused&&!document.hidden)setHero(heroIndex+1)},5800);
+document.getElementById("heroPrev").addEventListener("click",()=>setHero(heroIndex-1));document.getElementById("heroNext").addEventListener("click",()=>setHero(heroIndex+1));document.querySelectorAll(".progress-dot").forEach((el,i)=>el.addEventListener("click",()=>setHero(i)));document.querySelector(".hero").addEventListener("pointerenter",()=>heroPaused=true);document.querySelector(".hero").addEventListener("pointerleave",()=>heroPaused=false);document.querySelector(".hero").addEventListener("focusin",()=>heroPaused=true);document.querySelector(".hero").addEventListener("focusout",()=>heroPaused=false);if(!reduce.matches)window.setInterval(()=>{if(!heroPaused&&!document.hidden)setHero(heroIndex+1)},5800);
 const story=[
  {src:"01-land.webp",title:"Where it all began.",desc:"An empty piece of land, a big dream and a future waiting to unfold.",alt:"Plot of land prepared for home construction",thumb:"The land"},
  {src:"02-foundation.webp",title:"Laying the foundation.",desc:"Our dream began taking shape, one careful step at a time.",alt:"Concrete foundation being poured",thumb:"Foundation"},
