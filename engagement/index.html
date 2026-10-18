@@ -228,6 +228,88 @@
   .story-head h3{font-size:clamp(2.1rem,8.7vw,2.65rem)}
   .music-dock{right:18px}
 }
+
+/* A restrained starlit treatment for the Bethlehem name and a working Maps link. */
+.invitation-cell--bethlehem{overflow:visible}
+.invitation-cell--bethlehem .label{margin-bottom:22px}
+.invitation-cell .bethlehem-name{
+  position:relative;isolation:isolate;display:inline-block;max-width:100%;
+  margin:0 0 20px;padding:8px 16px 13px;
+  color:#f4d8a7;line-height:1.12;
+}
+.bethlehem-name::before{
+  content:"";position:absolute;inset:-13px -17px;z-index:-1;
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse,#e9b66d2e 0%,#e9b66d0b 48%,transparent 77%);
+  animation:bethlehem-aura 5.5s ease-in-out infinite;
+}
+.bethlehem-word{
+  display:block;white-space:nowrap;max-width:100%;
+  font:400 clamp(2rem,3.8vw,3.2rem)/1.16 var(--font-editorial);
+  letter-spacing:.045em;color:#f7dfb3;
+  text-shadow:0 0 9px #edc78434,0 0 23px #dbad6550;
+  animation:bethlehem-glow 5.2s ease-in-out infinite;
+}
+@supports (-webkit-background-clip:text){
+  .bethlehem-word{
+    background:linear-gradient(105deg,#d3ab65 0%,#f9e7c4 26%,#fff7e7 40%,#d3a65e 58%,#f0d8a8 76%,#d3ab65 100%);
+    background-size:230% 100%;-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:bethlehem-shimmer 8.4s ease-in-out infinite,bethlehem-glow 5.2s ease-in-out infinite;
+  }
+}
+.bethlehem-spark{
+  position:absolute;display:block;line-height:1;color:#f7dca3;pointer-events:none;
+  text-shadow:0 0 9px #ffdfa9bd,0 0 18px #f0be7f66;
+  animation:bethlehem-twinkle 3.6s ease-in-out infinite;transform-origin:center;
+}
+.bethlehem-spark--one{top:-8px;left:1px;font-size:19px;animation-delay:0s}
+.bethlehem-spark--two{top:-16px;right:8px;font-size:24px;animation-delay:.85s}
+.bethlehem-spark--three{bottom:1px;left:10%;font-size:11px;animation-delay:1.7s}
+.bethlehem-spark--four{bottom:0;right:4%;font-size:15px;animation-delay:2.5s}
+@keyframes bethlehem-shimmer{0%,100%{background-position:100% 50%}50%{background-position:0% 50%}}
+@keyframes bethlehem-glow{0%,100%{text-shadow:0 0 6px #efc78526,0 0 18px #d6aa6340}50%{text-shadow:0 0 15px #ffdfad7b,0 0 34px #e7b46a55}}
+@keyframes bethlehem-aura{0%,100%{opacity:.55;transform:scale(.97)}50%{opacity:.95;transform:scale(1.06)}}
+@keyframes bethlehem-twinkle{0%,100%{opacity:.22;transform:scale(.65) rotate(-12deg)}50%{opacity:1;transform:scale(1.18) rotate(12deg)}}
+.hero--cinematic h1 strong{animation:bethlehem-hero-light 6s ease-in-out infinite}
+@keyframes bethlehem-hero-light{0%,100%{text-shadow:0 4px 27px #0008,0 0 14px #e5b97618}50%{text-shadow:0 4px 27px #0008,0 0 25px #f6daaa6b}}
+.address-link{
+  display:block;max-width:30ch;margin:0 auto;color:#f2ddcc;
+  font-size:13px;line-height:1.75;text-decoration:none;
+  text-decoration-color:#d9b27d7a;text-underline-offset:5px;
+  overflow-wrap:anywhere;
+}
+.address-link:hover,.address-link:focus-visible{color:#ffe3b2;text-decoration:underline}
+.directions-link{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  min-height:44px;margin-top:22px;padding:10px 19px;
+  border:1px solid #e5c38baf;border-radius:999px;
+  color:#f2d49d;background:linear-gradient(120deg,#84523b33,#59304142);
+  font:600 11px/1.4 var(--font-body);letter-spacing:.045em;text-decoration:none;
+  box-shadow:0 8px 25px #1107113b;
+  transition:background .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.directions-link:hover{background:#c7a06b2b;box-shadow:0 10px 25px #1306106e;transform:translateY(-2px)}
+.directions-link__arrow{font-size:16px;line-height:1}
+@media(max-width:720px){
+ .invitation-cell--bethlehem{padding-block:34px 39px}
+ .invitation-cell .bethlehem-name{padding:8px 12px 14px;margin-bottom:16px}
+ .bethlehem-word{font-size:clamp(2.15rem,8vw,3.05rem);letter-spacing:.035em}
+ .directions-link{margin-top:19px}
+}
+@media(max-width:380px){
+ .bethlehem-word{font-size:clamp(1.85rem,8.2vw,2.25rem);letter-spacing:.022em}
+ .bethlehem-spark--one{left:0}
+ .bethlehem-spark--two{right:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .bethlehem-name::before,.bethlehem-word,.bethlehem-spark,.hero--cinematic h1 strong{
+  animation:none!important;transform:none!important
+ }
+ .bethlehem-spark{opacity:.85}
+ .directions-link{transition:none}
+}
+
 </style>
 </head>
 <body>
@@ -263,7 +345,21 @@
       <div id="storyStrip" class="story-strip" aria-label="Select a chapter in the building journey"></div>
     </div></section>
   <section id="details" class="details-section" aria-labelledby="detailsTitle"><div class="container reveal"><p class="eyebrow">02 / THE CELEBRATION</p><h2 id="detailsTitle" class="section-title">Come on in.</h2><span class="gold-line"></span><p class="intro">With grateful hearts, we welcome you to celebrate this blessing with us.</p>
-      <div class="invitation-grid"><div class="invitation-cell"><span class="label">SATURDAY · NOVEMBER</span><p class="big">07</p><p class="small" id="dateText">Saturday, 07 November 2026</p></div><div class="invitation-cell"><span class="label">THE CELEBRATION BEGINS</span><p class="big">6 PM</p><p class="small" id="timeText">06:00 PM onwards</p></div><div class="invitation-cell"><span class="label">THE HOME WE CALL</span><p class="place">BETHLEHEM</p><p class="small" id="addressText">42 Carrs Peninsula Road<br>Junction Hill, NSW</p></div></div><p class="details-tag">Welcome home ♡</p></div></section>
+      <div class="invitation-grid"><div class="invitation-cell"><span class="label">SATURDAY · NOVEMBER</span><p class="big">07</p><p class="small" id="dateText">Saturday, 07 November 2026</p></div><div class="invitation-cell"><span class="label">THE CELEBRATION BEGINS</span><p class="big">6 PM</p><p class="small" id="timeText">06:00 PM onwards</p></div><div class="invitation-cell invitation-cell--bethlehem">
+  <span class="label">THE HOME WE CALL</span>
+  <p class="place bethlehem-name">
+    <span class="bethlehem-word">BETHLEHEM</span>
+    <span class="bethlehem-spark bethlehem-spark--one" aria-hidden="true">✦</span>
+    <span class="bethlehem-spark bethlehem-spark--two" aria-hidden="true">✧</span>
+    <span class="bethlehem-spark bethlehem-spark--three" aria-hidden="true">✦</span>
+    <span class="bethlehem-spark bethlehem-spark--four" aria-hidden="true">✧</span>
+  </p>
+  <a class="small address-link" href="https://www.google.com/maps/search/?api=1&amp;query=42%20Carrs%20Peninsula%20Road%2C%20Junction%20Hill%2C%20NSW%2C%20Australia" target="_blank" rel="noopener noreferrer" aria-label="Open 42 Carrs Peninsula Road, Junction Hill in Google Maps"><span id="addressText">42 Carrs Peninsula Road, Junction Hill, NSW</span></a>
+  <a class="directions-link" href="https://www.google.com/maps/dir/?api=1&amp;destination=42%20Carrs%20Peninsula%20Road%2C%20Junction%20Hill%2C%20NSW%2C%20Australia" target="_blank" rel="noopener noreferrer" aria-label="Get directions to SD's Bethlehem in Google Maps">
+    <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+    <span>Get directions</span><span class="directions-link__arrow" aria-hidden="true">↗</span>
+  </a>
+</div></div><p class="details-tag">Welcome home ♡</p></div></section>
   <section id="rsvp" class="rsvp-section" aria-labelledby="rsvpTitle"><div class="ambient"></div><div class="container rsvp-layout"><div class="rsvp-intro reveal"><p class="eyebrow">03 / LET US KNOW</p><h2 class="section-title" id="rsvpTitle">Will you<br><em>join us?</em></h2><p>Our new home will feel even more special with you there. We hope you'll celebrate with us.</p></div><form id="rsvpForm" class="rsvp-card reveal"><label class="field-label" for="guestName">YOUR NAME</label><input class="field-input" id="guestName" name="name" required maxlength="80" autocomplete="name" placeholder="How should we call you?"><div class="field-label" id="attendanceLabel">WILL YOU BE JOINING US?</div><div class="choices" role="group" aria-labelledby="attendanceLabel"><label class="choice"><input name="attendance" type="radio" value="yes" required><span>Joyfully accept ♡</span></label><label class="choice"><input name="attendance" type="radio" value="no"><span>Unable to attend</span></label></div><label class="field-label" for="rsvpMessage">A LITTLE NOTE (OPTIONAL)</label><textarea id="rsvpMessage" class="field-input" name="message" maxlength="400" placeholder="Say hello..."></textarea><button type="submit" class="pill pill--gold">Send my RSVP</button><p class="note">Preview only. Nothing is submitted or saved.</p><div class="toast" id="rsvpResult" role="status" aria-live="polite"></div></form></div></section>
   <section id="wishes" class="wishes-section" aria-labelledby="wishesTitle"><div class="container"><div class="wishes-head reveal"><div><p class="eyebrow">04 / FROM OUR LOVED ONES</p><h2 class="section-title" id="wishesTitle">Wishes</h2><p>Every blessing and kind word means so much to us.</p></div><div class="wishes-controls"><button type="button" id="wishPrev" class="icon-btn" aria-label="Previous wishes">‹</button><button type="button" id="wishNext" class="icon-btn" aria-label="Next wishes">›</button></div></div><div class="wish-track reveal" id="wishTrack" aria-label="Housewarming wishes"><article class="wish"><p>May this home always be full of laughter, warmth and beautiful memories.</p><strong>Sam</strong></article><article class="wish"><p>Here's to new beginnings, quiet mornings and countless blessings together.</p><strong>Jordan</strong></article><article class="wish"><p>May peace, love and joy always find their way through your door.</p><strong>Taylor</strong></article></div><div class="wish-actions reveal"><button type="button" class="pill pill--outline" id="openWish">Leave your wish ♡</button><p class="note">These sample wishes are for preview. Your wish will appear here until you leave the page.</p></div></div></section>
 </main>
