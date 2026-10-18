@@ -9,7 +9,7 @@
   <title>SD’s BETHLEHEM — Sherin &amp; Dibiya | Housewarming</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
 :root {
   --wine: #60243c;
@@ -468,13 +468,13 @@ document.getElementById("wishForm").addEventListener("submit", (event) => {
   wishTrack.prepend(card);
   event.currentTarget.reset();
   closeWishModal();
-  card.scrollIntoView({ behavior: prefersReducedMotion.matches ? "instant" : "smooth", block: "nearest", inline: "start" });
+  card.scrollIntoView({ behavior: prefersReducedMotion.matches ? "auto" : "smooth", block: "nearest", inline: "start" });
 });
 
 function moveWishes(direction) {
   const card = wishTrack.querySelector(".wish");
   const distance = (card ? card.getBoundingClientRect().width : 300) + 17;
-  wishTrack.scrollBy({ left: direction * distance, behavior: prefersReducedMotion.matches ? "instant" : "smooth" });
+  wishTrack.scrollBy({ left: direction * distance, behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
 }
 document.getElementById("wishPrev").addEventListener("click", () => moveWishes(-1));
 document.getElementById("wishNext").addEventListener("click", () => moveWishes(1));
