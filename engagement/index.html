@@ -201,6 +201,33 @@
 @media(max-width:720px){.music-dock{right:18px;bottom:max(84px,calc(env(safe-area-inset-bottom) + 78px))}.music-toggle{gap:8px;min-height:47px;padding:5px 15px 5px 5px}.music-toggle__icon{width:35px;height:35px;font-size:23px}.music-toggle__label{font-size:9px;letter-spacing:.12em}}
 @media(max-width:360px){.music-dock{right:12px}.music-toggle{padding-right:11px;gap:7px}.music-toggle__label{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.music-toggle,.music-toggle__bars i{animation:none!important;transition:none!important}}
+
+/* October refinement: breathing room for the personal note and journey headline. */
+.note-content{max-width:650px}
+.note-content h2{font-size:clamp(3.05rem,5.4vw,4.75rem);line-height:1.15;letter-spacing:-.005em}
+.note-content .gold-line{margin-top:30px;margin-bottom:34px}
+.note-content .lead strong{font-size:clamp(1.45rem,2.25vw,1.8rem);line-height:1.29;letter-spacing:.025em;margin-bottom:19px}
+.story-head h3{font-size:clamp(2.55rem,4.3vw,4rem);line-height:1.14;letter-spacing:-.007em}
+.story-head .eyebrow{letter-spacing:.23em}
+/* One coherent bottom row: scroll cue on the left, song control on the right. */
+.music-dock{right:clamp(23px,4vw,62px);bottom:max(28px,calc(env(safe-area-inset-bottom) + 20px))}
+.music-dock.is-compact{right:clamp(18px,3vw,35px);top:max(18px,calc(env(safe-area-inset-top) + 16px));bottom:auto}
+@media(max-width:720px){
+  .note-content{margin-bottom:90px}
+  .note-content h2{font-size:clamp(2.85rem,10.3vw,3.7rem);line-height:1.16;letter-spacing:0}
+  .note-content .lead strong{font-size:clamp(1.45rem,6vw,1.6rem);letter-spacing:.025em;line-height:1.32;margin-bottom:19px}
+  .story-head{text-align:center;margin-bottom:26px}
+  .story-head h3{font-size:clamp(2.2rem,8.9vw,2.9rem);line-height:1.15;letter-spacing:0;margin-top:18px}
+  .story-head .eyebrow{font-size:9px;letter-spacing:.19em}
+  .story-head .caption{max-width:31ch;margin:16px auto 0;line-height:1.7}
+  .music-dock{right:26px;bottom:max(27px,calc(env(safe-area-inset-bottom) + 21px))}
+  .music-toggle{min-height:48px}
+}
+@media(max-width:390px){
+  .note-content h2{font-size:clamp(2.62rem,10.4vw,3.4rem)}
+  .story-head h3{font-size:clamp(2.1rem,8.7vw,2.65rem)}
+  .music-dock{right:18px}
+}
 </style>
 </head>
 <body>
@@ -228,19 +255,6 @@
     </div>
     <div class="hero-bottom">
       <a class="hero-end" href="#beginning" aria-label="Scroll to the invitation"><span>SCROLL TO BEGIN</span><i aria-hidden="true"></i></a>
-      <div class="hero-media-info" aria-label="Slideshow controls">
-        <div class="hero-photo-caption"><p class="mini" id="slideKicker">OUR DREAM, OUR HOME</p><p id="slideCaption">A place to call our own.</p></div>
-        <div class="photo-controls">
-          <button type="button" class="icon-btn" id="heroPrev" aria-label="Previous photograph">‹</button>
-          <div class="progress-dots" id="heroDots" aria-label="Slideshow position">
-            <button class="progress-dot is-active" type="button" aria-label="Show photograph 1" aria-current="true"></button>
-            <button class="progress-dot" type="button" aria-label="Show photograph 2"></button>
-            <button class="progress-dot" type="button" aria-label="Show photograph 3"></button>
-            <button class="progress-dot" type="button" aria-label="Show photograph 4"></button>
-          </div>
-          <button type="button" class="icon-btn" id="heroNext" aria-label="Next photograph">›</button>
-        </div>
-      </div>
     </div>
   </section>
   <section id="beginning" class="note-section" aria-labelledby="noteTitle"><div class="ambient"></div><div class="container"><div class="note-content reveal"><p class="eyebrow">01 / A NOTE FROM US</p><h2 class="section-title" id="noteTitle">A home built<br><em>with love.</em></h2><span class="gold-line"></span><p class="lead"><strong>SD’s BETHLEHEM</strong> is our dream home, built with prayers, hard work and love. We see it as a miraculous blessing from God and our Koratty Muthy.</p><p class="ordinary">We’re happy to share this special milestone with you all.</p><p class="signature"><span>With love,</span>Sherin &amp; Dibiya</p></div>
@@ -273,33 +287,21 @@ document.getElementById("timeText").textContent=EVENT.timeLabel;
 document.getElementById("addressText").textContent=EVENT.address+", "+EVENT.city;
 const reduce=window.matchMedia("(prefers-reduced-motion: reduce)");
 if(!reduce.matches&&"IntersectionObserver" in window){document.documentElement.classList.add("js-motion");const watcher=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){entry.target.classList.add("in-view");watcher.unobserve(entry.target)}}},{threshold:.07,rootMargin:"0px 0px -30px 0px"});document.querySelectorAll(".reveal").forEach(el=>watcher.observe(el))}
-const heroSlides=[...document.querySelectorAll(".hero-photo")];
-const heroCaptions=[
- {tag:"OUR DREAM, OUR HOME",caption:"A place to call our own."},
- {tag:"A BEAUTIFUL BLESSING",caption:"A rainbow over Bethlehem."},
- {tag:"A SPECIAL MOMENT",caption:"The keys to a new beginning."},
- {tag:"ALMOST HOME",caption:"Every step brought us closer."}
-];
-let heroIndex=0,heroPaused=false;
+// Cinematic photos advance automatically. The hero has no manual image controls.
+const heroSlides=[...document.querySelectorAll('.hero-photo')];
+let heroIndex=0;
 function setHero(i){
- heroIndex=(i+heroSlides.length)%heroSlides.length;
- heroSlides.forEach((slide,j)=>{slide.classList.toggle("is-active",j===heroIndex);slide.setAttribute("aria-hidden",j===heroIndex?"false":"true")});
- document.getElementById("slideKicker").textContent=heroCaptions[heroIndex].tag;
- document.getElementById("slideCaption").textContent=heroCaptions[heroIndex].caption;
- document.querySelectorAll(".progress-dot").forEach((button,j)=>{
-  button.classList.toggle("is-active",j===heroIndex);
-  if(j===heroIndex)button.setAttribute("aria-current","true");else button.removeAttribute("aria-current");
- });
+  heroIndex=(i+heroSlides.length)%heroSlides.length;
+  heroSlides.forEach((slide,index)=>{
+    const active=index===heroIndex;
+    slide.classList.toggle('is-active',active);
+    slide.setAttribute('aria-hidden',String(!active));
+  });
 }
-document.getElementById("heroPrev").addEventListener("click",()=>setHero(heroIndex-1));
-document.getElementById("heroNext").addEventListener("click",()=>setHero(heroIndex+1));
-document.querySelectorAll(".progress-dot").forEach((button,i)=>button.addEventListener("click",()=>setHero(i)));
-const photoControls=document.querySelector(".photo-controls");
-photoControls.addEventListener("pointerenter",()=>heroPaused=true);
-photoControls.addEventListener("pointerleave",()=>heroPaused=false);
-photoControls.addEventListener("focusin",()=>heroPaused=true);
-photoControls.addEventListener("focusout",event=>{if(!photoControls.contains(event.relatedTarget))heroPaused=false});
-if(!reduce.matches)window.setInterval(()=>{if(!heroPaused&&!document.hidden)setHero(heroIndex+1)},6200);
+setHero(0);
+if(!reduce.matches && heroSlides.length>1){
+  window.setInterval(()=>{if(!document.hidden)setHero(heroIndex+1)},6200);
+}
 const story=[
  {src:"01-the-land.webp",title:"Where it all began.",desc:"An open piece of land, a big dream and a future waiting to unfold.",alt:"The building plot at the start of the journey",thumb:"The land"},
  {src:"02-the-foundation.webp",title:"Laying the foundation.",desc:"The first concrete was poured, and our dream started taking shape.",alt:"Concrete foundation being poured at the site",thumb:"Foundation"},
@@ -360,14 +362,15 @@ document.addEventListener('visibilitychange', () => {
 });
 window.addEventListener('pagehide', () => { if (!backgroundSong.paused) backgroundSong.pause(); });
 updateSongButton();
-// Keep the full oval control on the hero, then minimize it to avoid covering content.
+// The song button aligns with the hero's scroll cue and becomes compact in the story.
 const musicDock = document.querySelector('.music-dock');
-if ('IntersectionObserver' in window) {
-  const heroWatcher = new IntersectionObserver(entries => {
-    musicDock.classList.toggle('is-compact', !entries[0].isIntersecting);
-  }, { threshold: 0 });
-  heroWatcher.observe(document.getElementById('home'));
+const heroSection = document.getElementById('home');
+function updateMusicDock(){
+  musicDock.classList.toggle('is-compact', window.scrollY >= Math.max(180, heroSection.offsetHeight * .65));
 }
+window.addEventListener('scroll', updateMusicDock, {passive:true});
+window.addEventListener('resize', updateMusicDock);
+updateMusicDock();
 </script>
 </body>
 </html>
