@@ -327,6 +327,32 @@
   .note-content .note-home-name .bethlehem-word{font-size:clamp(1.73rem,7.4vw,2.1rem);letter-spacing:.005em}
 }
 
+
+/* Accessible, aligned form validation and true RSVP confirmation. */
+#rsvpForm[hidden],#rsvpSuccess[hidden],#wishForm[hidden]{display:none!important}
+.form-field{position:relative;margin:0 0 24px;min-width:0}
+.form-field .field-input{margin-bottom:0}
+.form-field .choices{margin-bottom:0}
+.form-field .field-label{margin-bottom:9px}
+.field-error{font:500 12px/1.5 var(--font-body);letter-spacing:0;color:#ffd1c1;margin:7px 0 0;text-align:left;max-width:100%}
+.field-error:empty{display:none}
+.required-mark{color:#e8bf82;font-size:12px}
+.form-field.has-error .field-input{border-color:#efac9f!important;box-shadow:0 2px 0 #efac9f55}
+.form-field.has-error .choices{outline:1px solid #efac9f;border-radius:999px;outline-offset:4px}
+.form-submit-status{line-height:1.55}
+.form-submit-status.is-error{color:#ffd1c1}
+.rsvp-success{min-width:0;text-align:center;align-self:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding-block:clamp(42px,6vw,65px)}
+.rsvp-success__symbol{display:grid;place-items:center;width:62px;height:62px;border-radius:50%;border:1px solid #e6c48ca6;color:#f7d79d;font-size:27px;background:radial-gradient(circle,#c79d6535,#3816275e);box-shadow:0 0 30px #dcaa6c30;animation:successLight 3.8s ease-in-out infinite}
+.rsvp-success .eyebrow{margin:0}
+.rsvp-success__heading{font:400 clamp(2.5rem,5vw,4.1rem)/1.06 var(--font-editorial);color:#f7e2bd;margin:0;overflow-wrap:break-word}
+.rsvp-success__message{font:400 clamp(14px,1.5vw,17px)/1.7 var(--font-body);color:#f7e6dc;max-width:38ch;margin:0}
+.rsvp-success__line{width:64px;height:1px;background:linear-gradient(90deg,transparent,#eac68b,transparent)}
+.rsvp-success__foot{font:italic 400 25px/1.35 var(--font-editorial);color:#e9c58e;margin:0}
+.rsvp-success__again{margin-top:10px;min-height:44px}
+@keyframes successLight{0%,100%{opacity:.65;transform:scale(.97)}50%{opacity:1;transform:scale(1.05)}}
+@media(max-width:720px){.form-field{margin-bottom:21px}.rsvp-success{gap:15px}.rsvp-success__heading{font-size:clamp(2.35rem,9vw,3.4rem)}}
+@media(prefers-reduced-motion:reduce){.rsvp-success__symbol{animation:none}}
+
 </style>
 </head>
 <body>
@@ -377,11 +403,56 @@
     <span>Get directions</span><span class="directions-link__arrow" aria-hidden="true">↗</span>
   </a>
 </div></div><p class="details-tag">Welcome home ♡</p></div></section>
-  <section id="rsvp" class="rsvp-section" aria-labelledby="rsvpTitle"><div class="ambient"></div><div class="container rsvp-layout"><div class="rsvp-intro reveal"><p class="eyebrow">03 / LET US KNOW</p><h2 class="section-title" id="rsvpTitle">Will you<br><em>join us?</em></h2><p>Our new home will feel even more special with you there. We hope you'll celebrate with us.</p></div><form id="rsvpForm" class="rsvp-card reveal"><label class="field-label" for="guestName">YOUR NAME</label><input class="field-input" id="guestName" name="name" required maxlength="80" autocomplete="name" placeholder="How should we call you?"><div class="field-label" id="attendanceLabel">WILL YOU BE JOINING US?</div><div class="choices" role="group" aria-labelledby="attendanceLabel"><label class="choice"><input name="attendance" type="radio" value="yes" required><span>Joyfully accept ♡</span></label><label class="choice"><input name="attendance" type="radio" value="no"><span>Unable to attend</span></label></div><label class="field-label" for="rsvpMessage">A LITTLE NOTE (OPTIONAL)</label><textarea id="rsvpMessage" class="field-input" name="message" maxlength="400" placeholder="Say hello..."></textarea><button type="submit" class="pill pill--gold">Send my RSVP</button><p class="note" id="rsvpDisclosure">Preview only. Nothing is submitted or saved.</p><div class="toast" id="rsvpResult" role="status" aria-live="polite"></div></form></div></section>
+  <section id="rsvp" class="rsvp-section" aria-labelledby="rsvpTitle"><div class="ambient"></div><div class="container rsvp-layout"><div class="rsvp-intro reveal"><p class="eyebrow">03 / LET US KNOW</p><h2 class="section-title" id="rsvpTitle">Will you<br><em>join us?</em></h2><p>Our new home will feel even more special with you there. We hope you'll celebrate with us.</p></div><form id="rsvpForm" class="rsvp-card reveal" novalidate>
+  <div class="form-field" id="guestNameField">
+    <label class="field-label" for="guestName">YOUR NAME <span class="required-mark" aria-hidden="true">*</span></label>
+    <input class="field-input" id="guestName" name="name" required maxlength="80" autocomplete="name" placeholder="How should we call you?" aria-describedby="guestNameError">
+    <p class="field-error" id="guestNameError" aria-live="polite"></p>
+  </div>
+  <div class="form-field" id="attendanceField">
+    <div class="field-label" id="attendanceLabel">WILL YOU BE JOINING US? <span class="required-mark" aria-hidden="true">*</span></div>
+    <div class="choices" role="radiogroup" aria-labelledby="attendanceLabel" aria-describedby="attendanceError" id="rsvpAttendance">
+      <label class="choice"><input name="attendance" type="radio" value="yes" required><span>Joyfully accept ♡</span></label>
+      <label class="choice"><input name="attendance" type="radio" value="no"><span>Unable to attend</span></label>
+    </div>
+    <p class="field-error" id="attendanceError" aria-live="polite"></p>
+  </div>
+  <div class="form-field" id="rsvpMessageField">
+    <label class="field-label" for="rsvpMessage">A LITTLE NOTE <span class="required-mark" aria-hidden="true">*</span></label>
+    <textarea id="rsvpMessage" class="field-input" name="message" required maxlength="400" placeholder="Say hello..." aria-describedby="rsvpMessageError"></textarea>
+    <p class="field-error" id="rsvpMessageError" aria-live="polite"></p>
+  </div>
+  <button type="submit" class="pill pill--gold" id="rsvpSubmit">Send my RSVP</button>
+  <p class="note" id="rsvpDisclosure">Your RSVP is saved privately for Sherin and Dibiya.</p>
+  <div class="toast form-submit-status" id="rsvpResult" role="status" aria-live="polite"></div>
+</form>
+<div id="rsvpSuccess" class="rsvp-card rsvp-success" hidden tabindex="-1" role="status" aria-live="polite">
+  <div class="rsvp-success__symbol" aria-hidden="true">✦</div>
+  <p class="eyebrow">WITH GRATITUDE</p>
+  <h3 class="rsvp-success__heading" id="rsvpSuccessHeading">Thank you for your RSVP!</h3>
+  <p class="rsvp-success__message" id="rsvpSuccessMessage">Your response has been received.</p>
+  <span class="rsvp-success__line" aria-hidden="true"></span>
+  <p class="rsvp-success__foot">With love, Sherin &amp; Dibiya</p>
+  <button class="pill pill--outline rsvp-success__again" type="button" id="rsvpAgain">Send another RSVP</button>
+</div></div></section>
   <section id="wishes" class="wishes-section" aria-labelledby="wishesTitle"><div class="container"><div class="wishes-head reveal"><div><p class="eyebrow">04 / FROM OUR LOVED ONES</p><h2 class="section-title" id="wishesTitle">Wishes</h2><p>Every blessing and kind word means so much to us.</p></div><div class="wishes-controls"><button type="button" id="wishPrev" class="icon-btn" aria-label="Previous wishes">‹</button><button type="button" id="wishNext" class="icon-btn" aria-label="Next wishes">›</button></div></div><div class="wish-track reveal" id="wishTrack" aria-label="Housewarming wishes"><article class="wish"><p>May this home always be full of laughter, warmth and beautiful memories.</p><strong>Sam</strong></article><article class="wish"><p>Here's to new beginnings, quiet mornings and countless blessings together.</p><strong>Jordan</strong></article><article class="wish"><p>May peace, love and joy always find their way through your door.</p><strong>Taylor</strong></article></div><div class="wish-actions reveal"><button type="button" class="pill pill--outline" id="openWish">Leave your wish ♡</button><p class="note" id="wishesDisclosure">These sample wishes are for preview. Your wish will appear here until you leave the page.</p></div></div></section>
 </main>
 <footer class="footer"><svg class="roof-symbol" viewBox="0 0 180 82" aria-hidden="true"><path d="M8 61L90 8 172 61M21 63L90 22 159 63M81 48H99V65H81zM90 48V65M81 56H99"/></svg><p>With love, Sherin &amp; Dibiya</p><small>SD’s BETHLEHEM · 07 NOVEMBER 2026</small></footer>
-<div class="modal" id="wishModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wishTitle"><div class="modal-card"><div class="modal-head"><h3 id="wishTitle">Leave a wish</h3><button type="button" id="closeWish" class="modal-close" aria-label="Close wishes dialog">×</button></div><form id="wishForm"><label for="wishName" class="field-label">YOUR NAME</label><input id="wishName" class="field-input" required maxlength="80" autocomplete="name" placeholder="Your name"><label for="wishText" class="field-label">YOUR WISH</label><textarea id="wishText" class="field-input" required maxlength="350" placeholder="Wishing you..."></textarea><button type="submit" class="pill pill--gold">Share my wish</button><p class="note" id="wishDisclosure">Preview only. Wishes are not saved.</p><p class="note" id="wishSaveStatus" role="status" aria-live="polite"></p></form></div></div>
+<div class="modal" id="wishModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="wishTitle"><div class="modal-card"><div class="modal-head"><h3 id="wishTitle">Leave a wish</h3><button type="button" id="closeWish" class="modal-close" aria-label="Close wishes dialog">×</button></div><form id="wishForm" novalidate>
+  <div class="form-field" id="wishNameField">
+    <label for="wishName" class="field-label">YOUR NAME <span class="required-mark" aria-hidden="true">*</span></label>
+    <input id="wishName" class="field-input" required maxlength="80" autocomplete="name" placeholder="Your name" aria-describedby="wishNameError">
+    <p class="field-error" id="wishNameError" aria-live="polite"></p>
+  </div>
+  <div class="form-field" id="wishTextField">
+    <label for="wishText" class="field-label">YOUR WISH <span class="required-mark" aria-hidden="true">*</span></label>
+    <textarea id="wishText" class="field-input" required maxlength="350" placeholder="Wishing you..." aria-describedby="wishTextError"></textarea>
+    <p class="field-error" id="wishTextError" aria-live="polite"></p>
+  </div>
+  <button type="submit" class="pill pill--gold" id="wishSubmit">Share my wish</button>
+  <p class="note" id="wishDisclosure">Your name and wish will be visible to everyone visiting this invitation.</p>
+  <p class="note form-submit-status" id="wishSaveStatus" role="status" aria-live="polite"></p>
+</form></div></div>
 <div class="music-dock" aria-label="Background music">
   <button class="music-toggle" id="musicButton" type="button" aria-pressed="false" aria-label="Play Ullam Paadum" title="Ullam Paadum">
     <span class="music-toggle__icon" aria-hidden="true">♫</span>
@@ -448,36 +519,107 @@ async function sendBethlehem(data){
   if(result.status!=="success")throw new Error(result.message||"Unable to save.");
   return result;
 }
-document.getElementById("rsvpForm").addEventListener("submit",async event=>{
+
+const rsvpForm=document.getElementById("rsvpForm");
+const rsvpButton=document.getElementById("rsvpSubmit");
+const rsvpStatus=document.getElementById("rsvpResult");
+const rsvpSuccess=document.getElementById("rsvpSuccess");
+const nameInput=document.getElementById("guestName");
+const noteInput=document.getElementById("rsvpMessage");
+const attendanceInputs=[...rsvpForm.querySelectorAll('input[name="attendance"]')];
+function fieldError(inputId,fieldId,errorId,message){
+  const input=document.getElementById(inputId);
+  const field=document.getElementById(fieldId);
+  const error=document.getElementById(errorId);
+  error.textContent=message;
+  field.classList.toggle("has-error",Boolean(message));
+  input.setAttribute("aria-invalid",String(Boolean(message)));
+}
+function attendanceError(message){
+  const group=document.getElementById("rsvpAttendance");
+  const field=document.getElementById("attendanceField");
+  document.getElementById("attendanceError").textContent=message;
+  field.classList.toggle("has-error",Boolean(message));
+  group.setAttribute("aria-invalid",String(Boolean(message)));
+  attendanceInputs.forEach(input=>input.setAttribute("aria-invalid",String(Boolean(message))));
+}
+const hasContent=(value,limit)=>value.trim().length>0&&value.trim().length<=limit;
+function validateRsvp(){
+  const guest=nameInput.value.trim();
+  const note=noteInput.value.trim();
+  const attending=attendanceInputs.some(x=>x.checked);
+  fieldError("guestName","guestNameField","guestNameError",
+    hasContent(guest,80)?"":"Please enter your name.");
+  attendanceError(attending?"":"Please choose whether you can attend.");
+  fieldError("rsvpMessage","rsvpMessageField","rsvpMessageError",
+    hasContent(note,400)?"":"Please write a short note.");
+  const firstInvalid=[nameInput,attendanceInputs[0],noteInput].find((input,i)=>
+    i===0?!hasContent(guest,80):i===1?!attending:!hasContent(note,400));
+  if(firstInvalid){firstInvalid.focus({preventScroll:true});
+    firstInvalid.scrollIntoView({behavior:reduce.matches?"auto":"smooth",block:"center"});
+    return false;
+  }
+  return true;
+}
+nameInput.addEventListener("input",()=>{
+ if(document.getElementById("guestNameField").classList.contains("has-error"))
+  fieldError("guestName","guestNameField","guestNameError",
+    hasContent(nameInput.value,80)?"":"Please enter your name.");
+});
+noteInput.addEventListener("input",()=>{
+ if(document.getElementById("rsvpMessageField").classList.contains("has-error"))
+  fieldError("rsvpMessage","rsvpMessageField","rsvpMessageError",
+    hasContent(noteInput.value,400)?"":"Please write a short note.");
+});
+attendanceInputs.forEach(input=>input.addEventListener("change",()=>{
+ attendanceError(attendanceInputs.some(radio=>radio.checked)?"":"Please choose whether you can attend.");
+}));
+rsvpForm.addEventListener("submit",async event=>{
   event.preventDefault();
-  const form=event.currentTarget;
-  const name=document.getElementById("guestName").value.trim();
-  const attendance=new FormData(form).get("attendance");
-  if(!name||!attendance)return;
-  const status=document.getElementById("rsvpResult");
+  if(rsvpButton.disabled)return;
+  rsvpStatus.textContent="";rsvpStatus.classList.remove("is-error");
+  if(!validateRsvp())return;
+  const name=nameInput.value.trim();
+  const attending=new FormData(rsvpForm).get("attendance");
   if(!BETHLEHEM_CONNECTED){
-    status.textContent=attendance==="yes"?"Thank you, "+name+"! This is a demo; nothing was sent.":
-      "Thank you, "+name+". This demo RSVP was not sent.";
+    rsvpStatus.classList.add("is-error");
+    rsvpStatus.textContent="RSVP saving is currently unavailable. Please try again later.";
     return;
   }
-  const button=form.querySelector('[type="submit"]');
-  button.disabled=true;form.setAttribute("aria-busy","true");
-  status.textContent="Sending your RSVP…";
+  rsvpButton.disabled=true;rsvpButton.textContent="Sending…";
+  rsvpForm.setAttribute("aria-busy","true");
+  rsvpStatus.textContent="Sending your RSVP…";
   try{
     pendingRsvpId=pendingRsvpId||makeSubmissionId();
-    await sendBethlehem({action:"submitRsvp",name,attendance,
-      message:document.getElementById("rsvpMessage").value.trim(),
-      submittedAt:new Date().toISOString(),submissionId:pendingRsvpId,website:""});
-    status.textContent="Thank you, "+name+"! Your RSVP has been received.";
+    await sendBethlehem({action:"submitRsvp",name,attendance:attending,
+      message:noteInput.value.trim(),submittedAt:new Date().toISOString(),
+      submissionId:pendingRsvpId,website:""});
     pendingRsvpId=null;
+    document.getElementById("rsvpSuccessHeading").textContent="Thank you, "+name+"!";
+    document.getElementById("rsvpSuccessMessage").textContent=attending==="yes" ?
+      "Your RSVP has been received. We can't wait to welcome you to Bethlehem!" :
+      "Your RSVP has been received. We'll miss celebrating with you!";
+    rsvpForm.hidden=true;rsvpSuccess.hidden=false;
+    rsvpSuccess.focus({preventScroll:true});
+    rsvpSuccess.scrollIntoView({behavior:reduce.matches?"auto":"smooth",block:"center"});
   }catch(error){
-    status.textContent="We couldn't confirm your RSVP was saved. Check your connection before trying again.";
+    rsvpStatus.classList.add("is-error");
+    rsvpStatus.textContent="We couldn't confirm your RSVP was saved. Please check your connection and try again.";
     console.error("Bethlehem RSVP:",error);
-  }finally{button.disabled=false;form.removeAttribute("aria-busy")}
+  }finally{
+    rsvpButton.disabled=false;rsvpButton.textContent="Send my RSVP";
+    rsvpForm.removeAttribute("aria-busy");
+  }
 });
-
+document.getElementById("rsvpAgain").addEventListener("click",()=>{
+  rsvpForm.reset();rsvpStatus.textContent="";rsvpStatus.classList.remove("is-error");
+  fieldError("guestName","guestNameField","guestNameError","");
+  fieldError("rsvpMessage","rsvpMessageField","rsvpMessageError","");
+  attendanceError("");
+  rsvpSuccess.hidden=true;rsvpForm.hidden=false;nameInput.focus();
+});
 const modal=document.getElementById("wishModal"),wishOpen=document.getElementById("openWish"),wishClose=document.getElementById("closeWish"),track=document.getElementById("wishTrack");let beforeModal=null;
-function openModal(){beforeModal=document.activeElement;modal.classList.add("open");modal.setAttribute("aria-hidden","false");document.body.classList.add("modal-open");document.getElementById("wishName").focus()}
+function openModal(){beforeModal=document.activeElement;modal.classList.add("open");modal.setAttribute("aria-hidden","false");document.body.classList.add("modal-open");clearWishErrors();document.getElementById("wishName").focus()}
 function closeModal(){modal.classList.remove("open");modal.setAttribute("aria-hidden","true");document.body.classList.remove("modal-open");if(beforeModal&&typeof beforeModal.focus==="function")beforeModal.focus()}
 wishOpen.addEventListener("click",openModal);wishClose.addEventListener("click",closeModal);modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});document.addEventListener("keydown",e=>{if(!modal.classList.contains("open"))return;if(e.key==="Escape"){closeModal();return}if(e.key!=="Tab")return;const tabbable=[...modal.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled])')];if(e.shiftKey&&document.activeElement===tabbable[0]){e.preventDefault();tabbable.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===tabbable.at(-1)){e.preventDefault();tabbable[0].focus()}});
 
@@ -518,25 +660,74 @@ function loadBethlehemWishes(){
  script.src=BETHLEHEM_API_ENDPOINT+"?action=getWishes&callback="+encodeURIComponent(callback)+"&t="+Date.now();
  document.head.appendChild(script);
 }
+
+const wishName=document.getElementById("wishName");
+const wishText=document.getElementById("wishText");
+const wishButton=document.getElementById("wishSubmit");
+function setWishFieldError(inputId,fieldId,errorId,message){
+  const input=document.getElementById(inputId);
+  const field=document.getElementById(fieldId);
+  document.getElementById(errorId).textContent=message;
+  field.classList.toggle("has-error",Boolean(message));
+  input.setAttribute("aria-invalid",String(Boolean(message)));
+}
+function clearWishErrors(){
+  setWishFieldError("wishName","wishNameField","wishNameError","");
+  setWishFieldError("wishText","wishTextField","wishTextError","");
+  wishStatus.textContent="";wishStatus.classList.remove("is-error");
+}
+function validateWish(){
+  const hasName=hasContent(wishName.value,80);
+  const hasWish=hasContent(wishText.value,350);
+  setWishFieldError("wishName","wishNameField","wishNameError",hasName?"":"Please enter your name.");
+  setWishFieldError("wishText","wishTextField","wishTextError",hasWish?"":"Please write your wish.");
+  if(!hasName||!hasWish){
+    const input=hasName?wishText:wishName;input.focus({preventScroll:true});
+    input.scrollIntoView({behavior:reduce.matches?"auto":"smooth",block:"nearest"});
+    return false;
+  }
+  return true;
+}
+wishName.addEventListener("input",()=>{
+ if(document.getElementById("wishNameField").classList.contains("has-error"))
+  setWishFieldError("wishName","wishNameField","wishNameError",
+    hasContent(wishName.value,80)?"":"Please enter your name.");
+});
+wishText.addEventListener("input",()=>{
+ if(document.getElementById("wishTextField").classList.contains("has-error"))
+  setWishFieldError("wishText","wishTextField","wishTextError",
+    hasContent(wishText.value,350)?"":"Please write your wish.");
+});
 wishForm.addEventListener("submit",async event=>{
- event.preventDefault();
- const name=document.getElementById("wishName").value.trim();
- const wish=document.getElementById("wishText").value.trim();
- if(!name||!wish)return;
- if(!BETHLEHEM_CONNECTED){addWish(name,wish);wishForm.reset();closeModal();return;}
- const button=wishForm.querySelector('[type="submit"]');
- button.disabled=true;wishForm.setAttribute("aria-busy","true");
- wishStatus.textContent="Sharing your wish…";
- try{
-  pendingWishId=pendingWishId||makeSubmissionId();
-  const result=await sendBethlehem({action:"submitWish",name,wish,submissionId:pendingWishId,website:""});
-  pendingWishId=null;
-  addWish(result.wish?.name||name,result.wish?.wish||wish);
-  wishForm.reset();wishStatus.textContent="";closeModal();
- }catch(error){
-  wishStatus.textContent="We couldn't confirm your wish was saved. Check your connection before trying again.";
-  console.error("Bethlehem wish:",error);
- }finally{button.disabled=false;wishForm.removeAttribute("aria-busy")}
+  event.preventDefault();
+  if(wishButton.disabled)return;
+  wishStatus.textContent="";wishStatus.classList.remove("is-error");
+  if(!validateWish())return;
+  const name=wishName.value.trim(),wish=wishText.value.trim();
+  if(!BETHLEHEM_CONNECTED){
+    wishStatus.classList.add("is-error");
+    wishStatus.textContent="Wish saving is currently unavailable. Please try again later.";
+    return;
+  }
+  wishButton.disabled=true;wishButton.textContent="Sharing…";
+  wishForm.setAttribute("aria-busy","true");
+  wishStatus.textContent="Sharing your wish…";
+  try{
+    pendingWishId=pendingWishId||makeSubmissionId();
+    const result=await sendBethlehem({action:"submitWish",name,wish,submissionId:pendingWishId,website:""});
+    pendingWishId=null;
+    addWish(result.wish?.name||name,result.wish?.wish||wish);
+    wishForm.reset();clearWishErrors();closeModal();
+    document.getElementById("wishesDisclosure").textContent=
+      "Thank you, "+name+"! Your wish has been shared with everyone.";
+  }catch(error){
+    wishStatus.classList.add("is-error");
+    wishStatus.textContent="We couldn't confirm your wish was saved. Please check your connection and try again.";
+    console.error("Bethlehem wish:",error);
+  }finally{
+    wishButton.disabled=false;wishButton.textContent="Share my wish";
+    wishForm.removeAttribute("aria-busy");
+  }
 });
 if(BETHLEHEM_CONNECTED){
  document.getElementById("rsvpDisclosure").textContent="Your RSVP is saved privately for Sherin and Dibiya.";
