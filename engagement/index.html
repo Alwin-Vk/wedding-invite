@@ -433,7 +433,7 @@ document.getElementById("storyPrev").addEventListener("click",()=>setStory(story
 
 /* Bethlehem only. Activate with the /exec URL from the dedicated Bethlehem Apps Script.
    Until then the existing demo messages remain honest. Never use the wedding URL. */
-const BETHLEHEM_API_ENDPOINT="";
+const BETHLEHEM_API_ENDPOINT="https://script.google.com/macros/s/AKfycbygK-BKwu45n2eSx8d1VGmlJq5Kk7jWNaNMqVpgOom7Ng1JT0BPYuZeSbjesDgR0AmpVg/exec";
 const BETHLEHEM_CONNECTED=/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(BETHLEHEM_API_ENDPOINT);
 let pendingRsvpId=null,pendingWishId=null;
 function makeSubmissionId(){return typeof crypto!=="undefined"&&crypto.randomUUID?
