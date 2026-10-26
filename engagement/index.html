@@ -353,6 +353,28 @@
 @media(max-width:720px){.form-field{margin-bottom:21px}.rsvp-success{gap:15px}.rsvp-success__heading{font-size:clamp(2.35rem,9vw,3.4rem)}}
 @media(prefers-reduced-motion:reduce){.rsvp-success__symbol{animation:none}}
 
+/* Housewarming wishes: balanced form layout on narrow screens. */
+#wishModal .modal-card{box-sizing:border-box;width:min(100%,500px)}
+#wishModal .modal-head{align-items:center}
+#wishModal .modal-head h3{margin:0;min-width:0;font-size:clamp(2rem,7vw,2.9rem);line-height:1.12}
+#wishModal .modal-close{flex:0 0 44px;min-height:44px;cursor:pointer}
+#wishModal .form-field{min-width:0;width:100%}
+#wishModal .field-input{box-sizing:border-box;width:100%;max-width:100%;font-size:16px}
+#wishModal textarea.field-input{min-height:125px}
+#wishModal .pill{min-height:50px;border-radius:999px}
+@media(max-width:600px){
+ #wishModal.modal{align-items:center;justify-content:center;padding:12px;overscroll-behavior:contain}
+ #wishModal .modal-card{width:100%;max-height:calc(100dvh - 24px);padding:26px clamp(18px,5vw,26px);border-radius:22px;overflow-x:hidden;overflow-y:auto}
+ #wishModal .modal-head{gap:12px;margin-bottom:22px}
+ #wishModal .modal-head h3{font-size:clamp(1.9rem,8vw,2.4rem)}
+ #wishModal .form-field{margin-bottom:18px}
+ #wishModal .field-input{margin-bottom:6px;padding:12px 0}
+ #wishModal .note{font-size:12px;line-height:1.55}
+ .wishes-head{gap:16px}
+ .wishes-controls{margin-left:auto}
+ .wish-actions{align-items:flex-start;gap:14px}
+ .wish-actions .pill{max-width:100%}
+}
 </style>
 </head>
 <body>
@@ -653,6 +675,7 @@ function loadBethlehemWishes(){
   const list=Array.isArray(data.wishes)?data.wishes:[];
   if(!list.length){showWishText("Be the first to leave a little love.");return;}
   track.replaceChildren(...list.slice(0,100).map(x=>wishCard(String(x.name||"").slice(0,80),String(x.wish||"").slice(0,350))));
+  reshuffleWishes();
  }
  window[callback]=data=>finish(!data||data.status!=="success",data||{});
  script.onerror=()=>finish(true);
@@ -736,8 +759,73 @@ if(BETHLEHEM_CONNECTED){
  loadBethlehemWishes();
 }
 
-function moveWishes(d){const card=track.querySelector(".wish");track.scrollBy({left:d*((card?.getBoundingClientRect().width||300)+20),behavior:reduce.matches?"auto":"smooth"})}
-document.getElementById("wishPrev").addEventListener("click",()=>moveWishes(-1));document.getElementById("wishNext").addEventListener("click",()=>moveWishes(1));let wishPaused=false;track.addEventListener("pointerenter",()=>wishPaused=true);track.addEventListener("pointerleave",()=>wishPaused=false);track.addEventListener("focusin",()=>wishPaused=true);track.addEventListener("focusout",()=>wishPaused=false);if(!reduce.matches)window.setInterval(()=>{if(wishPaused||document.hidden||modal.classList.contains("open"))return;const max=track.scrollWidth-track.clientWidth;if(max<10)return;track.scrollTo({left:track.scrollLeft>=max-8?0:Math.min(max,track.scrollLeft+330),behavior:"smooth"})},6500);
+// Match the wedding invitation: shuffle once per load, advance only while visible,
+// and hand the carousel permanently to the visitor after their first interaction.
+let wishAutoplayTimer=0,wishUserInteracted=false,wishSectionVisible=false,wishProgrammaticScroll=false,wishScrollTimer=0;
+const wishSection=document.getElementById("wishes");
+function shuffledWishCards(cards){
+ const items=[...cards];
+ for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}
+ if(items.length>1){
+  try{
+   const key=items[0].querySelector("strong")?.textContent+"|"+items[0].querySelector("p")?.textContent;
+   if(sessionStorage.getItem("bethlehemWishesFirst")===key)items.push(items.shift());
+   const first=items[0];
+   sessionStorage.setItem("bethlehemWishesFirst",first.querySelector("strong")?.textContent+"|"+first.querySelector("p")?.textContent);
+  }catch(error){/* Storage is optional, e.g. private mode. */}
+ }
+ return items;
+}
+function reshuffleWishes(){
+ const cards=[...track.querySelectorAll(".wish:not(.wish--empty)")];
+ if(cards.length<2)return;
+ track.replaceChildren(...shuffledWishCards(cards));
+ track.scrollTo({left:0,behavior:"instant"});
+ scheduleWishAutoplay(4500);
+}
+function stopWishAutoplay(){
+ if(wishUserInteracted)return;
+ wishUserInteracted=true;
+ clearTimeout(wishAutoplayTimer);wishAutoplayTimer=0;
+}
+function actualWishCards(){return [...track.querySelectorAll(".wish:not(.wish--empty)")];}
+function nearestWishIndex(cards){return cards.reduce((best,card,i)=>Math.abs(card.offsetLeft-track.scrollLeft)<Math.abs(cards[best].offsetLeft-track.scrollLeft)?i:best,0);}
+function scrollWishCard(card){
+ if(!card)return;
+ wishProgrammaticScroll=true;
+ track.scrollTo({left:card.offsetLeft-track.firstElementChild.offsetLeft,behavior:reduce.matches?"auto":"smooth"});
+ clearTimeout(wishScrollTimer);wishScrollTimer=setTimeout(()=>wishProgrammaticScroll=false,950);
+}
+function moveWishes(d){
+ stopWishAutoplay();
+ const cards=actualWishCards();if(!cards.length)return;
+ const i=nearestWishIndex(cards);
+ scrollWishCard(cards[Math.max(0,Math.min(cards.length-1,i+d))]);
+}
+function canAutoWishes(){return !wishUserInteracted&&!reduce.matches&&!document.hidden&&!modal.classList.contains("open")&&wishSectionVisible&&actualWishCards().length>1;}
+function scheduleWishAutoplay(delay=5500){
+ clearTimeout(wishAutoplayTimer);
+ if(!canAutoWishes())return;
+ wishAutoplayTimer=setTimeout(()=>{
+  if(!canAutoWishes())return;
+  const cards=actualWishCards(),index=nearestWishIndex(cards);
+  scrollWishCard(cards[(index+1)%cards.length]);
+  scheduleWishAutoplay();
+ },delay);
+}
+document.getElementById("wishPrev").addEventListener("click",()=>moveWishes(-1));
+document.getElementById("wishNext").addEventListener("click",()=>moveWishes(1));
+["pointerdown","touchstart","wheel","keydown"].forEach(type=>track.addEventListener(type,stopWishAutoplay,{passive:type!=="keydown"}));
+track.addEventListener("scroll",()=>{if(!wishProgrammaticScroll)stopWishAutoplay()},{passive:true});
+track.addEventListener("focusin",stopWishAutoplay);
+wishOpen.addEventListener("click",stopWishAutoplay);
+document.addEventListener("visibilitychange",()=>scheduleWishAutoplay());
+if("IntersectionObserver" in window){
+ const wishObserver=new IntersectionObserver(entries=>{wishSectionVisible=entries[0].isIntersecting;scheduleWishAutoplay(wishSectionVisible?4500:5500)},{threshold:.1});
+ wishObserver.observe(wishSection);
+}else{wishSectionVisible=true;}
+reshuffleWishes();
+
 
 // Music starts only after a visitor taps the control, including on iPhone Safari.
 const backgroundSong = document.getElementById('housewarmingAudio');
