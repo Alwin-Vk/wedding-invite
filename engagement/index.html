@@ -306,20 +306,35 @@
   font:600 clamp(1.35rem,2.15vw,1.65rem)/1.1 var(--font-body);
   letter-spacing:-.025em;
 }
+/* Native SVG image ensures the house lettering remains visible on iPhone Safari.
+   The optional gradient mask is only an enhancement; it never hides the base artwork. */
 .bethlehem-name .bethlehem-word--sign,
 .hero--cinematic .hero-bethlehem-sign {
-  display:block;width:100%;max-width:100%;height:auto;aspect-ratio:1005 / 280;
-  margin:5px auto 0;padding:0;font-size:0;line-height:0;color:transparent;
-  background:linear-gradient(105deg,#d3ab65 0%,#f9e7c4 26%,#fff7e7 40%,#d3a65e 58%,#f0d8a8 76%,#d3ab65 100%);
-  background-size:230% 100%;
-  background-clip:border-box;-webkit-background-clip:border-box;
+  position:relative;display:block;width:100%;max-width:100%;height:auto;
+  aspect-ratio:1005 / 280;margin:5px auto 0;padding:0;
+  font-size:0;line-height:0;letter-spacing:0;background:none;
   -webkit-text-fill-color:initial;
-  -webkit-mask-image:url("assets/bethlehem/bethlehem-sign-lettering.svg");
-  mask-image:url("assets/bethlehem/bethlehem-sign-lettering.svg");
-  -webkit-mask-position:center;mask-position:center;
-  -webkit-mask-size:contain;mask-size:contain;
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  animation:bethlehem-shimmer 8.4s ease-in-out infinite,bethlehem-sign-light 5.2s ease-in-out infinite;
+  -webkit-mask-image:none;mask-image:none;
+  animation:bethlehem-sign-light 5.2s ease-in-out infinite;
+}
+.bethlehem-sign-image{
+  display:block;width:100%;height:100%;max-width:100%;
+  object-fit:contain;pointer-events:none;
+}
+/* Gold shimmer remains decorative; the unmasked gold image always renders. */
+@supports ((-webkit-mask-image:url("assets/bethlehem/bethlehem-sign-lettering.svg")) or (mask-image:url("assets/bethlehem/bethlehem-sign-lettering.svg"))) {
+  .bethlehem-name .bethlehem-word--sign::after,
+  .hero--cinematic .hero-bethlehem-sign::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(105deg,#d3ab65 0%,#f9e7c4 26%,#fff7e7 40%,#d3a65e 58%,#f0d8a8 76%,#d3ab65 100%);
+    background-size:230% 100%;
+    -webkit-mask-image:url("assets/bethlehem/bethlehem-sign-lettering.svg");
+    mask-image:url("assets/bethlehem/bethlehem-sign-lettering.svg");
+    -webkit-mask-position:center;mask-position:center;
+    -webkit-mask-size:contain;mask-size:contain;
+    -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    animation:bethlehem-shimmer 8.4s ease-in-out infinite;
+  }
 }
 @keyframes bethlehem-sign-light {
   0%,100%{filter:drop-shadow(0 0 4px #efc78535)}
@@ -373,8 +388,8 @@
   line-height:0;
   letter-spacing:0;
   text-transform:none;
-  /* Replace the former text-shadow animation with the existing sign shimmer. */
-  animation:bethlehem-shimmer 8.4s ease-in-out infinite,bethlehem-sign-light 5.2s ease-in-out infinite;
+  /* Keep the gold image visible even where SVG masking is unsupported. */
+  animation:bethlehem-sign-light 5.2s ease-in-out infinite;
 }
 @media (max-width:720px) {
   .hero--cinematic h1 {gap:clamp(18px,4vw,24px)}
@@ -475,7 +490,7 @@
     <div class="hero-center">
       <p class="eyebrow hero-kicker arrival arrival--1">A HOUSEWARMING CELEBRATION</p>
       <p class="hero-script arrival arrival--2">Welcome home</p>
-      <h1 class="arrival arrival--3" aria-label="SD’s Bethlehem"><span aria-hidden="true">SD’s</span><strong class="hero-bethlehem-sign" aria-hidden="true"></strong></h1>
+      <h1 class="arrival arrival--3" aria-label="SD’s Bethlehem"><span aria-hidden="true">SD’s</span><strong class="hero-bethlehem-sign" aria-hidden="true"><img class="bethlehem-sign-image" src="assets/bethlehem/bethlehem-sign-lettering-gold.svg" alt="" decoding="async"></strong></h1>
       <p class="hero-hosts arrival arrival--4">Sherin <span>&amp;</span> Dibiya</p>
       <span class="hero-rule arrival arrival--4" aria-hidden="true"></span>
       <p class="hero-date arrival arrival--5">07 NOVEMBER 2026</p>
@@ -485,7 +500,7 @@
       <a class="hero-end" href="#beginning" aria-label="Scroll to the invitation"><span>SCROLL TO BEGIN</span><i aria-hidden="true"></i></a>
     </div>
   </section>
-  <section id="beginning" class="note-section" aria-labelledby="noteTitle"><div class="ambient"></div><div class="container"><div class="note-content reveal"><p class="eyebrow">01 / A NOTE FROM US</p><h2 class="section-title" id="noteTitle">A home built<br><em>with love.</em></h2><span class="gold-line"></span><p class="lead"><span class="bethlehem-lockup note-home-lockup" role="group" aria-label="SD’s Bethlehem"><span class="bethlehem-prefix">SD’s</span><span class="note-home-name bethlehem-name"><span class="bethlehem-word bethlehem-word--sign" role="img" aria-label="Bethlehem"></span><span class="bethlehem-spark bethlehem-spark--one" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--two" aria-hidden="true">✧</span><span class="bethlehem-spark bethlehem-spark--three" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--four" aria-hidden="true">✧</span></span></span><span class="note-home-copy">is our dream home, built with prayers, hard work and love. We see it as a miraculous blessing from God and our Koratty Muthy.</span></p><p class="ordinary">We’re happy to share this special milestone with you all.</p><p class="signature"><span>With love,</span>Sherin &amp; Dibiya</p></div>
+  <section id="beginning" class="note-section" aria-labelledby="noteTitle"><div class="ambient"></div><div class="container"><div class="note-content reveal"><p class="eyebrow">01 / A NOTE FROM US</p><h2 class="section-title" id="noteTitle">A home built<br><em>with love.</em></h2><span class="gold-line"></span><p class="lead"><span class="bethlehem-lockup note-home-lockup" role="group" aria-label="SD’s Bethlehem"><span class="bethlehem-prefix">SD’s</span><span class="note-home-name bethlehem-name"><span class="bethlehem-word bethlehem-word--sign" role="img" aria-label="Bethlehem"><img class="bethlehem-sign-image" src="assets/bethlehem/bethlehem-sign-lettering-gold.svg" alt="" decoding="async"></span><span class="bethlehem-spark bethlehem-spark--one" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--two" aria-hidden="true">✧</span><span class="bethlehem-spark bethlehem-spark--three" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--four" aria-hidden="true">✧</span></span></span><span class="note-home-copy">is our dream home, built with prayers, hard work and love. We see it as a miraculous blessing from God and our Koratty Muthy.</span></p><p class="ordinary">We’re happy to share this special milestone with you all.</p><p class="signature"><span>With love,</span>Sherin &amp; Dibiya</p></div>
       <div class="story-head reveal"><div><p class="eyebrow">THE JOURNEY TO BETHLEHEM</p><h3>From a dream<br>to a doorstep.</h3></div><p class="caption">Every stage and every milestone tell a story worth remembering.</p></div>
       <div class="story-viewer reveal" aria-label="The story of the building process"><div class="story-photo-wrap"><img id="storyMainImage" src="assets/bethlehem/01-the-land.webp" alt="The empty building plot before construction" loading="lazy"></div><div class="story-details"><p class="story-count" id="storyCount">01 <span>/ 10</span></p><h4 id="storyTitle">Where it all began.</h4><p id="storyDescription">The first steps on an empty piece of land, with a home still living in our dreams.</p><div class="story-controls"><button type="button" class="icon-btn" id="storyPrev" aria-label="Previous building stage">‹</button><button type="button" class="icon-btn" id="storyNext" aria-label="Next building stage">›</button></div></div></div>
       <div id="storyStrip" class="story-strip" aria-label="Select a chapter in the building journey"></div>
@@ -496,7 +511,7 @@
   <div class="bethlehem-lockup">
     <span class="bethlehem-prefix">SD’s</span>
     <p class="place bethlehem-name">
-    <span class="bethlehem-word bethlehem-word--sign" role="img" aria-label="Bethlehem"></span>
+    <span class="bethlehem-word bethlehem-word--sign" role="img" aria-label="Bethlehem"><img class="bethlehem-sign-image" src="assets/bethlehem/bethlehem-sign-lettering-gold.svg" alt="" decoding="async"></span>
     <span class="bethlehem-spark bethlehem-spark--one" aria-hidden="true">✦</span>
     <span class="bethlehem-spark bethlehem-spark--two" aria-hidden="true">✧</span>
     <span class="bethlehem-spark bethlehem-spark--three" aria-hidden="true">✦</span>
