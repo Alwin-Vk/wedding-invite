@@ -306,7 +306,8 @@
   font:600 clamp(1.35rem,2.15vw,1.65rem)/1.1 var(--font-body);
   letter-spacing:-.025em;
 }
-.bethlehem-name .bethlehem-word--sign {
+.bethlehem-name .bethlehem-word--sign,
+.hero--cinematic .hero-bethlehem-sign {
   display:block;width:100%;max-width:100%;height:auto;aspect-ratio:1005 / 280;
   margin:5px auto 0;padding:0;font-size:0;line-height:0;color:transparent;
   background:linear-gradient(105deg,#d3ab65 0%,#f9e7c4 26%,#fff7e7 40%,#d3a65e 58%,#f0d8a8 76%,#d3ab65 100%);
@@ -346,6 +347,39 @@
  .directions-link{transition:none}
 }
 
+
+/* First-page hero: the exact Bethlehem sign, scaled responsively.
+   The short SD’s prefix remains in a plain font, safely separated above the sign. */
+.hero--cinematic h1 {
+  width:min(100%,820px);
+  max-width:100%;
+  gap:clamp(18px,2.6vw,28px);
+}
+.hero--cinematic h1 > span {
+  display:block;
+  font:500 clamp(1.85rem,3.8vw,2.8rem)/1.12 var(--font-body);
+  letter-spacing:-.025em;
+  color:#f6e3c8;
+}
+.hero--cinematic h1 .hero-bethlehem-sign {
+  display:block;
+  flex:none;
+  width:min(84vw,720px);
+  max-width:100%;
+  aspect-ratio:1005 / 280;
+  height:auto;
+  margin:0;
+  font-size:0;
+  line-height:0;
+  letter-spacing:0;
+  text-transform:none;
+  /* Replace the former text-shadow animation with the existing sign shimmer. */
+  animation:bethlehem-shimmer 8.4s ease-in-out infinite,bethlehem-sign-light 5.2s ease-in-out infinite;
+}
+@media (max-width:720px) {
+  .hero--cinematic h1 {gap:clamp(18px,4vw,24px)}
+  .hero--cinematic h1 .hero-bethlehem-sign {width:min(87vw,520px)}
+}
 
 /* The note repeats the same separated SD’s and house-sign design. */
 .note-content .note-home-lockup{
@@ -441,7 +475,7 @@
     <div class="hero-center">
       <p class="eyebrow hero-kicker arrival arrival--1">A HOUSEWARMING CELEBRATION</p>
       <p class="hero-script arrival arrival--2">Welcome home</p>
-      <h1 class="arrival arrival--3"><span>SD’s</span><strong>BETHLEHEM</strong></h1>
+      <h1 class="arrival arrival--3" aria-label="SD’s Bethlehem"><span aria-hidden="true">SD’s</span><strong class="hero-bethlehem-sign" aria-hidden="true"></strong></h1>
       <p class="hero-hosts arrival arrival--4">Sherin <span>&amp;</span> Dibiya</p>
       <span class="hero-rule arrival arrival--4" aria-hidden="true"></span>
       <p class="hero-date arrival arrival--5">07 NOVEMBER 2026</p>
