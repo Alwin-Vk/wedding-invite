@@ -291,16 +291,20 @@
 }
 .directions-link:hover{background:#c7a06b2b;box-shadow:0 10px 25px #1306106e;transform:translateY(-2px)}
 .directions-link__arrow{font-size:16px;line-height:1}
-/* The real house-sign lettering is an SVG traced from the supplied photo.
-   Only Bethlehem uses this art; SD’s stays in its original plain typeface. */
+/* Keep SD’s outside Bethlehem's illuminated lettering and give each its own space. */
+.bethlehem-lockup {
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:100%;max-width:100%;gap:clamp(19px,3vw,29px);text-align:center;
+}
+.invitation-cell--bethlehem .bethlehem-lockup {margin:0 0 16px;}
 .invitation-cell--bethlehem .bethlehem-name {
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  width:min(100%,350px);max-width:100%;margin:0 0 16px;text-align:center;
+  width:min(100%,350px);max-width:100%;margin:0;text-align:center;
 }
 .invitation-cell--bethlehem .bethlehem-prefix {
   display:block;color:#f4d8a7;
-  font:600 clamp(1.75rem,2.6vw,2.15rem)/1.1 var(--font-body);
-  letter-spacing:-.035em;
+  font:600 clamp(1.35rem,2.15vw,1.65rem)/1.1 var(--font-body);
+  letter-spacing:-.025em;
 }
 .bethlehem-name .bethlehem-word--sign {
   display:block;width:100%;max-width:100%;height:auto;aspect-ratio:1005 / 280;
@@ -325,7 +329,7 @@
 }
 @media(max-width:720px){
  .invitation-cell--bethlehem{padding-block:34px 39px}
- .invitation-cell .bethlehem-name{padding:8px 12px 14px;margin-bottom:16px}
+ .invitation-cell .bethlehem-name{padding:8px 12px 14px;margin-bottom:0}
  .bethlehem-word{font-size:clamp(2.15rem,8vw,3.05rem);letter-spacing:.035em}
  .directions-link{margin-top:19px}
 }
@@ -343,18 +347,22 @@
 }
 
 
-/* Match the celebration card in the personal note: a restrained SD’s above the
-   exact same traced Bethlehem artwork, glow, shimmer and star animations. */
+/* The note repeats the same separated SD’s and house-sign design. */
+.note-content .note-home-lockup{
+  display:flex;flex-direction:column;align-items:center;
+  width:min(100%,360px);margin:0 auto 20px;
+  gap:clamp(19px,3vw,29px);
+}
+.note-content .note-home-lockup .bethlehem-prefix{
+  display:block;color:#f4d8a7;
+  font:600 clamp(1.3rem,2vw,1.6rem)/1.1 var(--font-body);
+  letter-spacing:-.025em;
+}
 .note-content .note-home-name{
   position:relative;isolation:isolate;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   width:min(100%,340px);max-width:100%;
-  margin:0 auto 20px;padding:9px 12px 15px;
-}
-.note-content .note-home-name .bethlehem-prefix{
-  display:block;color:#f4d8a7;
-  font:600 clamp(1.5rem,2.4vw,1.9rem)/1.1 var(--font-body);
-  letter-spacing:-.035em;
+  margin:0 auto;padding:9px 12px 15px;
 }
 .note-content .note-home-name .bethlehem-word--sign{
   display:block;width:100%;max-width:100%;height:auto;
@@ -443,7 +451,7 @@
       <a class="hero-end" href="#beginning" aria-label="Scroll to the invitation"><span>SCROLL TO BEGIN</span><i aria-hidden="true"></i></a>
     </div>
   </section>
-  <section id="beginning" class="note-section" aria-labelledby="noteTitle"><div class="ambient"></div><div class="container"><div class="note-content reveal"><p class="eyebrow">01 / A NOTE FROM US</p><h2 class="section-title" id="noteTitle">A home built<br><em>with love.</em></h2><span class="gold-line"></span><p class="lead"><span class="note-home-name bethlehem-name" role="group" aria-label="SD’s Bethlehem"><span class="bethlehem-prefix">SD’s</span><span class="bethlehem-word bethlehem-word--sign" role="img" aria-label="Bethlehem"></span><span class="bethlehem-spark bethlehem-spark--one" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--two" aria-hidden="true">✧</span><span class="bethlehem-spark bethlehem-spark--three" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--four" aria-hidden="true">✧</span></span><span class="note-home-copy">is our dream home, built with prayers, hard work and love. We see it as a miraculous blessing from God and our Koratty Muthy.</span></p><p class="ordinary">We’re happy to share this special milestone with you all.</p><p class="signature"><span>With love,</span>Sherin &amp; Dibiya</p></div>
+  <section id="beginning" class="note-section" aria-labelledby="noteTitle"><div class="ambient"></div><div class="container"><div class="note-content reveal"><p class="eyebrow">01 / A NOTE FROM US</p><h2 class="section-title" id="noteTitle">A home built<br><em>with love.</em></h2><span class="gold-line"></span><p class="lead"><span class="bethlehem-lockup note-home-lockup" role="group" aria-label="SD’s Bethlehem"><span class="bethlehem-prefix">SD’s</span><span class="note-home-name bethlehem-name"><span class="bethlehem-word bethlehem-word--sign" role="img" aria-label="Bethlehem"></span><span class="bethlehem-spark bethlehem-spark--one" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--two" aria-hidden="true">✧</span><span class="bethlehem-spark bethlehem-spark--three" aria-hidden="true">✦</span><span class="bethlehem-spark bethlehem-spark--four" aria-hidden="true">✧</span></span></span><span class="note-home-copy">is our dream home, built with prayers, hard work and love. We see it as a miraculous blessing from God and our Koratty Muthy.</span></p><p class="ordinary">We’re happy to share this special milestone with you all.</p><p class="signature"><span>With love,</span>Sherin &amp; Dibiya</p></div>
       <div class="story-head reveal"><div><p class="eyebrow">THE JOURNEY TO BETHLEHEM</p><h3>From a dream<br>to a doorstep.</h3></div><p class="caption">Every stage and every milestone tell a story worth remembering.</p></div>
       <div class="story-viewer reveal" aria-label="The story of the building process"><div class="story-photo-wrap"><img id="storyMainImage" src="assets/bethlehem/01-the-land.webp" alt="The empty building plot before construction" loading="lazy"></div><div class="story-details"><p class="story-count" id="storyCount">01 <span>/ 10</span></p><h4 id="storyTitle">Where it all began.</h4><p id="storyDescription">The first steps on an empty piece of land, with a home still living in our dreams.</p><div class="story-controls"><button type="button" class="icon-btn" id="storyPrev" aria-label="Previous building stage">‹</button><button type="button" class="icon-btn" id="storyNext" aria-label="Next building stage">›</button></div></div></div>
       <div id="storyStrip" class="story-strip" aria-label="Select a chapter in the building journey"></div>
@@ -451,14 +459,16 @@
   <section id="details" class="details-section" aria-labelledby="detailsTitle"><div class="container reveal"><p class="eyebrow">02 / THE CELEBRATION</p><h2 id="detailsTitle" class="section-title">Come on in.</h2><span class="gold-line"></span><p class="intro">With grateful hearts, we welcome you to celebrate this blessing with us.</p>
       <div class="invitation-grid"><div class="invitation-cell"><span class="label">SATURDAY · NOVEMBER</span><p class="big">07</p><p class="small" id="dateText">Saturday, 07 November 2026</p></div><div class="invitation-cell"><span class="label">THE CELEBRATION BEGINS</span><p class="big">6 PM</p><p class="small" id="timeText">06:00 PM onwards</p></div><div class="invitation-cell invitation-cell--bethlehem">
   <span class="label">THE HOME WE CALL</span>
-  <p class="place bethlehem-name">
+  <div class="bethlehem-lockup">
     <span class="bethlehem-prefix">SD’s</span>
+    <p class="place bethlehem-name">
     <span class="bethlehem-word bethlehem-word--sign" role="img" aria-label="Bethlehem"></span>
     <span class="bethlehem-spark bethlehem-spark--one" aria-hidden="true">✦</span>
     <span class="bethlehem-spark bethlehem-spark--two" aria-hidden="true">✧</span>
     <span class="bethlehem-spark bethlehem-spark--three" aria-hidden="true">✦</span>
     <span class="bethlehem-spark bethlehem-spark--four" aria-hidden="true">✧</span>
-  </p>
+    </p>
+  </div>
   <a class="small address-link" href="https://maps.app.goo.gl/tuibJ2FptYXCDAXg7?g_st=ic" target="_blank" rel="noopener noreferrer" aria-label="Open 42 Carrs Peninsula Road, Junction Hill in Google Maps"><span id="addressText">42 Carrs Peninsula Road, Junction Hill, NSW</span></a>
   <a class="directions-link" href="https://maps.app.goo.gl/tuibJ2FptYXCDAXg7?g_st=ic" target="_blank" rel="noopener noreferrer" aria-label="Get directions to SD's Bethlehem in Google Maps">
     <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
